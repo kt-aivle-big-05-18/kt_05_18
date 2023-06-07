@@ -5,11 +5,13 @@ KT AIVLE SCHOOL 3기 AI개발자 트랙
 
 주제: ChatGPT를 활용한 리더 GROW 코칭 실습 서비스
 
-기술스택
+🛠기술스택🛠
 <div>
  <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=white"/>
  <img src="https://img.shields.io/badge/Vue.js-4FC08D?style=flat&logo=Vue.js&logoColor=white"/>
  <img src="https://img.shields.io/badge/Django-092E20?style=flat&logo=Django&logoColor=white"/>
+ <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=MySQL&logoColor=white"/>
+ <img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=GitHub&logoColor=white"/>
 </div>
 
 [선정배경] 
