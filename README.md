@@ -1,22 +1,22 @@
 # KT AIVLE SCHOOL 3기 AI개발자 트랙 _ BigProject
 
 
-#### 주제
+### 주제
 ChatGPT를 활용한 리더 GROW 코칭 실습 서비스
 
 
-#### 기간
+### 기간
 2023.05.30 - 2023.07.10
 
 
-#### 팀원
+### 팀원
 **이현지**(팀장, 데이터 분석, AI개발), **김예찬**(BE, DB), **김철우**(BE, DB), **박미나**(UI/UX, 데이터 분석, AI개발),
 
 
 **오재욱**(FE, 데이터 분석), **이충영**(FE, BE, DB), **최정윤**(FE, UI/UX)
 
 
-#### 🛠기술스택🛠
+### 🛠기술스택🛠
 <div>
  <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=white"/>
  <img src="https://img.shields.io/badge/Vue.js-4FC08D?style=flat&logo=Vue.js&logoColor=white"/>
@@ -26,7 +26,7 @@ ChatGPT를 활용한 리더 GROW 코칭 실습 서비스
 </div>
 
 ---
-#### 선정배경
+### 선정배경
  기업 내 리더들에 대한 코칭 교육은 소규모 그룹훈련으로 진행되기 때문에 높은 비용이 발생하고 전문코치들을 활용한 그룹훈련 방식이기 때문에 훈련 기간이 길게 소요된다. 또한 빈번한 리더들에 대한 집합 교육은 조직운영의 효율성을 저하시킨다. 
 
 
@@ -35,7 +35,7 @@ ChatGPT를 활용한 리더 GROW 코칭 실습 서비스
 
  이러한 팀원과의 코칭 전에 코치는 스스로 예상되는 주제에 대한 사전 코칭 훈련의 필요성을 느끼게 되었다. 
 
- #### 기대효과 
+ ### 기대효과 
  AI를 이용한 가상의 코칭 대상과의 대화 시뮬레이션, 일명 롤플레잉을 통해 코치가 어떤 질문을 했을 때 어떤 답변을 받을 수 있을지를 예상해보며 실제 코칭에서 더 좋은 결과를 이끌어 낼 수 있다.   
 
 
@@ -44,7 +44,7 @@ ChatGPT를 활용한 리더 GROW 코칭 실습 서비스
 
  추후 해당 서비스를 직무별 역량에 맞추어 영업, 면접, 고객관리 등 여러 상황 및 직무를 위한 훈련 서비스로 확장시킬 수 있다. 
 
-#### 서비스 주요 기능
+### 서비스 주요 기능
 
 * 홈 화면 / 서비스 소개 
 * 회원가입 / 로그인 
@@ -82,7 +82,7 @@ ChatGPT를 활용한 리더 GROW 코칭 실습 서비스
     * 피드백 설문을 많이 실시한 유저들에 대해서 포인트를 지급해 피드백 문화가 형성 되도록 유도 
 
 
-#### AI 주요 기능 
+### AI 주요 기능 
 * 음성인식 및 텍스트변환 (Speech-To-Text & Text-To-Speech) 
     * Clova API 또는 Google API를 활용한 STT/TTS 기능 구현 
     * (STT) 사용자 음성데이터를 텍스트로 변환해 GPT에게 전달,  
@@ -97,8 +97,9 @@ ChatGPT를 활용한 리더 GROW 코칭 실습 서비스
 * 가상 상대의 목소리 선택  
 
 ---
-#### 서비스 FLOW
+### 서비스 FLOW
 ![image](https://github.com/AIVLE-School-Third-Big-Project/kt_05_18/assets/116613061/c991c694-a250-4200-8d24-2338b64a46bb)
-#### 관리자 FLOW
 
+
+### 관리자 FLOW
 ![image](https://github.com/AIVLE-School-Third-Big-Project/kt_05_18/assets/116613061/09c0de51-639c-45c9-b87c-c5e5e6e815c1)
