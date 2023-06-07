@@ -15,7 +15,7 @@ ChatGPT를 활용한 리더 GROW 코칭 실습 서비스
 
 **오재욱**(FE, 데이터 분석), **이충영**(FE, BE, DB), **최정윤**(FE, UI/UX)
 
-<br>
+
 ### 🛠기술스택🛠
 <div>
  <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=white"/>
