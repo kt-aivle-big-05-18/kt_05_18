@@ -5,6 +5,12 @@ KT AIVLE SCHOOL 3기 AI개발자 트랙
 
 주제: ChatGPT를 활용한 리더 GROW 코칭 실습 서비스
 
+기술스택
+<img src="https://img.shields.io/badge/Python-#3776AB?style=flat&logo=Python&logoColor=white"/>
+<img src="https://img.shields.io/badge/Vue.js-#4FC08D?style=flat&logo=Vue.js&logoColor=white"/>
+<img src="https://img.shields.io/badge/Django-#092E20?style=flat&logo=Django&logoColor=white"/>
+
+
 [선정배경] 
 
  기업 내 리더들에 대한 코칭 교육은 소규모 그룹훈련으로 진행되기 때문에 높은 비용이 발생하고 전문코치들을 활용한 그룹훈련 방식이기 때문에 훈련 기간이 길게 소요된다. 또한 빈번한 리더들에 대한 집합 교육은 조직운영의 효율성을 저하시킨다. 
