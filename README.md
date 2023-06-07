@@ -101,3 +101,7 @@ ChatGPT를 활용한 리더 GROW 코칭 실습 서비스
 
 ### 관리자 FLOW
 ![image](https://github.com/AIVLE-School-Third-Big-Project/kt_05_18/assets/116613061/09c0de51-639c-45c9-b87c-c5e5e6e815c1)
+---
+### UI/UX
+![image](https://github.com/AIVLE-School-Third-Big-Project/kt_05_18/assets/116613061/e806d74d-4bb1-4cf5-9605-9083e1dc3036)
+
