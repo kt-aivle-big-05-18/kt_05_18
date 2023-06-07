@@ -9,16 +9,8 @@ ChatGPT를 활용한 리더 GROW 코칭 실습 서비스
 2023.05.30 - 2023.07.10
 
 
-<<<<<<< HEAD
-### 팀원
-**이현지**(팀장, 데이터 분석, AI개발), **김예찬**(BE, DB), **김철우**(BE, DB), **박미나**(UI/UX, 데이터 분석, AI개발),
-
-
-**오재욱**(FE, 데이터 분석), **이충영**(FE, BE, DB), **최정윤**(FE, UI/UX)
-=======
-#### 팀원
-**이현지**(팀장, 데이터 분석, AI개발), **김예찬**(BE, DB), **김철우**(BE, DB), **박미나**(UI/UX, 데이터 분석, AI개발), **오재욱**(FE, 데이터 분석), **이충영**(FE, BE, DB), **최정윤**(FE, UI/UX)
->>>>>>> parent of 6b4cf9f (Update README.md)
+### 👨‍💻팀원👩‍💻
+**이현지**(팀장, 데이터 분석, AI개발), **김예찬**(BE, DB), **김철우**(BE, DB), **박미나**(UI/UX, 데이터 분석, AI개발),<br/> **오재욱**(FE, 데이터 분석), **이충영**(FE, BE, DB), **최정윤**(FE, UI/UX)
 
 
 ### 🛠기술스택🛠
@@ -108,3 +100,7 @@ ChatGPT를 활용한 리더 GROW 코칭 실습 서비스
 
 ### 관리자 FLOW
 ![image](https://github.com/AIVLE-School-Third-Big-Project/kt_05_18/assets/116613061/09c0de51-639c-45c9-b87c-c5e5e6e815c1)
+---
+### UI/UX
+![image](https://github.com/AIVLE-School-Third-Big-Project/kt_05_18/assets/116613061/e806d74d-4bb1-4cf5-9605-9083e1dc3036)
+
