@@ -24,6 +24,7 @@ import base64
 from pydub import AudioSegment
 from io import BytesIO
 from django.core.files.storage import FileSystemStorage
+from django.contrib.auth.decorators import login_required
 #----------------------------------------------------------------------------------------------------------------------#
 # 0. 필요 install 목록
 # pip install soundfile
@@ -284,4 +285,37 @@ def transcribe_audio(file_path):
         transcript += result.alternatives[0].transcript + " "
 
     return transcript
+
+@login_required
+def mypersona(request):
+    personas = Persona.objects.filter(nickname=request.user.nickname)
+    return render(request, "rpg/mypersona.html", {"personas": personas})
+
+@login_required
+def share_persona(request, persona_id):
+    # 공유 시작 로직 작성
+    # persona_id에 해당하는 Persona 객체를 가져와서 shared 값을 True로 변경하는 등의 작업을 수행합니다.
+    try:
+        persona = Persona.objects.get(pk=persona_id, nickname=request.user)
+        persona.shared = True
+        persona.save()
+    except Persona.DoesNotExist:
+        # 해당 페르소나가 존재하지 않을 경우 예외 처리
+        return redirect('mypage:mypersona')
+
+    return redirect('mypage:mypersona')
+
+@login_required
+def stop_sharing(request, persona_id):
+    # 공유 중지 로직 작성
+    # persona_id에 해당하는 Persona 객체를 가져와서 shared 값을 False로 변경하는 등의 작업을 수행합니다.
+    try:
+        persona = Persona.objects.get(pk=persona_id, nickname=request.user)
+        persona.shared = False
+        persona.save()
+    except Persona.DoesNotExist:
+        # 해당 페르소나가 존재하지 않을 경우 예외 처리
+        return redirect('mypage:mypersona')
+
+    return redirect('mypage:mypersona')
 
