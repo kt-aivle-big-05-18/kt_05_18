@@ -1,0 +1,15 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ChatGPT</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $.ajaxSetup({
+            headers: { "X-CSRFToken": '{{csrf_token}}' }
+        });
+    </script>        
+    <script src="{% static '/analysis/analysis.js' %}"></script>
+</head>
+<div id = 'test_p'>여기는 분석페이지</div>
+<button id="test">test</button>

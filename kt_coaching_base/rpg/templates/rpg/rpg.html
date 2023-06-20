@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ChatGPT</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $.ajaxSetup({
+            headers: { "X-CSRFToken": '{{csrf_token}}' }
+        });
+    </script>        
+    <script src="{% static '/rpg/rpg.js' %}"></script>
+    <style>
+        .chat-container {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .user-message {
+            color: blue;
+        }
+        .assistant-message {
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>ChatGPT</h1>
+    <div class="chat-container" id="chat-container"></div>
+    {% csrf_token %}
+    <button id="record">●</button>
+    <button id="stop">■</button>
+    <input type="text" id="user-input" placeholder="이곳에 입력하세요.">
+    <button id="send-btn">▶</button>
+    <p><br>최근 녹음 재생</p>
+    <div id="sound-clips"></div>
+    <button id="end_btn">실습종료</button>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+    <!-- 공지사항 상세 -->
+    <h1>{{ notice.title }}</h1>
+    <p>{{ notice.content }}</p>
+    
+    {% if notice.get_previous %}
+        <a href="{% url 'community:notice_detail' notice.get_previous.pk %}">이전글</a>
+    {% endif %}
+    
+    {% if notice.get_next %}
+        <a href="{% url 'community:notice_detail' notice.get_next.pk %}">다음글</a>
+    {% endif %}
+    
+    <a href="{% url 'community:notice_list' %}">목록</a>
+{% endblock %}

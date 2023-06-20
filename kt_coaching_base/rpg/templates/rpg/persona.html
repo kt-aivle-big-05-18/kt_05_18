@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <h3> 여기는 persona </h3>
+    <form method="post" action = "">
+        <!-- 폼 필드들 -->
+        {% csrf_token %}
+        {% if error_message %}
+        <div class="error-message">
+          {{ error_message }}
+        </div>
+        {% endif %}
+
+        <div class="form-group">
+          <label for="department">직군:</label>
+          <select name="department" id="department" required>
+            <option value="개발팀">개발팀</option>
+            <option value="영업팀">영업팀</option>
+            <option value="기획팀">기획팀</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="rank">직급:</label>
+          <select name="rank" id="rank" required>
+            <option value="주니어 개발자">주니어 개발자</option>
+            <option value="신입사원">신입사원</option>
+            <option value="대리">대리</option>
+          </select>
+        </div>
+
+        <div>
+            <label for="id_age">연령:</label>
+            <input type="number" name="age" id="id_age" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="gender">성별:</label>
+          <input type="radio" name="gender" id="gender_male" value="남성" required>
+          <label for="gender_male">남성</label>
+          <input type="radio" name="gender" id="gender_female" value="여성" required>
+          <label for="gender_female">여성</label>
+        </div>
+        
+        <div class="form-group">
+          <label for="voice">목소리 설정:</label>
+          <select name="voice" id="voice" required>
+              <option value="ko-KR-Neural2-A"> 밝은 여성 목소리</option>
+              <option value="ko-KR-Neural2-B"> 차분한 여성 목소리</option>
+              <option value="ko-KR-Wavenet-B"> 중년 여성 목소리</option>
+              <option value="ko-KR-Standard-D"> 밝은 남성 목소리</option>
+              <option value="ko-KR-Wavenet-C"> 차분한 남성 목소리</option>
+              <option value="ko-KR-Standard-C"> 부드러운 남성 목소리</option>
+          </select>
+          </select>
+        </div>
+
+        <div>
+          <label for="u_career">경력:</label>
+          <input type="number" name="career" id="u_career" required>
+      </div>
+
+        <!-- Submit 버튼 -->
+        <button type="submit">실습 시작</button>
+      </form>
+    {% endblock %}
