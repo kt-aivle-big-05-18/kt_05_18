@@ -18,10 +18,10 @@
             <div id="nav" class="nav-links">
                 <div class="menu-group">
                     {% comment %} 헤더로 페이지 들어갔을 때 헤더에 색 입히기 안되네  {% endcomment %}
-                    {% comment %} <a href="{% url 'simulation:simulation_view' %}" class="menu-header{% if request.path == simulation_view %} active-menu{% endif %}">Simulation</a> {% endcomment %}
                     <a href="{% url 'common:home' %}" class="menu-header{% if request.path == home_view %} active-menu{% endif %}">Analyze</a>
                     {% comment %} <a href="{% url 'community:community_view' %}" class="menu-header{% if request.path == community_view %} active-menu{% endif %}">Community</a> {% endcomment %}
                     <a href="{% url 'mypage:mypage_view' %}" class="menu-header{% if request.path == mypage_view %} active-menu{% endif %}">Mypage</a>
+                    <a href="{% url 'community:notice_list' %}" class="menu-header"> 공지사항 </a>
                 </div>
             </div>
             <div id="nav" class="nav-right">
@@ -35,7 +35,6 @@
                     <a href="{% url 'account:signup' %}" class="signup-link">Sign Up</a>
                     {% endif %}
                     <a href="{% url 'rpg:persona' %}"></a>
-                    <a href={% url 'community:notice_list' %}> 공지사항 </a>
                 </div>
             </div>
         </div>

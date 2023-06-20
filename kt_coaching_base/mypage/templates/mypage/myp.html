@@ -1,6 +1,13 @@
 {% extends "base.html" %}
-
+{% load static%}
 {% block content %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'myp.js' %}" defer></script> 
+
+<div id="user-data" data-user-is-authenticated="{{ request.user.is_authenticated }}"></div>
+
+
 <style>
     body {
         background-color: #E9F2FF;
@@ -135,21 +142,21 @@
 <h1>마이페이지</h1>
 <div class="content-container">
     <div class="box-container">
-        <div class="box">
-            <a href="{% url 'mypage:box_info' %}">
-                <div class="box_text">개인 정보 수정</div>
+        <div class="box" id="myp_click">
+            <a href="{% url 'mypage:myp_info' %}" onclick="javascript:void(0)">
+                <div class="box_text" >개인 정보 수정</div>
                 <img src="..\static\css\image\1.PNG" alt="개인 정보 수정 이미지" />
             </a>
         </div>
-        <div class="box">
-            <a href="{% url 'mypage:box_self' %}">
+        <div class="box" id="myp_click">
+            <a href="{% url 'mypage:myp_self' %}" onclick="javascript:void(0)">
                 <div class="box_text">자가 진단 서비스</div>
                 <img src="..\static\css\image\2.PNG" alt="자가 진단 서비스 이미지" />
             </a>
         </div>
-        <div class="box">
-            <a href="{% url 'mypage:box_survey' %}">
-                <div class="box_text">설문 요청 결과</div>
+        <div class="box" id="myp_click">
+            <a href="{% url 'mypage:myp_survey' %}" onclick="javascript:void(0)">
+                <div class="box_text">채팅 기록 확인</div>
                 <img src="..\static\css\image\3.PNG" alt="설문 요청 결과 이미지" />
             </a>
         </div>
