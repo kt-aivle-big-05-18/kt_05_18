@@ -19,3 +19,15 @@ class Message(models.Model):
 
     class Meta:
         ordering    =   ("send_date",)
+        
+class analysis(models.Model):
+    name            = models.CharField(max_length=45)
+    persona         = models.ForeignKey(Persona, on_delete=models.CASCADE)
+    positive        = models.IntegerField()
+    understanding   = models.IntegerField()
+    respect         = models.IntegerField()
+    admit           = models.IntegerField()
+    perspective     = models.IntegerField()
+    
+    
+    
