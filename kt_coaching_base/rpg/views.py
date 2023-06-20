@@ -34,7 +34,6 @@ from django.core.files.storage import FileSystemStorage
 # pip install openai
 # pip install pydub
 # 구글 stt 관련 추가로 설정해야함.
-
 #----------------------------------------------------------------------------------------------------------------------#
 
 # request 매개변수를 갖는 함수는 rpg.js와 urls.py를 참고해서 이해하면 더 쉽습니다. -from 충영
@@ -243,7 +242,7 @@ def generate_speech(text, voice, gender, id, count):
         out.write(response.audio_content)
 
 #---------------------------------------------------------------------------#
-# 4. stt
+# 5. stt
 #---------------------------------------------------------------------------#
 
 def stt(request):
@@ -284,4 +283,9 @@ def transcribe_audio(file_path):
         transcript += result.alternatives[0].transcript + " "
 
     return transcript
+
+#---------------------------------------------------------------------------#
+# 6. 분석 AI
+#---------------------------------------------------------------------------#
+
 
