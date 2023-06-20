@@ -1,32 +1,92 @@
 {% extends "base.html" %}
-{% load static %}
 {% block content %}
+{% load static %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{% static 'home.js' %}" defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'home.css' %}">
 
 <div id="user-data" data-user-is-authenticated="{{ user.is_authenticated }}"></div>
 
-<div class="home">
-    <section class="jumbotron">
-        <div class="container">
-            <h1 class="jumbotron_ani" style="animation-delay: 0s;">환영합니다.</h1>
-            <h1 class="jumbotron_ani" style="animation-delay: 1s;">KT AI 챗봇과 함께하는</h1>
-            <h1 class="jumbotron_ani" style="animation-delay: 2s;">자가 코칭 훈련 서비스입니다.</h1>
-            {% comment %} <a href="{% url 'rpg:persona' %}"> {% endcomment %}
-                <button class="start-btn" id="startBtn"> 
-                    <span class="triangle">&#9658;</span>
-                    START
-                </button>
-            {% comment %} </a> {% endcomment %}
+<div class="home_wrapper">
+    <div class="home_container"> <!-- 1번째 스크롤 -->
+        <div class="home_content">
+            <div class="home_content_text"> <!-- 글자 섹션 -->
+                <div class="home_text_ani" style="animation-delay: 0s;">환영합니다.</div>
+                <div class="home_text_ani" style="animation-delay: 1s;">KT AI 챗봇과 함께하는</div>
+                <div class="home_text_ani" style="animation-delay: 2s;">자가 코칭 훈련 서비스입니다.</div>
+                    <button class="home_start_btn" id="startBtn"> 
+                        <span class="triangle">&#9658;</span>
+                        START
+                    </button>
+            </div>
+            <div class="home_content_image"> <!-- 이미지 섹션 -->
+                <img class="home_robot" style="animation-delay: 0s;" src="/static/image/robot_lay.png" alt="로봇img">
+            </div>
         </div>
-        {% comment %} <div>
-            <img class="home_img" src="/static/image/robot_lay.png" alt="홈사진">
-        </div> {% endcomment %}
-    </section>
+        <div class="home_bottom">
+            <a href="#home_intro" class="home_bottom_go">
+                <div class="home_bottom_text">GO TO SERVICE INTRO</div>
+                <img class="home_bottom_arrow" src="/static/image/white_down_arrow.png" alt="아래화살표">   
+            </a>
+        </div>
+    </div>
+
+    <!-- 서비스소개 -->
+    <div id="home_intro" class="intro_container"> <!-- 2번째 스크롤 -->
+        <div class="intro_title">
+            <div class="intro_title_text"> Introduction to Services</div>
+        </div>
+        <div class="intro_content">
+            <div class="intro_content_box">
+                <div class="intro_content_img_box">
+                    <img class="intro_content_img" src="/static/image/chatbot.png" alt="챗봇">
+                </div>
+                <div class="intro_content_txt_box">
+                    <div class="intro_content_txt_title">챗지피티 기반 코칭 훈련 서비스</div>
+                    <br>
+                    가상의 코칭 대상자를 설정하여 자가 코칭 훈련이 가능한 서비스<br>
+                    코칭 대상을 확보하기 어려운 문제를 해결
+                </div>
+            </div>
+            <div class="intro_content_box">
+                <div class="intro_content_img_box">
+                    <img class="intro_content_img" src="/static/image/voice.png" alt="음성인식">
+                </div>
+                <div class="intro_content_txt_box">
+                    <div class="intro_content_txt_title">음성인식 서비스</div>
+                    <br>
+                    음성채팅으로 훈련 가능.<br>
+                    음성인식을 통한 사용자의 목소리를 분석하여 전반적인 코칭 대화의 분위기 감지 및 피드백
+                </div>
+            </div>
+            <div class="intro_content_box">
+                <div class="intro_content_img_box">
+                    <img class="intro_content_img" src="/static/image/result.png" alt="결과확인">
+                </div>
+                <div class="intro_content_txt_box">
+                    <div class="intro_content_txt_title">결과 분석 서비스</div>
+                    <br>
+                    코칭 대화 후 결과를 분석하여 코칭 역량 향상에 필요한 피드백 제공.
+                </div>
+            </div>
+        </div> 
+        <div class="intro_bottom">
+            <a href="#home_use" class="intro_bottom_go">
+                <div class="intro_bottom_text">GO HOW TO USE</div>
+                <img class="intro_bottom_arrow" src="/static/image/black_down_arrow.png" alt="아래화살표">   
+            </a>
+        </div>  
+    </div>
+
+    <!-- 서비스 이용 방법 -->
+    <div id="home_use" class="use_container"> <!-- 3번째 스크롤 -->
+        How to User the Service
+    </div>
 </div>
 {% endblock %}
-    
-{% block footer%}
+{% comment %} {% block footer%}
 {% include "footer.html" %}
-{% endblock %}
+{% endblock %} {% endcomment %}

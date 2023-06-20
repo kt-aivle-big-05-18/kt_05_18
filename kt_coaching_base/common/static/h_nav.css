@@ -22,7 +22,7 @@
   
   .menu-head {
     font-size: 33px;
-    height: 90px; /* 헤더 높이와 일치하게 변경 */
+    height: 92px; /* 헤더 높이와 일치하게 변경 */
     color: #2FC4CE;
     font-weight: 700;
     /*line-height: 90px; /* 텍스트가 헤더 높이와 일치하게 세로 가운데 정렬 */
@@ -31,15 +31,15 @@
   .logo-link{
     text-decoration: none;
     color: #2FC4CE;
-    line-height: 90px;
+    line-height: 92px;
   }
 
   .login-link,
   .signup-link {
     text-decoration: none;
     color: #2FC4CE;
-    height: 90px; /*헤더 높이와 일치하게 변경 */
-    line-height: 90px; /*텍스트가 헤더 높이와 일치하게 세로 가운데 정렬 */
+    height: 92px; /*헤더 높이와 일치하게 변경 */
+    line-height: 92px; /*텍스트가 헤더 높이와 일치하게 세로 가운데 정렬 */
     margin-left: auto;
     font-weight: 500;
 }
@@ -55,8 +55,8 @@
     margin-left: 80px;
     text-decoration: none;
     color: #2FC4CE;
-    height: 90px; /* 헤더 높이와 일치하게 변경 */
-    line-height: 90px; /* 텍스트가 헤더 높이와 일치하게 세로 가운데 정렬 */
+    height: 92px; /* 헤더 높이와 일치하게 변경 */
+    line-height: 92px; /* 텍스트가 헤더 높이와 일치하게 세로 가운데 정렬 */
   }
   
   .nav-right {
@@ -68,7 +68,7 @@
   .divider {
     color: #2FC4CE;
     margin: 0 0;
-    line-height: 90px;
+    line-height: 92px;
   }
   
   .menu-group {
