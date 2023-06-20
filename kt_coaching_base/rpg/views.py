@@ -32,6 +32,7 @@ from django.core.files.storage import FileSystemStorage
 # pip install google-cloud-speech
 # pip install google-cloud-texttospeech
 # pip install openai
+# pip install pydub
 # 구글 stt 관련 추가로 설정해야함.
 
 #----------------------------------------------------------------------------------------------------------------------#
