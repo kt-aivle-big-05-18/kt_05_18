@@ -32,7 +32,6 @@
         align-items: center;
         width: 280px;
         height: 500px;
-        font-weight: 600;
         border-radius: 2%;
         background-color: white;
         box-shadow: 2px 5.5px 10px rgba(0, 0, 0, 0.3);
@@ -67,6 +66,7 @@
         justify-content: top;
         align-items: center;
         margin-right: 70px;
+        margin-bottom: 40px;
         width: 700px;
         height: 500px;
         background-color: #E9F2FF;
@@ -88,6 +88,35 @@
         background-color: white;
         box-shadow: 2px 5.5px 10px rgba(0, 0, 0, 0.3);
     }
+
+    .username {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 40px;
+    }
+
+    .profile_info > p + p {
+        margin-top: 10px;
+        font-weight: normal;
+        font-size: 15px;
+    } 
+
+    .edit_button {
+        margin-left: 10px;
+        padding: 5px 15px;
+        background-color: #4CAF50;
+        text-align: center;
+        font-size: 16px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .edit_button:hover {
+        background-color: #45a049;
+    }
+
 </style>
 
 <h1>개인 정보 수정</h1>
@@ -97,31 +126,40 @@
         <img class="img_profile" src="/static/img/an.jpg" alt="프로필 이미지" />
         <div class="profile_info">
         {% if user.is_authenticated %}
-            <p>{{ user.username }}</p>
+            <p class="username">{{ user.username }}</p>
             <p>{{ user.nickname }}</p>
             <p>{{ user.userid }}</p>
             <p>{{ user.email }}</p>
         </div>
     </div>
     <div class="info_box_body">
-        <div class="info_box">
-            <div>직무</div>
-            <div>{{ user.job }}</div>
-        </div>
-        <div class="info_box">
-            <div>부서</div>
-            <div>{{ user.department }}</div>
-        </div>
-        <div class="info_box">
-            <div>직급</div>
-            <div>{{ user.rank }}</div>
-        </div>
-        <div class="info_box">
-            <div>비밀번호</div>
-            <div>비밀번호는 보안상 보여드릴 수 없습니다.</div>
-        </div>
-        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="info_box">
+                <div>직무</div>
+                <div>{{ user.job }}</div>
+            </div>
+            <div class="info_box">
+                <div>부서</div>
+                <div><input type="text" name="department" value="{{ user.department }}"></div>
+                <button type="submit" class="edit_button">수정</button>
+            </div>
+            <div class="info_box">
+                <div>직급</div>
+                <div><input type="text" name="rank" value="{{ user.rank }}"></div>
+                <button type="submit" class="edit_button">수정</button>
+            </div>
+            <div class="info_box">
+                <div>비밀번호</div>
+                <div><input type="password" name="password" value="비밀번호는 보안상 보여드릴 수 없습니다."></div>
+                <button type="submit" class="edit_button">수정</button>
+            </div>
+            {% endif %}
+        </form>
     </div>
 </div>
 
 {% endblock %}
+
+
+
