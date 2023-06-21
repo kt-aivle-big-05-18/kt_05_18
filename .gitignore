@@ -1,0 +1,7 @@
+## file ignore
+
+## folder ignore
+migrations/
+__pycache__/
+*.py[cod]
+media/
