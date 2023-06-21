@@ -108,7 +108,7 @@ def persona(request):
         if form.is_valid():
             form.nickname = request.user.nickname
             persona = form.save(commit=False)
-            persona.nickname = Account.object.get(nickname=request.user.nickname)
+            persona.nickname = Account.objects.get(nickname=request.user.nickname)
             persona.save()
             request.session['visited_persona'] = True
             request.session.get("persona_set").append({
@@ -285,7 +285,6 @@ def transcribe_audio(file_path):
 
     return transcript
 
-<<<<<<< HEAD
 @login_required
 def mypersona(request):
     personas = Persona.objects.filter(nickname=request.user.nickname)
@@ -318,10 +317,8 @@ def stop_sharing(request, persona_id):
         return redirect('mypage:mypersona')
 
     return redirect('mypage:mypersona')
-=======
 #---------------------------------------------------------------------------#
 # 6. 분석 AI
 #---------------------------------------------------------------------------#
 
->>>>>>> e95860e26dd75d1a78dbe5ef1c968f10b5c7cbbd
 
