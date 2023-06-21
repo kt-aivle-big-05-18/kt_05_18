@@ -9,29 +9,18 @@ class Persona(models.Model):
     voice         = models.CharField(max_length=45)
     career        = models.IntegerField()
     nickname      = models.ForeignKey(Account, to_field="nickname", on_delete=models.CASCADE)
-
+    shared      = models.BooleanField(default=False)
+    
 class Message(models.Model):
     name        = models.CharField(max_length=45)
     persona     = models.ForeignKey(Persona, on_delete=models.CASCADE)
     content     = models.TextField()
     send_date   = models.DateTimeField(auto_now_add=True)
     voice_url   = models.TextField()
-
+    csv_url     = models.TextField()
     class Meta:
         ordering    =   ("send_date",)
         
-class Analysis(models.Model):
-    message         = models.ForeignKey(Message, on_delete=models.CASCADE)
-    persona         = models.ForeignKey(Persona, on_delete=models.CASCADE)
-    negative        = models.IntegerField(default=0)
-    understanding   = models.IntegerField(default=0)
-    respect         = models.IntegerField(default=0)
-    admit           = models.IntegerField(default=0)
-    perspective     = models.IntegerField(default=0)
-    send_date   = models.DateTimeField(auto_now_add=True)
-    
-    class Meta:
-        ordering    =   ("send_date",)
     
     
     

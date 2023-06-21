@@ -2,6 +2,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from .forms import RegistrationForm
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from .models import Account
 
 # Create your views here.
 def signup(request):
@@ -33,3 +36,13 @@ def login_view(request):
 def logout_view(requset):
     logout(requset)
     return redirect("common:home")
+
+@require_POST
+def check_duplicate(request):
+    userid = request.POST.get('userid', None)
+
+    response_data = {
+        'is_taken': Account.objects.filter(userid=userid).exists()
+    }
+
+    return JsonResponse(response_data)

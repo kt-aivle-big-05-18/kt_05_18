@@ -8,4 +8,4 @@ def analysis (request):
 
 def test (request):
     print("test")
-    return JsonResponse({"message" : request.session.get("persona_id")[0]["id"]})
+    return JsonResponse({"message" : request.session.get("persona_id")[0]["id"],})
