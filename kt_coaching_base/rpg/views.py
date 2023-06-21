@@ -1,28 +1,46 @@
 # rpg/views.py
+
+# 일반 파이썬 패키지
+import numpy as np
+import pandas as pd
+import os
+
+# Django
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
-import openai
-import requests
-import json
 from django.contrib.auth import authenticate, login, logout
+from django.db import transaction
+import openai, json, requests
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
+
+# DB 관련
 from .forms import RegisterPersona
-from .models import Persona, Message, Analysis
+from .models import Persona, Message
 from account.models import Account
-import sounddevice as sd
-import numpy as np
-from scipy.io.wavfile import write
+
+# Goolge stt/tts
 from google.cloud import speech, texttospeech
 from google.cloud import speech_v1p1beta1 as speech
 from google.oauth2 import service_account
-from django.db import transaction
+
+# 인코딩 관련
 import soundfile as sf
 import scipy.io.wavfile as wav
 from scipy.signal import resample
-import wave, os
-from django.conf import settings
+from scipy.io.wavfile import write
+import wave
 import base64
 from io import BytesIO
-from django.core.files.storage import FileSystemStorage
+import sounddevice as sd
+
+# 전처리 및 AI 분류 관련
+from keras.models import load_model
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sentence_transformers import SentenceTransformer
+import librosa
+import random
+import re
 #----------------------------------------------------------------------------------------------------------------------#
 # 0. 필요 install 목록
 # pip install soundfile
@@ -31,6 +49,7 @@ from django.core.files.storage import FileSystemStorage
 # pip install google-cloud-speech
 # pip install google-cloud-texttospeech
 # pip install openai
+# pip install sentence-transformers
 # 구글 stt 관련 추가로 설정해야함.
 #----------------------------------------------------------------------------------------------------------------------#
 
@@ -154,42 +173,22 @@ def rpg(request):
         count = request.session.get("count") # url 경로 저장을 위한 대화 카운트 설정
         user_voice_url = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.wav'.format(p_id, count))
         
+        # ---------------------- AI 전처리 / AI prediction -----------------------#
+        m_df = classification_model(message, user_voice_url)
+        m_df_url = os.path.join(base_dir, 'rpg/static/df_csv/{0}_{1}.csv'.format(p_id, count))
+        m_df.to_csv(m_df_url, index=False)
+        # ------------------------------------------------------------------------#
+        
         # 유저 메세지내용, 음성녹음 내용을 테이블에 저장
         user_message_obj = Message(
             name = request.user.nickname,
             persona = Persona.objects.get(id=int(p_id)),
             content = request.POST.get("message"),
-            voice_url = user_voice_url
+            voice_url = user_voice_url,
+            csv_url = m_df_url
         )
         user_message_obj.save()
         
-        message_id = Message.objects.filter(id=p_id).last() # 현재 실습의 가장 마지막 메세지 인덱스 불러오기
-        
-        # ---------------------- AI 전처리 / AI prediction -----------------------#
-        
-        # # 각 분야별 점수 초기화
-        # request.session["negative"] = 0
-        # request.session["understanding"] = 0
-        # request.session["respect"] = 0
-        # request.session["admit"] = 0
-        # request.session["perspective"] = 0
-        
-        # leadership = nlp(message, user_voice_url) # 분류 결과를 변수에 저장
-        # request.session[leadership] = 1
-        
-        # # ---------------------- 분석결과 DB에 저장하기 ---------------------------#
-        # message_analysis = Analysis(
-        #     message = Message.objects.get(id=int(message_id)),
-        #     persona = Persona.objects.get(id=int(p_id)),
-        #     negative = request.session.get("negative"),
-        #     understanding = request.session.get("understanding"),
-        #     respect = request.session.get("respect"),
-        #     admit = request.session.get("admit"),
-        #     perspective = request.session.get("perspective"),
-        # )
-        # message_analysis.save()
-        
-        # -----------------------------------------------------------------------#
         request.session["count"] += 1
         count = request.session.get("count")
         
@@ -242,6 +241,7 @@ def rpg(request):
 #----------------------------------------------------------------------------#
 # 4. tts
 #----------------------------------------------------------------------------#
+
 def generate_speech(text, voice, gender, p_id, count):
     # 클라이언트 인스턴스화
     client = texttospeech.TextToSpeechClient()
@@ -319,31 +319,164 @@ def transcribe_audio(file_path):
 # 6. AI
 #---------------------------------------------------------------------------#
 
-# # 전처리 함수 (음성 있는)
-# def Pretreatment(message, path):
-#     vecter = 0
-#     return vecter
+#-------- 전처리 함수 정의 ----------#
+def noise(data):
+    noise_amp = 0.035*np.random.uniform()*np.amax(data)
+    data = data + noise_amp*np.random.normal(size=data.shape[0])
+    return data
 
-# # 전처리 함수 (음성 없는)
-# def Pretreatment_nv(message):
-#     vecter = 0
-#     return vecter
+def extract_features(data, sample_rate):
+    # ZCR
+    result = np.array([])
+    zcr = np.mean(librosa.feature.zero_crossing_rate(y=data).T, axis=0)
+    result=np.hstack((result, zcr)) # stacking horizontally
 
-# def nlp(message, path):
-#     # 만약 음성파일이 존재하지 않을 경우
-#     if not os.path.exists(user_voice_url):
-#         vecter = Pretreatment_nv(message)
-        
-#     # 음성파일이 존재 할 경우
-#     else :
-#         vecter = Pretreatment(message, path)
-        
+    # Chroma_stft
+    stft = np.abs(librosa.stft(data))
+    chroma_stft = np.mean(librosa.feature.chroma_stft(S=stft, sr=sample_rate).T, axis=0)
+    result = np.hstack((result, chroma_stft)) # stacking horizontally
 
-#     # h5 모델 불러와 예측하기
-#     # model1 = load_model('your_model_1.h5')
-#     # prediction = model.predict(vecter)
-#     # 1차 모델 이진 분류 결과가 부정인 경우 return
-#     # model2 = load_model('your_model_2.h5')
-#     # prediction = model.predict(vecter)
-#     # 2차 모델 이진 분류 결과 return
-#     return prediction
+    # MFCC
+    mfcc = np.mean(librosa.feature.mfcc(y=data, sr=sample_rate).T, axis=0)
+    result = np.hstack((result, mfcc)) # stacking horizontally
+
+    # Root Mean Square Value
+    rms = np.mean(librosa.feature.rms(y=data).T, axis=0)
+    result = np.hstack((result, rms)) # stacking horizontally
+
+    # MelSpectogram
+    mel = np.mean(librosa.feature.melspectrogram(y=data, sr=sample_rate).T, axis=0)
+    result = np.hstack((result, mel)) # stacking horizontally
+
+    return result
+
+def get_features(path):
+
+    data, sample_rate = librosa.load(path, duration=2.5, offset=0.0)
+
+    # without augmentation
+    res1 = extract_features(data, sample_rate)
+    result = np.array(res1)
+
+    # data with noise
+    noise_data = noise(data)
+    res2 = extract_features(noise_data, sample_rate)
+    result = np.concatenate((result, res2), axis = 0)
+
+    return result
+
+class text_embedding():
+  def __init__(self, model_name):
+    self.model_name = model_name
+
+  def fit(self, new_sent, y=None):
+        return self
+
+  def transform(self, new_sent):
+        embedding_model = SentenceTransformer(self.model_name)
+        embedding_vec = embedding_model.encode(new_sent['sentence'])
+        X_val = np.concatenate((new_sent.drop(['sentence'], axis = 1), embedding_vec), axis = 1)
+        return X_val
+
+## 문단 > 문장 단위로 나누기
+def split_into_sentences(paragraph):
+    sentences = re.split("(?<=[.!?])\s+", paragraph)
+    return sentences
+
+
+#---------------- 모델 불러와서 분류하기 -------------#
+
+def classification_model(new_sentence, new_voice):
+  output_dic = {0:'관점변화', 1:'부정', 2:'인정', 3:'존중', 4:'피드백'}
+  final_result = pd.DataFrame()
+  new_sents = pd.DataFrame(split_into_sentences(new_sentence))
+
+  # wav 파일 불러오기
+  model_path = os.path.join(settings.BASE_DIR, 'rpg/analysis_model/')
+  new_wav = new_voice # wav 파일 경로
+
+  # 데이터 전처리 함수 불러오기
+  scaler = StandardScaler()
+  txt_embed = text_embedding(model_name = 'jhgan/ko-sroberta-multitask')
+
+  if os.path.isfile(new_wav) and len(new_sents)<3:  # wav파일 있고 2문장 이하면 voice+text 사용
+    print('VOICE', len(new_sents))
+    new_sent = pd.DataFrame([new_sentence])
+    new_sent.columns = ['sentence']
+    # extract voice feature vector
+    new_voice = pd.DataFrame(get_features(new_wav)).transpose()
+    new_df = pd.concat([new_voice, new_sent], axis=1)
+
+    # read voice training data
+    voice_df = pd.read_csv(os.path.join(model_path, '230621_voice_df.csv'))
+
+    # 새로운 데이터 전처리
+    X_test = txt_embed.transform(new_df) # extract text embedding vector
+
+    scaler.fit_transform(voice_df)
+    x_test = scaler.transform(X_test)
+#-----------------------------------------------------------------------#
+    # 긍정 부정 분류 모델 불러옴, 긍부정 예측
+   
+    model1 = load_model(os.path.join(model_path, '230621_voice_model1.h5'))
+    y_pred1 = model1.predict(x_test, verbose=0).round()
+
+    pred1_df = pd.DataFrame(x_test)
+    pred1_df['predict1'] = y_pred1
+
+    pred_neg = pred1_df.loc[pred1_df['predict1'] == 1]
+    pred_neg['predict'] = '부정'
+
+    pred_pos = pred1_df.loc[pred1_df['predict1'] == 0]
+    x_test2 = pred_pos.drop('predict1', axis=1)
+
+    if len(x_test2) > 0:
+      if os.path.isfile(new_wav): # wav 파일 있으면 voice feature 제거하고 text로만 2차분류함
+          voice_cols = [x for x in range(324)]
+          x_test2 = pd.DataFrame(x_test2).drop(voice_cols, axis=1) # delete voice feature vector
+
+      # 2차 분류 모델 불러옴, 최종 분류
+      model2 = load_model(os.path.join(model_path, '230621_result_model2.h5'))
+      y_fin = np.argmax(model2.predict(x_test2, verbose=0), axis=1)
+
+      pred_pos['predict'] = np.vectorize(output_dic.get)(y_fin)
+
+    final_result['sentence'] = new_sent['sentence']
+    final_result['predict'] = pd.concat([pred_neg, pred_pos]).sort_index()['predict']
+
+  else: # wav 없거나 3문장 이상이면 text만 사용
+    new_sents.columns = ['sentence']
+    
+    text_df = pd.read_csv(os.path.join(model_path, '230621_text_df.csv'))
+
+    # 새로운 데이터 전처리
+    X_test = txt_embed.transform(new_sents) # extract text embedding vector
+
+    scaler.fit_transform(text_df)
+    x_test = scaler.transform(X_test)
+
+    # 긍정 부정 분류 모델 불러옴, 긍부정 예측
+    
+    model1 = load_model(os.path.join(model_path, '230621_text_model1.h5'))
+    y_pred1 = model1.predict(x_test, verbose=0).round()
+
+    pred1_df = pd.DataFrame(x_test)
+    pred1_df['predict1'] = y_pred1
+
+    pred_neg = pred1_df.loc[pred1_df['predict1'] == 1]
+    pred_neg['predict'] = '부정'
+
+    pred_pos = pred1_df.loc[pred1_df['predict1'] == 0]
+    x_test2 = pred_pos.drop('predict1', axis=1)
+
+    if len(x_test2) > 0:
+      # 2차 분류 모델 불러옴, 최종 분류
+      model2 = load_model(os.path.join(model_path, '230621_result_model2.h5'))
+      y_fin = np.argmax(model2.predict(x_test2, verbose=0), axis=1)
+
+      pred_pos['predict'] = np.vectorize(output_dic.get)(y_fin)
+
+    final_result['sentence'] = new_sents['sentence']
+    final_result['predict'] = pd.concat([pred_neg, pred_pos]).sort_index()['predict']
+
+  return final_result
