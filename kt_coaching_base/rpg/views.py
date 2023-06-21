@@ -143,6 +143,7 @@ def rpg(request):
     
     base_dir = settings.BASE_DIR # 기본 디렉터리 경로 불러오기
     p_id = request.session.get("persona_id")[0]["id"] # 채팅방 id 불러오기
+    print(p_id)
     
     # HTTP 요청이 POST 방식일 경우
     if request.method == "POST":
@@ -162,7 +163,7 @@ def rpg(request):
         )
         user_message_obj.save()
         
-        message_id = Message.objects.filter(p_id).last() # 현재 실습의 가장 마지막 메세지 인덱스 불러오기
+        message_id = Message.objects.filter(id=p_id).last() # 현재 실습의 가장 마지막 메세지 인덱스 불러오기
         
         # ---------------------- AI 전처리 / AI prediction -----------------------#
         
@@ -173,7 +174,7 @@ def rpg(request):
         # request.session["admit"] = 0
         # request.session["perspective"] = 0
         
-        # leadership = nlp(message, user_voice_url)
+        # leadership = nlp(message, user_voice_url) # 분류 결과를 변수에 저장
         # request.session[leadership] = 1
         
         # # ---------------------- 분석결과 DB에 저장하기 ---------------------------#
@@ -230,7 +231,7 @@ def rpg(request):
         data = { # json형식으로 respone 해줄 데이터
             'message' : trans_,
             'voice': encoded_voice,
-            'path': "{0}_{1}.wav".format(p_id[0]["id"], count)
+            'path': "{0}_{1}.wav".format(p_id, count)
         }
         request.session["count"] += 1 # 음성녹음 이름을 조합을 위한 count + 1
         return JsonResponse(data)
@@ -241,7 +242,7 @@ def rpg(request):
 #----------------------------------------------------------------------------#
 # 4. tts
 #----------------------------------------------------------------------------#
-def generate_speech(text, voice, gender, id, count):
+def generate_speech(text, voice, gender, p_id, count):
     # 클라이언트 인스턴스화
     client = texttospeech.TextToSpeechClient()
 
@@ -266,7 +267,7 @@ def generate_speech(text, voice, gender, id, count):
     )
     
     # 응답의 오디오 컨텐츠는 이진 데이터입니다.
-    with open('rpg/static/voice/{0}_{1}.wav'.format(id[0]["id"], count), 'wb') as out:
+    with open('rpg/static/voice/{0}_{1}.wav'.format(p_id, count), 'wb') as out:
         # 응답을 출력 파일에 작성합니다.
         out.write(response.audio_content)
 
@@ -275,13 +276,13 @@ def generate_speech(text, voice, gender, id, count):
 #---------------------------------------------------------------------------#
 
 def stt(request):
-        p_id = request.session.get("persona_id")
+        p_id = request.session.get("persona_id")[0]["id"]
         count = request.session.get("count")
 
         audio_data = request.FILES['audio_data']
 
-        fs = FileSystemStorage(location=os.path.join('{0}/rpg/static/voice'.format(settings.BASE_DIR)))
-        filename = fs.save('{0}_{1}.wav'.format(p_id[0]["id"], count), audio_data)
+        fs = FileSystemStorage(location=os.path.join(settings.BASE_DIR, '/rpg/static/voice'))
+        filename = fs.save('{0}_{1}.wav'.format(p_id, count), audio_data)
         uploaded_file_url = fs.path(filename)
         
         trans_voice_message = transcribe_audio(uploaded_file_url)
@@ -341,7 +342,7 @@ def transcribe_audio(file_path):
 #     # h5 모델 불러와 예측하기
 #     # model1 = load_model('your_model_1.h5')
 #     # prediction = model.predict(vecter)
-#     # 1차 모델 이진 분류 결과가 부정인 경우 retrun
+#     # 1차 모델 이진 분류 결과가 부정인 경우 return
 #     # model2 = load_model('your_model_2.h5')
 #     # prediction = model.predict(vecter)
 #     # 2차 모델 이진 분류 결과 return
