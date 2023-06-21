@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-
+from rpg import views as rpg_views
 app_name = 'mypage'
 
 urlpatterns = [
