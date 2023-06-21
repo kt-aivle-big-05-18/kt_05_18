@@ -21,14 +21,18 @@ class Message(models.Model):
     class Meta:
         ordering    =   ("send_date",)
         
-class analysis(models.Model):
-    name            = models.CharField(max_length=45)
+class Analysis(models.Model):
+    message         = models.ForeignKey(Message, on_delete=models.CASCADE)
     persona         = models.ForeignKey(Persona, on_delete=models.CASCADE)
-    positive        = models.IntegerField()
-    understanding   = models.IntegerField()
-    respect         = models.IntegerField()
-    admit           = models.IntegerField()
-    perspective     = models.IntegerField()
+    negative        = models.IntegerField(default=0)
+    understanding   = models.IntegerField(default=0)
+    respect         = models.IntegerField(default=0)
+    admit           = models.IntegerField(default=0)
+    perspective     = models.IntegerField(default=0)
+    send_date   = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering    =   ("send_date",)
     
     
     
