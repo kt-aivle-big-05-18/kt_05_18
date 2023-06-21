@@ -43,9 +43,6 @@ INSTALLED_APPS = [
     "account",
     "rpg",
     "mypage",
-    "mypage_info",
-    "mypage_self",
-    "mypage_survey",
     "analysis",
     "community",
 ]

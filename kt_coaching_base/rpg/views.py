@@ -129,7 +129,7 @@ def persona(request):
             request.session['visited_persona'] = True
             request.session.get("persona_set").append({
                                     "role" : "system", 
-                                    "content" : translate( "다음 대화부터 assistant는 상사와 대화하는 {0}세인 {1} {2}{3}입니다.".format(
+                                    "content" : translate( "다음 대화부터 assistant는 팀장과 대화하는 {0}세인 {1} {2}{3}입니다.".format(
                                         form.cleaned_data['age'], # 0 나이 - gpt
                                         form.cleaned_data['gender'], # 1 성별 - gpt
                                         form.cleaned_data['department'], # 2 직군 - gpt
