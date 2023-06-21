@@ -6,7 +6,7 @@ import requests
 import json
 from django.contrib.auth import authenticate, login, logout
 from .forms import RegisterPersona
-from .models import Persona, Message
+from .models import Persona, Message, Analysis
 from account.models import Account
 import sounddevice as sd
 import numpy as np
@@ -21,7 +21,6 @@ from scipy.signal import resample
 import wave, os
 from django.conf import settings
 import base64
-from pydub import AudioSegment
 from io import BytesIO
 from django.core.files.storage import FileSystemStorage
 #----------------------------------------------------------------------------------------------------------------------#
@@ -32,7 +31,6 @@ from django.core.files.storage import FileSystemStorage
 # pip install google-cloud-speech
 # pip install google-cloud-texttospeech
 # pip install openai
-# pip install pydub
 # 구글 stt 관련 추가로 설정해야함.
 #----------------------------------------------------------------------------------------------------------------------#
 
@@ -124,6 +122,7 @@ def persona(request):
             })
             request.session["voice"] = request.POST.get('voice') # 챗봇의 목소리 형태를 저장할 세션 변수
             request.session["count"] = 0 # 대화 주고받는 순서 저장할 세션 변수
+            # 이제 여기에 스케일러 fit 할 예정입니다!
             return redirect("rpg:rpg_start")
     else : # GET 방식인 경우
         # 폼 생성
@@ -133,9 +132,9 @@ def persona(request):
         request.session["persona_set"] = []
         return render(request, 'rpg/persona.html', {"form": form})
 
-#----------------------------------------------------------------------------------------------------------------------#
-# 3. 롤플레잉 실행 과정
-#----------------------------------------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------------------#
+# 3. 롤플레잉 실행 과정 
+#----------------------------------------------------------------------------------------------------#
 
 def rpg(request):
     if len(request.session.get("persona_set")) == 0 :
@@ -143,26 +142,55 @@ def rpg(request):
         return redirect("rpg:persona")
     
     base_dir = settings.BASE_DIR # 기본 디렉터리 경로 불러오기
-    p_id = request.session.get("persona_id") # 채팅방 id 불러오기
+    p_id = request.session.get("persona_id")[0]["id"] # 채팅방 id 불러오기
     
     # HTTP 요청이 POST 방식일 경우
     if request.method == "POST":
-        # 번역된  POST.message를 messages에 추가
-        request.session.get('messages').append({"role": "user", "content": translate(request.POST.get("message"))})
+        message = request.POST.get("message") # 사용자가 입력한 한국어 메세지
         
+        # 번역된 사용자 입력 메세지를 messages에 추가
+        request.session.get('messages').append({"role": "user", "content": translate(message)})
         count = request.session.get("count") # url 경로 저장을 위한 대화 카운트 설정
-        user_voice_url = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.wav'.format(p_id[0]["id"], count))
+        user_voice_url = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.wav'.format(p_id, count))
         
+        # 유저 메세지내용, 음성녹음 내용을 테이블에 저장
         user_message_obj = Message(
             name = request.user.nickname,
-            persona = Persona.objects.get(id=int(request.session.get('persona_id')[0]["id"])),
+            persona = Persona.objects.get(id=int(p_id)),
             content = request.POST.get("message"),
             voice_url = user_voice_url
         )
         user_message_obj.save()
         
+        message_id = Message.objects.filter(p_id).last() # 현재 실습의 가장 마지막 메세지 인덱스 불러오기
+        
+        # ---------------------- AI 전처리 / AI prediction -----------------------#
+        
+        # # 각 분야별 점수 초기화
+        # request.session["negative"] = 0
+        # request.session["understanding"] = 0
+        # request.session["respect"] = 0
+        # request.session["admit"] = 0
+        # request.session["perspective"] = 0
+        
+        # leadership = nlp(message, user_voice_url)
+        # request.session[leadership] = 1
+        
+        # # ---------------------- 분석결과 DB에 저장하기 ---------------------------#
+        # message_analysis = Analysis(
+        #     message = Message.objects.get(id=int(message_id)),
+        #     persona = Persona.objects.get(id=int(p_id)),
+        #     negative = request.session.get("negative"),
+        #     understanding = request.session.get("understanding"),
+        #     respect = request.session.get("respect"),
+        #     admit = request.session.get("admit"),
+        #     perspective = request.session.get("perspective"),
+        # )
+        # message_analysis.save()
+        
+        # -----------------------------------------------------------------------#
         request.session["count"] += 1
-        count += 1
+        count = request.session.get("count")
         
         # OpenAI의 챗봇 API에 메시지 리스트를 전달하고 응답을 받아오기
         response = openai.ChatCompletion.create(
@@ -172,23 +200,24 @@ def rpg(request):
         
         # 번역된 챗봇의 메시지를 메시지 리스트에 추가
         request.session.get('messages').append({"role": "assistant", "content": response.choices[0].message.content})
-        trans_ = retranslate(response.choices[0].message.content) # 한국어 번역한 chatgpt 답변
+        trans_ = retranslate(response.choices[0].message.content) # 한국어 번역한 chatgpt 답변 메세지
         
         voice_select = request.session.get('voice')  # 선택한 음성 옵션 가져오기
         if voice_select=='ko-KR-Neural2-A' or voice_select=='ko-KR-Neural2-B' or voice_select=='ko-KR-Wavenet-B':
             gender_select = 'FEMALE'
-            generate_speech(trans_, voice_select, gender_select, request.session.get("persona_id") , request.session.get("count"))  # 음성 파일 생성 함수 호출
+            generate_speech(trans_, voice_select, gender_select, p_id , count)  # 음성 파일 생성 함수 호출
             
         elif voice_select == 'ko-KR-Standard-D' or voice_select=='ko-KR-Wavenet-C' or voice_select=='ko-KR-Standard-C':
             gender_select = 'MALE'
-            generate_speech(trans_, voice_select, gender_select, request.session.get("persona_id"), request.session.get("count"))  # 음성 파일 생성 함수 호출
+            generate_speech(trans_, voice_select, gender_select, p_id, count)  # 음성 파일 생성 함수 호출
         
         # 답장 온거 저장된 wav파일 경로
-        path_gpt_voice = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.wav'.format(p_id[0]["id"], count))
+        path_gpt_voice = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.wav'.format(p_id, count))
+        
         # gpt 답장 메세지 DB 전송
         gpt_response_obj = Message(
             name="gpt",
-            persona = Persona.objects.get(id=int(request.session.get('persona_id')[0]["id"])),
+            persona = Persona.objects.get(id=int(p_id)),
             content = trans_,
             voice_url = path_gpt_voice
         )
@@ -206,7 +235,7 @@ def rpg(request):
         request.session["count"] += 1 # 음성녹음 이름을 조합을 위한 count + 1
         return JsonResponse(data)
     else :
-        request.session['messages'] = request.session.get("persona_set")
+        request.session['messages'] = request.session.get("persona_set") # 초기 패르소나 설정을 메세지에 추가하기
         return render(request, "rpg/rpg.html")
 
 #----------------------------------------------------------------------------#
@@ -284,8 +313,36 @@ def transcribe_audio(file_path):
 
     return transcript
 
+
 #---------------------------------------------------------------------------#
-# 6. 분석 AI
+# 6. AI
 #---------------------------------------------------------------------------#
 
+# # 전처리 함수 (음성 있는)
+# def Pretreatment(message, path):
+#     vecter = 0
+#     return vecter
 
+# # 전처리 함수 (음성 없는)
+# def Pretreatment_nv(message):
+#     vecter = 0
+#     return vecter
+
+# def nlp(message, path):
+#     # 만약 음성파일이 존재하지 않을 경우
+#     if not os.path.exists(user_voice_url):
+#         vecter = Pretreatment_nv(message)
+        
+#     # 음성파일이 존재 할 경우
+#     else :
+#         vecter = Pretreatment(message, path)
+        
+
+#     # h5 모델 불러와 예측하기
+#     # model1 = load_model('your_model_1.h5')
+#     # prediction = model.predict(vecter)
+#     # 1차 모델 이진 분류 결과가 부정인 경우 retrun
+#     # model2 = load_model('your_model_2.h5')
+#     # prediction = model.predict(vecter)
+#     # 2차 모델 이진 분류 결과 return
+#     return prediction
