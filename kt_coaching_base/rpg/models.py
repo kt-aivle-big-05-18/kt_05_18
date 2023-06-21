@@ -9,7 +9,8 @@ class Persona(models.Model):
     voice         = models.CharField(max_length=45)
     career        = models.IntegerField()
     nickname      = models.ForeignKey(Account, to_field="nickname", on_delete=models.CASCADE)
-
+    shared      = models.BooleanField(default=False)
+    
 class Message(models.Model):
     name        = models.CharField(max_length=45)
     persona     = models.ForeignKey(Persona, on_delete=models.CASCADE)

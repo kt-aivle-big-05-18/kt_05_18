@@ -23,6 +23,7 @@ from django.conf import settings
 import base64
 from io import BytesIO
 from django.core.files.storage import FileSystemStorage
+from django.contrib.auth.decorators import login_required
 #----------------------------------------------------------------------------------------------------------------------#
 # 0. 필요 install 목록
 # pip install soundfile
@@ -105,7 +106,7 @@ def persona(request):
         if form.is_valid():
             form.nickname = request.user.nickname
             persona = form.save(commit=False)
-            persona.nickname = Account.object.get(nickname=request.user.nickname)
+            persona.nickname = Account.objects.get(nickname=request.user.nickname)
             persona.save()
             request.session['visited_persona'] = True
             request.session.get("persona_set").append({
@@ -313,7 +314,6 @@ def transcribe_audio(file_path):
         transcript += result.alternatives[0].transcript + " "
 
     return transcript
-
 
 #---------------------------------------------------------------------------#
 # 6. AI

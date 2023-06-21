@@ -3,6 +3,19 @@
     <!-- 공지사항 상세 -->
     <h1>{{ notice.title }}</h1>
     <p>{{ notice.content }}</p>
+    {% if notice.file %}
+        {% if message %}
+            <div class="alert alert-warning">{{ message }}</div>
+        {% else %}
+            <form method="POST">
+                {% csrf_token %}
+                {{ notice.get_filename }}
+                <button type="submit" name="download">다운로드</button>
+            </form>
+        {% endif %}
+    {% else %}
+        <div class="alert alert-info">파일이 없습니다.</div>
+    {% endif %}
     
     {% if notice.get_previous %}
         <a href="{% url 'community:notice_detail' notice.get_previous.pk %}">이전글</a>
