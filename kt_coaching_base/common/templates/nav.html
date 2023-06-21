@@ -13,7 +13,7 @@
                     <div class="menu-group">
                         {% comment %} 헤더로 페이지 들어갔을 때 헤더에 색 입히기 안되네  {% endcomment %}
                         <a href="{% url 'rpg:persona' %}" class="menu-header{% if request.path == 'simulation_view' %} active-menu{% endif %}">Simulation</a>
-                        <a href="{% url 'common:home' %}" class="menu-header{% if request.path == 'home_view' %} active-menu{% endif %}">Analyze</a>
+                        <a href="{% url 'analysis:analysis' %}" class="menu-header{% if request.path == 'home_view' %} active-menu{% endif %}">Analyze</a>
                         <a href="{% url 'community:notice_list' %}" class="menu-header{% if request.path == 'community' %} active-menu{% endif %}">Community</a>
                         <a href="{% url 'mypage:mypage_view' %}" class="menu-header{% if request.path == 'mypage_view' %} active-menu{% endif %}">Mypage</a>
                     </div>

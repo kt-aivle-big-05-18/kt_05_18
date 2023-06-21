@@ -1,4 +1,9 @@
+{% extends "base.html" %}
 {% load static %}
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'analysis/analysis.js' %}" defer></script>
+<link rel="stylesheet" href="{% static 'analysis/analysis.css' %}">
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,3 +18,4 @@
 </head>
 <div id = 'test_p'>여기는 분석페이지</div>
 <button id="test">test</button>
+{% endblock %}
