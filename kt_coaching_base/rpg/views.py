@@ -276,13 +276,13 @@ def generate_speech(text, voice, gender, p_id, count):
 #---------------------------------------------------------------------------#
 
 def stt(request):
-        p_id = request.session.get("persona_id")
+        p_id = request.session.get("persona_id")[0]["id"]
         count = request.session.get("count")
 
         audio_data = request.FILES['audio_data']
 
         fs = FileSystemStorage(location=os.path.join(settings.BASE_DIR, '/rpg/static/voice'))
-        filename = fs.save('{0}_{1}.wav'.format(p_id[0]["id"], count), audio_data)
+        filename = fs.save('{0}_{1}.wav'.format(p_id, count), audio_data)
         uploaded_file_url = fs.path(filename)
         
         trans_voice_message = transcribe_audio(uploaded_file_url)
