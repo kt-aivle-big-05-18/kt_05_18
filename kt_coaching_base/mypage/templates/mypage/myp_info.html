@@ -1,6 +1,14 @@
 {% extends "base.html" %}
-
 {% block content %}
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }} alert-dismissible">
+    {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+
 <style>
     body {
         background-color: #E9F2FF;
@@ -125,7 +133,6 @@
         <img class="img_logo" src="/static/img/kt.png" alt="kt 로고 이미지" />
         <img class="img_profile" src="/static/img/an.jpg" alt="프로필 이미지" />
         <div class="profile_info">
-        {% if user.is_authenticated %}
             <p class="username">{{ user.username }}</p>
             <p>{{ user.nickname }}</p>
             <p>{{ user.userid }}</p>
@@ -133,33 +140,34 @@
         </div>
     </div>
     <div class="info_box_body">
-        <form method="post">
+        <!-- 부서 수정 -->
+        <form method="post" action="{% url 'mypage:update_profile' %}">
             {% csrf_token %}
-            <div class="info_box">
-                <div>직무</div>
-                <div>{{ user.job }}</div>
-            </div>
             <div class="info_box">
                 <div>부서</div>
                 <div><input type="text" name="department" value="{{ user.department }}"></div>
-                <button type="submit" class="edit_button">수정</button>
+                <button type="submit" class="edit_button" name="update-department">수정</button>
             </div>
+        </form>
+        <!-- 직급 수정 -->
+        <form method="post" action="{% url 'mypage:update_profile' %}">
+            {% csrf_token %}
             <div class="info_box">
                 <div>직급</div>
                 <div><input type="text" name="rank" value="{{ user.rank }}"></div>
-                <button type="submit" class="edit_button">수정</button>
+                <button type="submit" class="edit_button" name="update-rank">수정</button>
             </div>
+        </form>
+        <!-- 비밀번호 수정 -->
+        <form method="post" action="{% url 'mypage:update_profile' %}">
+            {% csrf_token %}
             <div class="info_box">
                 <div>비밀번호</div>
-                <div><input type="password" name="password" value="비밀번호는 보안상 보여드릴 수 없습니다."></div>
-                <button type="submit" class="edit_button">수정</button>
+                <div><input type="password" name="password" placeholder="비밀번호를 입력하세요."></div>
+                <button type="submit" class="edit_button" name="update-password">수정</button>
             </div>
-            {% endif %}
         </form>
     </div>
 </div>
 
 {% endblock %}
-
-
-
