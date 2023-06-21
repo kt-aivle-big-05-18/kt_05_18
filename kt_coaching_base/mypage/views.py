@@ -1,7 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 def mypage_view(request):
-    return render(request, 'mypage/myp.html')
+    if not request.user.is_authenticated :
+        return redirect('account:login')
+    else :
+        return render(request, 'mypage/myp.html')
 
 def myp_info(request):
     return render(request, 'mypage/myp_info.html')
