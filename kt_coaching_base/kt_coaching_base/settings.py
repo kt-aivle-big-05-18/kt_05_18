@@ -89,7 +89,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME':  'kt_coaching', #mySQL DB이름
         'USER': 'root', #계정이름
-        'PASSWORD': 'aivle', #계정 비밀번호 <- 변경 안하신 분은 "aivle"
+        'PASSWORD': '0000', #계정 비밀번호 <- 변경 안하신 분은 "aivle"
         'HOST': 'localhost', #수정X
         'PORT': '3306', #수정X
     }
