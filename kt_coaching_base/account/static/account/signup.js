@@ -16,9 +16,12 @@
   
 //   });
 
+// 개인 정보 처리 방안 팝업
 $(function() {
 	$("#modal").modal("show");
 });
+<<<<<<< HEAD
+=======
 
 // 모달 띄우기 코드
 // $(document).ready(function() {
@@ -106,3 +109,4 @@ $(document).ready(function() {
       return cookieValue;
     }
   });
+>>>>>>> cbe04fe4204a73bf4251478bf9ee4fadda368688

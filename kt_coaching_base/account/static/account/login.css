@@ -1,4 +1,19 @@
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.login_wrapper{
+  animation-name: fadeIn;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
 .login_wrapper {
     /* 로그인 흰 박스 통째로 가운데 정렬 */
     display: flex;

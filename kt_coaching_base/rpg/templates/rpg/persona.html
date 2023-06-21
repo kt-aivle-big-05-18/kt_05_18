@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
+
+{% block header_color %}
+    #ff0000  <!-- 홈 페이지에서는 헤더 색상을 빨간색으로 설정 -->
+{% endblock %}
+
 {% block content %}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -165,7 +170,7 @@
                 <div class="persona_setting_select_second">
                   <div class="persona_select_wrapper">
                     <label for="id_age">연령</label>
-                    <input class="persona_select" type="number" name="age" id="id_age" required>
+                    <input class="persona_select" min="18" max="100" type="number" name="age" id="id_age" required>
                   </div>
 
                   <div class="persona_select_wrapper">
@@ -196,7 +201,7 @@
 
                   <div class="persona_select_wrapper">
                     <label for="career">경력</label>
-                    <input class="persona_select" type="number" name="career" id="career" required/>
+                    <input class="persona_select" min="1" max="50" type="number" name="career" id="career" required/>
                   </div>
                 </div>
 
