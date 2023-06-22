@@ -2,6 +2,7 @@
 
 ## folder ignore
 migrations/
+*/migrations/
 __pycache__/
 *.py[cod]
 media/
