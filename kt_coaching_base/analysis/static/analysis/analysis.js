@@ -22,6 +22,15 @@ $.ajaxSetup({
 
 // });
 
+// 로딩창 로드
+// $(window).load(function () {          //페이지가 로드 되면 로딩 화면을 없애주는 것
+  // $('#loading').show();
+    // 페이지 이동 후 3초(3000 밀리초) 동안 로딩 창을 보여준 뒤 숨깁니다.
+  //   setTimeout(function() {
+  //     $('#loading').hide();
+  // }, 5000);
+// });
+
 // 설문팝업
 $(function() {
 	$("#survey_modal").modal("show");

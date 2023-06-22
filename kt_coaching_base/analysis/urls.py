@@ -8,4 +8,5 @@ app_name = "analysis"
 urlpatterns = [
     path("", views.intro, name="intro"),
     path("result/", views.result, name="result"),
+    
 ]
