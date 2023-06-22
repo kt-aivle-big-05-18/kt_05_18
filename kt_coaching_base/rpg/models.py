@@ -20,7 +20,6 @@ class Message(models.Model):
     csv_url     = models.TextField()
     class Meta:
         ordering    =   ("send_date",)
-        
-    
+
     
     
