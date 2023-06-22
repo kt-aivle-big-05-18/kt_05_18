@@ -1,173 +1,248 @@
-{% extends "base.html" %}
-{% block content %}
+    {% extends "base.html" %}
+    {% block content %}
 
-{% if messages %}
-{% for message in messages %}
-<div class="alert alert-{{ message.tags }} alert-dismissible">
-    {{ message }}
-</div>
-{% endfor %}
-{% endif %}
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
 
-<style>
-    body {
-        background-color: #E9F2FF;
-        font-family: 'Montserrat', sans-serif;
-        min-height: calc(100vh - 40vw);
-    }
+    <style>
+        body {
+            background-color: #E9F2FF;
+            font-family: 'Montserrat', sans-serif;
+            min-height: calc(100vh - 40vw);
+        }
 
-    .content-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 80%;
-        margin: 40px auto;
-    }
+        .content-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 80%;
+            margin: 40px auto;
+        }
 
-    h1 {
-        text-align: left;
-        width: 80%;
-        padding-top: 10px;
-        padding-bottom: 4px;
-        padding-left: 70px;
-        font-size: 30px;
-    }
+        h1 {
+            text-align: left;
+            width: 80%;
+            padding-top: 10px;
+            padding-bottom: 4px;
+            padding-left: 70px;
+            font-size: 30px;
+        }
 
-    .box {
-        display: flex;
-        flex-direction: column;
-        justify-content: top;
-        align-items: center;
-        width: 280px;
-        height: 500px;
-        border-radius: 2%;
-        background-color: white;
-        box-shadow: 2px 5.5px 10px rgba(0, 0, 0, 0.3);
-    }
+        .box {
+            display: flex;
+            flex-direction: column;
+            justify-content: top;
+            align-items: center;
+            width: 280px;
+            height: 500px;
+            border-radius: 20px;
+            background-color: white;
+            box-shadow: 2px 5.5px 10px rgba(0, 0, 0, 0.3);
+        }
 
-    .img_logo {
-        width: 15%;
-        height: 20%;
-        object-fit: contain;
-    }
+        .img_logo {
+            width: 15%;
+            height: 20%;
+            object-fit: contain;
+        }
 
-    .img_profile {
-        width: 60%;
-        height: 35%;
-        object-fit: cover;
-        border-radius: 50%;
-    }
+        .img_profile {
+            width: 60%;
+            height: 35%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
 
-    .profile_info {
-        margin-top: 10px;
-        margin-bottom: 7px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        line-height: 0.7;
-        font-size: 20px;
-    }
+        .profile_info {
+            margin-top: 10px;
+            margin-bottom: 7px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 0.7;
+            font-size: 20px;
+        }
 
-    .info_box_body {
-        display: flex;
-        flex-direction: column;
-        justify-content: top;
-        align-items: center;
-        margin-right: 70px;
-        margin-bottom: 40px;
-        width: 700px;
-        height: 500px;
-        background-color: #E9F2FF;
-    }
+        .info_box_body {
+            display: flex;
+            flex-direction: column;
+            justify-content: top;
+            align-items: center;
+            margin-right: 70px;
+            margin-bottom: 40px;
+            width: 700px;
+            height: 500px;
+            background-color: #E9F2FF;
+        }
 
-    .info_box {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-weight: 530;
-        font-size: 20px;
-        padding: 25px;
-        margin-top: 20px;
-        margin-right: 70px;
-        margin-bottom: 30px;
-        width: 600px;
-        height: 50px;
-        border-radius: 15px;
-        background-color: white;
-        box-shadow: 2px 5.5px 10px rgba(0, 0, 0, 0.3);
-    }
+        .info_box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            font-weight: 530;
+            font-size: 20px;
+            padding: 25px;
+            margin-top: 20px;
+            margin-right: 70px;
+            margin-bottom: 30px;
+            width: 600px;
+            height: 40px;
+            border-radius: 20px;
+            background-color: white;
+            box-shadow: 2px 5.5px 10px rgba(0, 0, 0, 0.3);
+        }
 
-    .username {
-        font-size: 18px;
-        font-weight: bold;
-        margin-bottom: 40px;
-    }
+        .info_box input[type="button"] {
+            width: 30px;
+        }
+        
+        .info_box input[type="text"] {
+            width: 150px;
+            text-align: center;
+        }
+        
+        .info_box input[type="password"] {
+            width: 180px;
+            text-align: center;
+            margin-right: 34px;
+        }
 
-    .profile_info > p + p {
-        margin-top: 10px;
-        font-weight: normal;
-        font-size: 15px;
-    } 
+        .username {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 40px;
+        }
 
-    .edit_button {
-        margin-left: 10px;
-        padding: 5px 15px;
-        background-color: #4CAF50;
-        text-align: center;
-        font-size: 16px;
-        color: white;
-        border: none;
-        cursor: pointer;
-        border-radius: 5px;
-    }
+        .profile_info > p + p {
+            margin-top: 10px;
+            font-weight: normal;
+            font-size: 15px;
+        } 
 
-    .edit_button:hover {
-        background-color: #45a049;
-    }
+        .edit_button {
+            margin-left: 10px;
+            padding: 5px 15px;
+            background-color: #99b4da;
+            text-align: center;
+            font-size: 16px;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
 
-</style>
+        .edit_button:hover {
+            background-color: #134971;
+        }
 
-<h1>개인 정보 수정</h1>
-<div class="content-container">
-    <div class="box">
-        <img class="img_logo" src="/static/img/kt.png" alt="kt 로고 이미지" />
-        <img class="img_profile" src="/static/img/an.jpg" alt="프로필 이미지" />
-        <div class="profile_info">
-            <p class="username">{{ user.username }}</p>
-            <p>{{ user.nickname }}</p>
-            <p>{{ user.userid }}</p>
-            <p>{{ user.email }}</p>
+    </style>
+
+    <h1>개인 정보 수정</h1>
+    <div class="content-container">
+        {% comment %} <div class="box">
+            <img class="img_logo" src="/static/img/kt.png" alt="kt 로고 이미지" />
+            <img class="img_profile" src="/static/img/an.jpg" alt="프로필 이미지" />
+            <div class="profile_info">
+                <p class="username">{{ user.username }}</p>
+                <p>{{ user.nickname }}</p>
+                <p>{{ user.userid }}</p>
+                <p>{{ user.email }}</p>
+            </div>
+        </div> {% endcomment %}
+        <div class="box">
+            <img class="img_logo" src="/static/img/kt.png" alt="kt 로고 이미지" />
+            <img class="img_profile" src="/static/img/an.jpg" alt="프로필 이미지" />
+            <div class="profile_info">
+                <p class="username">{{ user.username }}</p>
+                <p>{{ user.nickname }}</p>
+                <p>{{ user.userid }}</p>
+                <p>{{ user.email }}</p>
+            </div>
+        </div>
+        <div class="info_box_body">
+            <!-- 부서 수정 -->
+            <form method="post" action="{% url 'mypage:update_profile' %}">
+                {% csrf_token %}
+                <div class="info_box">
+                    <div>부서</div>
+                    <div>
+                        <input type="button" value="&lt;" onclick="changeDepartment(-1);">
+                        <input type="text" id="departmentDisplay" readonly name="department" value="{{ user.department }}">
+                        <input type="button" value="&gt;" onclick="changeDepartment(1);">
+                    </div>
+                    <button type="submit" class="edit_button" name="update-department">수정</button>
+                </div>
+            </form>
+            <!-- 직급 수정 -->
+            <form method="post" action="{% url 'mypage:update_profile' %}">
+                {% csrf_token %}
+                <div class="info_box">
+                    <div>직급</div>
+                    <div>
+                        <input type="button" value="&lt;" onclick="changeRank(-1);">
+                        <input type="text" id="rankDisplay" readonly name="rank" value="{{ user.rank }}">
+                        <input type="button" value="&gt;" onclick="changeRank(1);">
+                    </div>
+                    <button type="submit" class="edit_button" name="update-rank">수정</button>
+                </div>
+            </form>
+            <!-- 비밀번호 수정 -->
+            <form method="post" action="{% url 'mypage:update_profile' %}">
+                {% csrf_token %}
+                <div class="info_box">
+                    <div>비밀번호</div>
+                    <div><input type="password" name="password" placeholder="비밀번호를 입력하세요."></div>
+                    <button type="submit" class="edit_button" name="update-password">수정</button>
+                </div>
+            </form>
         </div>
     </div>
-    <div class="info_box_body">
-        <!-- 부서 수정 -->
-        <form method="post" action="{% url 'mypage:update_profile' %}">
-            {% csrf_token %}
-            <div class="info_box">
-                <div>부서</div>
-                <div><input type="text" name="department" value="{{ user.department }}"></div>
-                <button type="submit" class="edit_button" name="update-department">수정</button>
-            </div>
-        </form>
-        <!-- 직급 수정 -->
-        <form method="post" action="{% url 'mypage:update_profile' %}">
-            {% csrf_token %}
-            <div class="info_box">
-                <div>직급</div>
-                <div><input type="text" name="rank" value="{{ user.rank }}"></div>
-                <button type="submit" class="edit_button" name="update-rank">수정</button>
-            </div>
-        </form>
-        <!-- 비밀번호 수정 -->
-        <form method="post" action="{% url 'mypage:update_profile' %}">
-            {% csrf_token %}
-            <div class="info_box">
-                <div>비밀번호</div>
-                <div><input type="password" name="password" placeholder="비밀번호를 입력하세요."></div>
-                <button type="submit" class="edit_button" name="update-password">수정</button>
-            </div>
-        </form>
-    </div>
-</div>
 
+    {% endblock %}
+
+    {% block script %}
+    <script>
+        const departments = [
+            "{{ user.department }}",
+            "부서1",
+            "부서2",
+            "부서3",
+            ];
+        const ranks = [
+            "{{ user.rank }}",
+            "직급1",
+            "직급2",
+            "직급3",
+        ];
+
+        window.onload = function () {
+            departmentElement = document.getElementById("departmentDisplay");
+            rankElement = document.getElementById("rankDisplay");
+        
+            // Set the initial values
+            departmentElement.value = "{{ user.department }}";
+            rankElement.value = "{{ user.rank }}";
+        };
+        
+        function changeDepartment(direction) {
+            changeValue(direction, departments, departmentElement);
+        }
+        
+        function changeRank(direction) {
+            changeValue(direction, ranks, rankElement);
+        }
+        
+        function changeValue(direction, values, element) {
+            let currentIndex = values.indexOf(element.value);
+            let newIndex = (currentIndex + direction + values.length) % values.length;
+            element.value = values[newIndex];
+        }
+        
+    </script>
 {% endblock %}
