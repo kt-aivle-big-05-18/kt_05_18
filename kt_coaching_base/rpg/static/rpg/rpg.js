@@ -15,7 +15,7 @@ $(document).ready(function() {
     });
 
     $("#end_btn").click(function() {
-        window.location.href = "http://127.0.0.1:8000/analysis/";
+        window.location.href = "http://127.0.0.1:8000/rpg/loading/";
     });
 
     // 사용자의 메시지를 전송하는 함수 정의
@@ -152,5 +152,33 @@ $(document).ready(function() {
 });
 
 
+// 로딩창 구현
 
+// $(document).ready(function() {
+//     $('#loading').hide();
+//     window.onbeforeunload = function() { // 페이지 이탈 시에 로딩 창을 보여준다.
+//         // if($('#loading').css('display') == 'none'){
+//         //     $('#loading').show();
+//         // }
+//         $('#loading').show();
+// };
 
+    // $(window).on('load', function() {
+    //     // 새 페이지 로드 시 로딩 창을 숨김
+    //     setTimeout(function() {
+    //         $('#loading').hide();
+    //     }, 3000);
+    // });
+    // // Delayed hiding of the loading screen after 3 seconds (3000 milliseconds)
+    // setTimeout(function() {
+    //     $('#loading').hide();
+    // }, 10000);
+// });
+
+// $(document).ready(function() {
+//     $('#loading').hide();
+//     $("#end_btn").on("click", function() {
+//         $('#loading').show();
+//         return true;
+//     });
+// });
