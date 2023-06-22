@@ -1,0 +1,25 @@
+/* 로딩창 구현 */
+/* #loading {
+	width: 100vw;
+  height: 100vh;
+	top: 0;
+	left: 0;
+	position: fixed;
+	display: block;
+	opacity: 1.0;
+	background: #606582;
+	z-index: 99;
+	text-align: center;
+  animation-name: fadeIn;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+#loading > img {
+	position: absolute;
+	z-index: 100;
+  width: 70vw; 
+  height: 90vh; 
+  margin-left:-35vw;
+  margin-top: 10vh;
+} */

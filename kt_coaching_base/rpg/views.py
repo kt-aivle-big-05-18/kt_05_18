@@ -479,3 +479,10 @@ def classification_model(new_sentence, new_voice):
     final_result['predict'] = pd.concat([pred_neg, pred_pos]).sort_index()['predict']
 
   return final_result
+
+
+# ----------------------------------------------------------------
+
+# 로딩창 불러오기
+def loading(request):
+    return render(request, 'rpg/loading.html')
