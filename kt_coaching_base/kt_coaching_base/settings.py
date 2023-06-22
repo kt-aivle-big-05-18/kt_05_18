@@ -88,7 +88,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME':  'kt_coaching', #mySQL DB이름
         'USER': 'root', #계정이름
-        'PASSWORD': '0000', #계정 비밀번호 <- 변경 안하신 분은 "aivle"
+        'PASSWORD': 'aivle', #계정 비밀번호 <- 변경 안하신 분은 "aivle"
         'HOST': 'localhost', #수정X
         'PORT': '3306', #수정X
     }
@@ -133,6 +133,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+STATIC_ROOT = 'mystatic'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
