@@ -50,6 +50,7 @@ import re
 # pip install google-cloud-texttospeech
 # pip install openai
 # pip install sentence-transformers
+# pip install librosa
 # 구글 stt 관련 추가로 설정해야함.
 #----------------------------------------------------------------------------------------------------------------------#
 
@@ -350,7 +351,6 @@ def extract_features(data, sample_rate):
     return result
 
 def get_features(path):
-
     data, sample_rate = librosa.load(path, duration=2.5, offset=0.0)
 
     # without augmentation
