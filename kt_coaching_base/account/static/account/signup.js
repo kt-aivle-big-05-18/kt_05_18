@@ -106,4 +106,8 @@ $(document).ready(function() {
       }
       return cookieValue;
     }
+<<<<<<< HEAD
 });
+=======
+  });
+>>>>>>> 854e90f1e5d871667db4142bc4c5dda5ea3e6ef6
