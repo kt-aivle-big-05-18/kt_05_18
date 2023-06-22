@@ -50,6 +50,7 @@ import re
 # pip install google-cloud-texttospeech
 # pip install openai
 # pip install sentence-transformers
+# pip install librosa
 # 구글 stt 관련 추가로 설정해야함.
 #----------------------------------------------------------------------------------------------------------------------#
 
@@ -129,7 +130,7 @@ def persona(request):
             request.session['visited_persona'] = True
             request.session.get("persona_set").append({
                                     "role" : "system", 
-                                    "content" : translate( "다음 대화부터 assistant는 상사와 대화하는 {0}세인 {1} {2}{3}입니다.".format(
+                                    "content" : translate( "다음 대화부터 assistant는 팀장과 대화하는 {0}세인 {1} {2}{3}입니다.".format(
                                         form.cleaned_data['age'], # 0 나이 - gpt
                                         form.cleaned_data['gender'], # 1 성별 - gpt
                                         form.cleaned_data['department'], # 2 직군 - gpt
@@ -350,7 +351,6 @@ def extract_features(data, sample_rate):
     return result
 
 def get_features(path):
-
     data, sample_rate = librosa.load(path, duration=2.5, offset=0.0)
 
     # without augmentation

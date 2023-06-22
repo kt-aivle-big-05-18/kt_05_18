@@ -20,8 +20,6 @@
 $(function() {
 	$("#modal").modal("show");
 });
-<<<<<<< HEAD
-=======
 
 // 모달 띄우기 코드
 // $(document).ready(function() {
@@ -108,9 +106,4 @@ $(document).ready(function() {
       }
       return cookieValue;
     }
-<<<<<<< HEAD
   });
-=======
-  });
->>>>>>> cbe04fe4204a73bf4251478bf9ee4fadda368688
->>>>>>> f8dcb14152767b74710934ec19d5dde703cdbb4b
