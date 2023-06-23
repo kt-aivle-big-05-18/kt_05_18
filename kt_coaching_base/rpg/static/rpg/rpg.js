@@ -23,7 +23,7 @@ $(document).ready(function() {
         var userInput = $("#user-input").val(); // 사용자 입력을 가져오기
         if (userInput !== "") { // 입력이 비어있지 않으면
             // 사용자 메시지를 채팅 컨테이너에 추가
-            chatContainer.append("<p class='user-message'>당신: " + userInput + "</p>");
+            chatContainer.append("<div class='user_message'> " + userInput + "</div>");
             scrollToBottom(); // 채팅 컨테이너를 맨 아래로 스크롤
 
             // 사용자 메시지를 서버로 POST 요청으로 보내기
@@ -34,7 +34,7 @@ $(document).ready(function() {
                     message: userInput
                 },
                 success: function(response) {
-                    chatContainer.append("<p class='assistant-message'>팀원: " + response.message + "</p>");
+                    chatContainer.append("<div class='assistant_message'>" + response.message + "</div>");
                     // 오디오 요소를 생성하고 소스를 반환된 오디오 URL로 설정
                     var audioElement = document.createElement("audio");
                     audioElement.src = "data:audio/wav;base64," + response.voice;
@@ -150,35 +150,3 @@ $(document).ready(function() {
         })
     }
 });
-
-
-// 로딩창 구현
-
-// $(document).ready(function() {
-//     $('#loading').hide();
-//     window.onbeforeunload = function() { // 페이지 이탈 시에 로딩 창을 보여준다.
-//         // if($('#loading').css('display') == 'none'){
-//         //     $('#loading').show();
-//         // }
-//         $('#loading').show();
-// };
-
-    // $(window).on('load', function() {
-    //     // 새 페이지 로드 시 로딩 창을 숨김
-    //     setTimeout(function() {
-    //         $('#loading').hide();
-    //     }, 3000);
-    // });
-    // // Delayed hiding of the loading screen after 3 seconds (3000 milliseconds)
-    // setTimeout(function() {
-    //     $('#loading').hide();
-    // }, 10000);
-// });
-
-// $(document).ready(function() {
-//     $('#loading').hide();
-//     $("#end_btn").on("click", function() {
-//         $('#loading').show();
-//         return true;
-//     });
-// });
