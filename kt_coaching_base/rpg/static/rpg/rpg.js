@@ -15,7 +15,7 @@ $(document).ready(function() {
     });
 
     $("#end_btn").click(function() {
-        window.location.href = "http://127.0.0.1:8000/rpg/loading/";
+        window.location.href = "/rpg/loading/";
     });
 
     // 사용자의 메시지를 전송하는 함수 정의
@@ -51,7 +51,7 @@ $(document).ready(function() {
             });
             // 사용자 입력 필드 비우기
             $("#user-input").val("");
-        }
+        } 
     }
 
     // 채팅 컨테이너를 맨 아래로 스크롤하는 함수 정의
