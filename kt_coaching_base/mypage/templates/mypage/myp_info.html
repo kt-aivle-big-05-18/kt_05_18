@@ -51,7 +51,21 @@
             border-radius: 20px;
             background-color: white;
             box-shadow: 2px 5.5px 10px rgba(0, 0, 0, 0.3);
+            animation: floating 3s ease-in-out infinite;
         }
+
+        @keyframes floating {
+            0% {
+              transform: translateY(0);
+            }
+            50% {
+              transform: translateY(-10px);
+            }
+            100% {
+              transform: translateY(0);
+            }
+        }
+          
 
         .img_logo {
             width: 15%;
@@ -152,11 +166,31 @@
             margin-right: 2px;
         }
 
+        .back_button {
+            position: absolute;
+            top: 15%;
+            right: 30px;
+            font-size: 18px;
+            padding: 6px 12px;
+            background-color: #99b4da;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+      
+        .back_button:hover {
+            background-color: #134971;
+        }
+
 
     </style>
 
 
     <h1>개인 정보 수정</h1>
+    <button class="back_button" onclick="window.history.back();">←</button>
     <div class="content-container">
         <div class="box">
             <img class="img_logo" src="/static/img/kt.png" alt="kt 로고 이미지" />
