@@ -8,6 +8,13 @@
     </div>
     {% endfor %}
     {% endif %}
+    
+    {% if popup %}
+    <div class="alert alert-success alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <p>{{ message }}</p>
+    </div>
+    {% endif %}
 
     <style>
         body {
@@ -19,7 +26,7 @@
         .content-container {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             width: 80%;
             margin: 40px auto;
         }
@@ -75,6 +82,7 @@
             align-items: center;
             margin-right: 70px;
             margin-bottom: 40px;
+            margin-top: 20px;
             width: 700px;
             height: 500px;
             background-color: #E9F2FF;
@@ -96,21 +104,6 @@
             border-radius: 20px;
             background-color: white;
             box-shadow: 2px 5.5px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .info_box input[type="button"] {
-            width: 30px;
-        }
-        
-        .info_box input[type="text"] {
-            width: 150px;
-            text-align: center;
-        }
-        
-        .info_box input[type="password"] {
-            width: 180px;
-            text-align: center;
-            margin-right: 34px;
         }
 
         .username {
@@ -141,20 +134,29 @@
             background-color: #134971;
         }
 
+        .options-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 250px;
+            height: 30px;
+            margin-left: 220px;
+        }
+
+        .info_box input[type="password"] {
+            width: 180px;
+            height: 30px;
+            text-align: center;
+            margin-right: 2px;
+        }
+
+
     </style>
+
 
     <h1>개인 정보 수정</h1>
     <div class="content-container">
-        {% comment %} <div class="box">
-            <img class="img_logo" src="/static/img/kt.png" alt="kt 로고 이미지" />
-            <img class="img_profile" src="/static/img/an.jpg" alt="프로필 이미지" />
-            <div class="profile_info">
-                <p class="username">{{ user.username }}</p>
-                <p>{{ user.nickname }}</p>
-                <p>{{ user.userid }}</p>
-                <p>{{ user.email }}</p>
-            </div>
-        </div> {% endcomment %}
         <div class="box">
             <img class="img_logo" src="/static/img/kt.png" alt="kt 로고 이미지" />
             <img class="img_profile" src="/static/img/an.jpg" alt="프로필 이미지" />
@@ -171,26 +173,33 @@
                 {% csrf_token %}
                 <div class="info_box">
                     <div>부서</div>
-                    <div>
-                        <input type="button" value="&lt;" onclick="changeDepartment(-1);">
-                        <input type="text" id="departmentDisplay" readonly name="department" value="{{ user.department }}">
-                        <input type="button" value="&gt;" onclick="changeDepartment(1);">
+                    <div class="options-container">
+                        <span>{{ user.department }}</span> 
+                        <select name="department" id="department" required>
+                            <option value="none" selected>부서를 선택하세요</option>
+                            <option value="부서1">부서1</option>
+                            <option value="부서2">부서2</option>
+                            <option value="부서3">부서3</option>
+                        </select>
                     </div>
                     <button type="submit" class="edit_button" name="update-department">수정</button>
-                </div>
+                </div>                
             </form>
-            <!-- 직급 수정 -->
             <form method="post" action="{% url 'mypage:update_profile' %}">
                 {% csrf_token %}
                 <div class="info_box">
                     <div>직급</div>
-                    <div>
-                        <input type="button" value="&lt;" onclick="changeRank(-1);">
-                        <input type="text" id="rankDisplay" readonly name="rank" value="{{ user.rank }}">
-                        <input type="button" value="&gt;" onclick="changeRank(1);">
+                    <div class="options-container">
+                        <span>{{ user.rank }}</span>
+                        <select name="rank" id="rank" required>
+                            <option value="none" selected>직급을 선택하세요</option>
+                            <option value="직급1">직급1</option>
+                            <option value="직급2">직급2</option>
+                            <option value="직급3">직급3</option>
+                        </select>
                     </div>
                     <button type="submit" class="edit_button" name="update-rank">수정</button>
-                </div>
+                </div>                
             </form>
             <!-- 비밀번호 수정 -->
             <form method="post" action="{% url 'mypage:update_profile' %}">
@@ -203,46 +212,5 @@
             </form>
         </div>
     </div>
-
+    
     {% endblock %}
-
-    {% block script %}
-    <script>
-        const departments = [
-            "{{ user.department }}",
-            "부서1",
-            "부서2",
-            "부서3",
-            ];
-        const ranks = [
-            "{{ user.rank }}",
-            "직급1",
-            "직급2",
-            "직급3",
-        ];
-
-        window.onload = function () {
-            departmentElement = document.getElementById("departmentDisplay");
-            rankElement = document.getElementById("rankDisplay");
-        
-            // Set the initial values
-            departmentElement.value = "{{ user.department }}";
-            rankElement.value = "{{ user.rank }}";
-        };
-        
-        function changeDepartment(direction) {
-            changeValue(direction, departments, departmentElement);
-        }
-        
-        function changeRank(direction) {
-            changeValue(direction, ranks, rankElement);
-        }
-        
-        function changeValue(direction, values, element) {
-            let currentIndex = values.indexOf(element.value);
-            let newIndex = (currentIndex + direction + values.length) % values.length;
-            element.value = values[newIndex];
-        }
-        
-    </script>
-{% endblock %}
