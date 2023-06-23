@@ -1,4 +1,5 @@
     {% extends "base.html" %}
+    {% load static %}
     {% block content %}
 
     {% if messages %}
@@ -159,7 +160,7 @@
     <div class="content-container">
         <div class="box">
             <img class="img_logo" src="/static/img/kt.png" alt="kt 로고 이미지" />
-            <img class="img_profile" src="/static/img/an.jpg" alt="프로필 이미지" />
+            <img class="img_profile" src="/static/css/image/won.png" alt="프로필 이미지" />
             <div class="profile_info">
                 <p class="username">{{ user.username }}</p>
                 <p>{{ user.nickname }}</p>

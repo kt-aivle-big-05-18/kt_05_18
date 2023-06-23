@@ -2,25 +2,34 @@ $.ajaxSetup({
     headers: { "X-CSRFToken": '{{csrf_token}}' }
 });
 
-$(document).ready(function() {
-    $("#test").click(function() {
-        $.ajax({
-            url: "/analysis/test/", // 요청할 URL
-            type: "POST", // HTTP 메소드
-            data: { // 서버로 보낼 데이터
-                message: "test"
-            },
-            success: function(response) {
-                test_p.append("<p class='assistant-message'>채팅방 이름: "+ response.message + "</p>");
-            },
-            error: function(xhr, errmsg, err) { // 요청 실패시 실행할 함수
-                console.log(errmsg); // 에러 메시지를 콘솔에 출력
-                chatContainer.append(errmsg); // 에러 메시지를 컨테이너에 출력
-            }
-        });
-    });
+// $(document).ready(function() {
+//     $("#test").click(function() {
+//         $.ajax({
+//             url: "/analysis/test/", // 요청할 URL
+//             type: "POST", // HTTP 메소드
+//             data: { // 서버로 보낼 데이터
+//                 message: "test"
+//             },
+//             success: function(response) {
+//                 test_p.append("<p class='assistant-message'>채팅방 이름: "+ response.message + "</p>");
+//             },
+//             error: function(xhr, errmsg, err) { // 요청 실패시 실행할 함수
+//                 console.log(errmsg); // 에러 메시지를 콘솔에 출력
+//                 chatContainer.append(errmsg); // 에러 메시지를 컨테이너에 출력
+//             }
+//         });
+//     });
 
-});
+// });
+
+// 로딩창 로드
+// $(window).load(function () {          //페이지가 로드 되면 로딩 화면을 없애주는 것
+  // $('#loading').show();
+    // 페이지 이동 후 3초(3000 밀리초) 동안 로딩 창을 보여준 뒤 숨깁니다.
+  //   setTimeout(function() {
+  //     $('#loading').hide();
+  // }, 5000);
+// });
 
 // 설문팝업
 $(function() {

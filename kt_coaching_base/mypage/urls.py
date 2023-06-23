@@ -10,4 +10,5 @@ urlpatterns = [
     path('myp_self/', views.myp_self, name='myp_self'),
     path('update_profile/', views.update_profile, name='update_profile'),
     path('popup/', views.popup, name='popup'),
+    # path('password_check/', views.password_check, name='password_check'),
 ]

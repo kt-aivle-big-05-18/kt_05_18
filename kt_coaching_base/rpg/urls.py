@@ -8,5 +8,6 @@ app_name = "rpg"
 urlpatterns = [
     path('rpg_start/', views.rpg, name='rpg_start'),
     path('stt/', views.stt, name="stt"),
+    path('loading/', views.loading, name="loading"),
     path('', views.persona, name='persona'),
 ]
