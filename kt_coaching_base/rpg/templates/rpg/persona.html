@@ -118,7 +118,7 @@
           <div class="persona_profile_box"> <!-- 프로필 박스 -->
             <img class="persona_profile_kt" src="/static/img/kt.png" alt="kt로고">
             <div class="persona_profile_name"> 홍길동 </div>
-            <img class="persona_profile_char" src="/static/img/ok.jpg" alt="페르소나1">
+            <img class="persona_profile_char" id="persona_image" src="/static/img/default.png" alt="페르소나1">
           </div>
         </div>
 
@@ -126,6 +126,40 @@
         <div class="persona_setting">
           <div class="persona_setting_title">Make Your Persona</div>
           <div class="persona_setting_content">
+            <script>
+              function updatePersonaImage() {
+                let age = document.getElementById("id_age").value;
+                let gender = document.getElementById("gender").value;
+                let imageElement = document.getElementById("persona_image");
+            
+                let ageGroup = null;
+                let imageName = "";
+            
+                if (age >= 18 && age <= 29) {
+                  ageGroup = "young";
+                } else if (age >= 30 && age <= 39) {
+                  ageGroup = "middle";
+                } else if (age >= 40 && age <= 49) {
+                  ageGroup = "senior";
+                } else if (age >= 50 && age <= 59) {
+                  ageGroup = "elder";
+                } else if (age >= 60) {
+                  ageGroup = "old";
+                }
+            
+                if (gender === "M" && ageGroup !== null) {
+                  imageName = ageGroup + "_male";
+                } else if (gender === "F" && ageGroup !== null) {
+                  imageName = ageGroup + "_female";
+                } else {
+                  imageName = "default";
+                }
+            
+                imageElement.src = "/static/img/" + imageName + ".png";
+                imageElement.alt = imageName;
+              }
+            </script>
+            
             <form method="post">
               <!-- 폼 필드들 -->
               {% csrf_token %}
@@ -170,7 +204,7 @@
                 <div class="persona_setting_select_second">
                   <div class="persona_select_wrapper">
                     <label for="id_age">연령</label>
-                    <input class="persona_select" min="18" max="100" type="number" name="age" id="id_age" required>
+                    <input class="persona_select" min="18" max="100" type="number" name="age" id="id_age" oninput="updatePersonaImage()" required>
                   </div>
 
                   <div class="persona_select_wrapper">
@@ -179,7 +213,7 @@
                     <label for="gender_male">남성</label>
                     <input type="radio" name="gender" id="gender_female" value="F" required/>
                     <label for="gender_female">여성</label> {% endcomment %}
-                    <select class="persona_select" name="gender" id="gender" required>
+                    <select class="persona_select" name="gender" id="gender" oninput="updatePersonaImage()" required>
                       <option value="M">남성</option>
                       <option value="F">여성</option>
                     </select>
