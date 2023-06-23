@@ -10,7 +10,7 @@ def result (request):
     if request.method == "POST":
         print("abc")
     else :
-        return render(request, "analysis/analysis.html")
+        return render(request, "analysis/result.html")
 # Create your views here.
 
 def intro (request):
