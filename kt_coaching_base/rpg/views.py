@@ -4,6 +4,7 @@
 import numpy as np
 import pandas as pd
 import os
+import pickle
 
 # Django
 from django.http import JsonResponse, HttpResponse
@@ -13,6 +14,7 @@ from django.db import transaction
 import openai, json, requests
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+
 
 # DB 관련
 from .forms import RegisterPersona
@@ -33,6 +35,7 @@ import wave
 import base64
 from io import BytesIO
 import sounddevice as sd
+import subprocess
 
 # 전처리 및 AI 분류 관련
 from keras.models import load_model
@@ -51,6 +54,7 @@ import re
 # pip install openai
 # pip install sentence-transformers
 # pip install librosa
+# conda install -c conda-forge ffmpeg
 # 구글 stt 관련 추가로 설정해야함.
 #----------------------------------------------------------------------------------------------------------------------#
 
@@ -156,6 +160,10 @@ def persona(request):
 # 3. 롤플레잉 실행 과정 
 #----------------------------------------------------------------------------------------------------#
 
+def convert_webm_to_wav(input_file, output_file): #webm wav로 바꾸는 코드
+    command = ['ffmpeg', '-i', input_file, output_file]
+    subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
 def rpg(request):
     if len(request.session.get("persona_set")) == 0 :
         form = RegisterPersona(request.POST or None)
@@ -172,10 +180,14 @@ def rpg(request):
         # 번역된 사용자 입력 메세지를 messages에 추가
         request.session.get('messages').append({"role": "user", "content": translate(message)})
         count = request.session.get("count") # url 경로 저장을 위한 대화 카운트 설정
-        user_voice_url = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.wav'.format(p_id, count))
+        user_voice_url = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.webm'.format(p_id, count))
+        wav_voice_url = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.wav'.format(p_id, count))
         
+        convert_webm_to_wav(user_voice_url, wav_voice_url)
+        
+        print(user_voice_url)
         # ---------------------- AI 전처리 / AI prediction -----------------------#
-        m_df = classification_model(message, user_voice_url)
+        m_df = classification_model(message, wav_voice_url)
         m_df_url = os.path.join(base_dir, 'rpg/static/df_csv/{0}_{1}.csv'.format(p_id, count))
         m_df.to_csv(m_df_url, index=False)
         # ------------------------------------------------------------------------#
@@ -189,7 +201,7 @@ def rpg(request):
             csv_url = m_df_url
         )
         user_message_obj.save()
-        
+        print(count)
         request.session["count"] += 1
         count = request.session.get("count")
         
@@ -276,20 +288,27 @@ def generate_speech(text, voice, gender, p_id, count):
 # 5. stt
 #---------------------------------------------------------------------------#
 
+class OverwriteStorage(FileSystemStorage):
+
+    def get_available_name(self, name, max_length=None):
+        if self.exists(name):
+            os.remove(os.path.join(self.location, name))
+        return name
+
 def stt(request):
-        p_id = request.session.get("persona_id")[0]["id"]
-        count = request.session.get("count")
+    p_id = request.session.get("persona_id")[0]["id"]
+    count = request.session.get("count")
 
-        audio_data = request.FILES['audio_data']
+    audio_data = request.FILES['audio_data']
 
-        fs = FileSystemStorage(location=os.path.join(settings.BASE_DIR, '/rpg/static/voice'))
-        filename = fs.save('{0}_{1}.wav'.format(p_id, count), audio_data)
-        uploaded_file_url = fs.path(filename)
-        
-        trans_voice_message = transcribe_audio(uploaded_file_url)
+    fs = OverwriteStorage(location=os.path.join(settings.BASE_DIR, 'rpg/static/voice'))
+    filename = fs.save('{0}_{1}.webm'.format(p_id, count), audio_data)
+    uploaded_file_url = fs.path(filename)
 
-        return JsonResponse({"text" : trans_voice_message})
-        
+    trans_voice_message = transcribe_audio(uploaded_file_url)
+
+    return JsonResponse({"text" : trans_voice_message})
+
 
 def transcribe_audio(file_path):
     
@@ -304,6 +323,7 @@ def transcribe_audio(file_path):
     audio = speech.RecognitionAudio(content=audio_data)
     config = speech.RecognitionConfig(
         encoding=speech.RecognitionConfig.AudioEncoding.WEBM_OPUS,
+        # sample_rate_hertz=44100,
         language_code="ko-KR",
     )
     response = client.recognize(config=config, audio=audio)
@@ -393,27 +413,28 @@ def classification_model(new_sentence, new_voice):
   # wav 파일 불러오기
   model_path = os.path.join(settings.BASE_DIR, 'rpg/analysis_model/')
   new_wav = new_voice # wav 파일 경로
-
+  
   # 데이터 전처리 함수 불러오기
-  scaler = StandardScaler()
+  with open('voice_scaler.pkl', 'rb') as f:
+    v_scaler = pickle.load(f)
+
   txt_embed = text_embedding(model_name = 'jhgan/ko-sroberta-multitask')
+  with open('text_scaler.pkl', 'rb') as w:
+    t_scaler = pickle.load(w)
 
   if os.path.isfile(new_wav) and len(new_sents)<3:  # wav파일 있고 2문장 이하면 voice+text 사용
-    print('VOICE', len(new_sents))
     new_sent = pd.DataFrame([new_sentence])
     new_sent.columns = ['sentence']
+
     # extract voice feature vector
     new_voice = pd.DataFrame(get_features(new_wav)).transpose()
     new_df = pd.concat([new_voice, new_sent], axis=1)
 
     # read voice training data
     voice_df = pd.read_csv(os.path.join(model_path, '230621_voice_df.csv'))
-
     # 새로운 데이터 전처리
     X_test = txt_embed.transform(new_df) # extract text embedding vector
-
-    scaler.fit_transform(voice_df)
-    x_test = scaler.transform(X_test)
+    x_test = v_scaler.transform(X_test)
 #-----------------------------------------------------------------------#
     # 긍정 부정 분류 모델 불러옴, 긍부정 예측
    
@@ -450,9 +471,7 @@ def classification_model(new_sentence, new_voice):
 
     # 새로운 데이터 전처리
     X_test = txt_embed.transform(new_sents) # extract text embedding vector
-
-    scaler.fit_transform(text_df)
-    x_test = scaler.transform(X_test)
+    x_test = t_scaler.transform(X_test)
 
     # 긍정 부정 분류 모델 불러옴, 긍부정 예측
     
