@@ -58,7 +58,9 @@ import re
 # 구글 stt 관련 추가로 설정해야함.
 #----------------------------------------------------------------------------------------------------------------------#
 
+# to. 18조
 # request 매개변수를 갖는 함수는 rpg.js와 urls.py를 참고해서 이해하면 더 쉽습니다. -from 충영
+
 
 #----------------------------------------------------------------------------------------------------------------------#
 # 1. 네이버 번역 관련
@@ -146,7 +148,7 @@ def persona(request):
             })
             request.session["voice"] = request.POST.get('voice') # 챗봇의 목소리 형태를 저장할 세션 변수
             request.session["count"] = 0 # 대화 주고받는 순서 저장할 세션 변수
-            # 이제 여기에 스케일러 fit 할 예정입니다!
+            request.session['scores'] = []
             return redirect("rpg:rpg_start")
     else : # GET 방식인 경우
         # 폼 생성
@@ -201,10 +203,12 @@ def rpg(request):
             csv_url = m_df_url
         )
         user_message_obj.save()
-        print(count)
+        
         request.session["count"] += 1
         count = request.session.get("count")
         
+        request.session['score'] = score_count(p_id, request.user.nickname)
+        request.session['scores'].append(request.session['score'])
         # OpenAI의 챗봇 API에 메시지 리스트를 전달하고 응답을 받아오기
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
@@ -243,7 +247,8 @@ def rpg(request):
         data = { # json형식으로 respone 해줄 데이터
             'message' : trans_,
             'voice': encoded_voice,
-            'path': "{0}_{1}.wav".format(p_id, count)
+            'path': "{0}_{1}.wav".format(p_id, count),
+            'score' : "{0}".format(request.session.get('score'))
         }
         request.session["count"] += 1 # 음성녹음 이름을 조합을 위한 count + 1
         return JsonResponse(data)
@@ -505,3 +510,46 @@ def classification_model(new_sentence, new_voice):
 # 로딩창 불러오기
 def loading(request):
     return render(request, 'rpg/loading.html')
+
+
+#---------------------------------------------------------------------------#
+# 7. 실시간 점수
+#---------------------------------------------------------------------------#
+
+def score_count(p_id, nickname):
+    df = pd.DataFrame()
+    questions = Message.objects.filter(persona=p_id, name=nickname)
+    questions_list = [
+        {
+            'id': msg.id, 
+            'name': msg.name, 
+            'persona': msg.persona.id,  # assuming persona object has an id
+            'content': msg.content, 
+            'send_date': msg.send_date.isoformat(), 
+            'voice_url': msg.voice_url,
+            'csv_url': msg.csv_url
+        } 
+        for msg in questions
+    ]
+    
+    for question in questions_list:
+        csv_url = question['csv_url']
+
+        # csv_url에서 CSV 파일을 읽어옴
+        df_temp = pd.read_csv(csv_url)
+        # 읽어온 DataFrame을 df 아래에 붙임
+        df = pd.concat([df, df_temp], ignore_index=True)
+    
+    l = len(df['predict'])
+    score = 0
+    for i in df['predict']:
+        print(i , "2222222222222222222222222222222")
+        if i == "관점변화" or i == "인정" or i == "존중" :
+            score += 2
+        elif i == "판단" :
+            score += 1
+    
+    f_score = int(round((score/(2*l)) * 100))
+    print(f_score)
+    return f_score
+    

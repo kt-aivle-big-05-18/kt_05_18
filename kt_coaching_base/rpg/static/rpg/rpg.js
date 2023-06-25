@@ -29,6 +29,7 @@ $(document).ready(function() {
                 },
                 success: function(response) {
                     chatContainer.append("<div class='assistant_message'>" + response.message + "</div>");
+                    document.getElementById('score').innerHTML = response.score + '점';
 
                     var audioElement = document.createElement("audio");
                     audioElement.src = "data:audio/wav;base64," + response.voice;
