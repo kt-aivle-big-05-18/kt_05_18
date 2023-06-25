@@ -1,25 +1,100 @@
-/* 로딩창 구현 */
-/* #loading {
+.rpg_wrapper{
 	width: 100vw;
-  height: 100vh;
-	top: 0;
-	left: 0;
-	position: fixed;
-	display: block;
-	opacity: 1.0;
-	background: #606582;
-	z-index: 99;
-	text-align: center;
-  animation-name: fadeIn;
-  animation-duration: 1s;
-  animation-fill-mode: forwards;
+    height: calc(100vh - 202px);
+	/* background-color: #f6f6f6; */
+	padding-top: 30px;
 }
 
-#loading > img {
-	position: absolute;
-	z-index: 100;
-  width: 70vw; 
-  height: 90vh; 
-  margin-left:-35vw;
-  margin-top: 10vh;
-} */
+.rpg_wrapper_lay{
+	display: flex;
+	flex-direction: column;
+	/* justify-content: center; */
+	align-items: center;
+	margin: 0px 50px;
+	width: 93%;
+	height: 100%;
+}
+
+.rpg_content{
+	display: flex;
+	flex-direction: column;
+	/* justify-content: start; */
+	align-items: start;
+	width: 100%;
+	height: 94%;
+	/* background-color: aqua; */
+}
+
+.real_time_score_wrapper{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+	width: 200px;
+	background-color: #BDF2F6;
+	border-radius: 12px;
+	padding: 5px;
+	font-weight: 600;
+}
+
+.real_time_score{
+	background-color: #E2FDFF;
+	border-radius: 12px;
+	padding: 3px;
+}
+
+.chat_container {
+	width: 100%;
+}
+
+.user_message {
+	border: 2px solid #B0DEE1;
+	color: black;
+	border-radius: 20px;
+	padding: 20px;
+	margin-top: 10px;
+}
+
+.assistant_message {
+	text-align: right;
+	color: black;
+	border: 2px solid #D3D3D3;
+	background-color: #F1F1F1;
+	border-radius: 20px;
+	padding: 20px;
+	margin-top: 10px;
+}
+
+/* 입력창 부분 */
+.rpg_bottom{
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	background-color: white;
+	padding-top: 10px;
+}
+.rpg_input_section{
+	margin: 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	box-shadow: 3px 3px 3px 3px lightgray;
+	border-radius: 35px;
+	padding: 10px;
+}
+
+/* 스탑 아이콘은 이제 필요 없소 */
+.rpg_record_icon, .rpg_stop_icon, .rpg_send_icon{
+	width: 20px;
+	height: 20px;
+	margin: 0px 10px;
+}
+
+.rpg_input_container{
+	border: none;
+	font-size: 20px;
+	padding: 5px 0px;
+	width: 80%;
+
+}

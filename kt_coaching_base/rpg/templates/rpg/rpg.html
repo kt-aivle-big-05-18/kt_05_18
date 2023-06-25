@@ -11,35 +11,30 @@
     $.ajaxSetup({
         headers: { "X-CSRFToken": '{{csrf_token}}' }
     });
-</script>        
-<style>
-    .chat-container {
-        border: 1px solid #ccc;
-        padding: 10px;
-        margin-bottom: 20px;
-    }
-    .user-message {
-        color: blue;
-    }
-    .assistant-message {
-        color: green;
-    }
-</style>
+</script>
 
-<div>ChatGPT</div>
-<div class="chat-container" id="chat-container"></div>
-{% csrf_token %}
-<button id="record">●</button>
-<button id="stop">■</button>
-<input type="text" id="user-input" placeholder="이곳에 입력하세요.">
-<button id="send-btn">▶</button>
-<p><br>최근 녹음 재생</p>
-<div id="sound-clips"></div>
-
-{% comment %} <div id="loading" display="none">
-    <img src="/static/img/loading.gif" alt="loading">
-</div> {% endcomment %}
-
-<button id="end_btn">실습종료</button>
+<div class="rpg_wrapper">
+    <div class="rpg_wrapper_lay">
+        <div class="rpg_content">
+            <div class="real_time_score_wrapper">
+                <div>실시간 점수</div>
+                <div id ="score" class="real_time_score">0 점</div>
+            </div>
+            <div class="chat_container" id="chat-container"></div>
+        </div>
+        {% csrf_token %}
+        <div class="rpg_bottom">
+            <div class="rpg_input_section">
+                <img class="rpg_record_icon" id="record" src="/static/img/mice.png" alt="녹음아이콘">
+                {% comment %} <img class="rpg_stop_icon" id="stop" src="/static/img/check.png" alt="중지아이콘"> {% endcomment %}
+                <input class="rpg_input_container" type="text" id="user-input" placeholder="이곳에 입력하세요.">
+                <img class="rpg_send_icon" id="send-btn" src="/static/img/send.png" alt="전송아이콘">
+            </div>
+            <p>최근 녹음 재생</p>
+            <button id="sound-clips">재생</button>
+            <button class="rpg_end_btn" id="end_btn">실습종료</button>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

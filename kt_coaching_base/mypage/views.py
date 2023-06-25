@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
+from django.http import JsonResponse
+from django.contrib.auth.hashers import check_password
 
 @login_required
 def mypage_view(request):
@@ -19,6 +22,9 @@ def myp_survey(request):
     return render(request, 'mypage/myp_survey.html')
 
 # @login_required
+from django.shortcuts import render, redirect
+from django.contrib import messages
+
 def update_profile(request):
     if request.method == 'POST':
         user = request.user
@@ -35,9 +41,25 @@ def update_profile(request):
                 user.set_password(password)
         
         user.save()
-        messages.success(request, '프로필 정보가 성공적으로 업데이트되었습니다.')
-        return redirect('mypage:myp_info')
-    
+        
+        return redirect(f"{reverse('mypage:popup')}?message=프로필 정보가 성공적으로 업데이트 되었습니다.")
+
     else:
         return render(request, 'mypage/myp_info.html')
+    
+def popup(request):
+    message = request.GET.get('message', None)
+    return render(request, 'mypage/myp_popup.html', {'message': message})
+
+# 마이페이지 접속 시 비밀번호 한 번 더 
+# def password_check(request):
+#     if request.is_ajax() and request.method == 'POST':
+#         password = request.POST.get("password", None)
+#         if password and check_password(password, request.user.password):
+#             return JsonResponse({"result": True})
+#         else:
+#             return JsonResponse({"result": False})
+
+#     return JsonResponse({"result": False})
+
 
