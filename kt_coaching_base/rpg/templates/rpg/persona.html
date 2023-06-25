@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
+
+{% block header_color %}
+    #ff0000  <!-- 홈 페이지에서는 헤더 색상을 빨간색으로 설정 -->
+{% endblock %}
+
 {% block content %}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -134,8 +139,8 @@
                   <label class="persona_setting_content_topic_label" for="department">대화 주제</label>
                   <select class="persona_select"name="department" id="department" required>
                     <option value="none" select>주제를 선택하세요.</option>
-                    <option value="직군2">직군2</option>
-                    <option value="직군3">직군3</option>
+                    <option value="상황1">상황1</option>
+                    <option value="상황2">상황2</option>
                   </select>
                 </div>
               </div>
@@ -146,18 +151,18 @@
                   <div class="persona_select_wrapper">
                     <label for="department">직군</label>
                     <select class="persona_select" name="department" id="department" required>
-                      <option value="직군1">직군1</option>
-                      <option value="직군2">직군2</option>
-                      <option value="직군3">직군3</option>
+                      <option value="개발자">개발자</option>
+                      <option value="영업부">영업부</option>
+                      <option value="인사과">인사과</option>
                     </select>
                   </div>
 
                   <div class="persona_select_wrapper">
                     <label for="rank">직급</label>
                     <select class="persona_select" name="rank" id="rank" required>
-                      <option value="직급1">직급1</option>
-                      <option value="직급2">직급2</option>
-                      <option value="직급3">직급3</option>
+                      <option value="주니어개발자">주니어 개발자</option>
+                      <option value="신입 영업사원">신입 영업사원</option>
+                      <option value="대리">대리</option>
                     </select>
                   </div>
                 </div>
@@ -165,7 +170,7 @@
                 <div class="persona_setting_select_second">
                   <div class="persona_select_wrapper">
                     <label for="id_age">연령</label>
-                    <input class="persona_select" type="number" name="age" id="id_age" required>
+                    <input class="persona_select" min="18" max="100" type="number" name="age" id="id_age" required>
                   </div>
 
                   <div class="persona_select_wrapper">
@@ -176,7 +181,7 @@
                     <label for="gender_female">여성</label> {% endcomment %}
                     <select class="persona_select" name="gender" id="gender" required>
                       <option value="M">남성</option>
-                      <option value="F">남성</option>
+                      <option value="F">여성</option>
                     </select>
                   </div>
                 </div>
@@ -185,18 +190,18 @@
                   <div class="persona_select_wrapper">
                     <label for="voice">목소리</label>
                     <select class="persona_select" name="voice" id="voice" required>
-                      <option value="목소리1">목소리1</option>
-                      <option value="목소리2">목소리2</option>
-                      <option value="목소리3">목소리3</option>
-                      <option value="목소리4">목소리4</option>
-                      <option value="목소리5">목소리5</option>
-                      <option value="목소리6">목소리6</option>
+                      <option value="ko-KR-Neural2-A"> 밝은 여성 목소리</option>
+                      <option value="ko-KR-Neural2-B"> 차분한 여성 목소리</option>
+                      <option value="ko-KR-Wavenet-B"> 중년 여성 목소리</option>
+                      <option value="ko-KR-Standard-D"> 밝은 남성 목소리</option>
+                      <option value="ko-KR-Wavenet-C"> 차분한 남성 목소리</option>
+                      <option value="ko-KR-Standard-C"> 부드러운 남성 목소리</option>
                     </select>
                   </div>
 
                   <div class="persona_select_wrapper">
                     <label for="career">경력</label>
-                    <input class="persona_select" type="number" name="career" id="career" required/>
+                    <input class="persona_select" min="1" max="50" type="number" name="career" id="career" required/>
                   </div>
                 </div>
 

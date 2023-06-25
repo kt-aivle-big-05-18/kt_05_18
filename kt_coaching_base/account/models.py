@@ -71,7 +71,7 @@ class Account(AbstractBaseUser):
     is_staff    = models.BooleanField(default=False) 
     is_superuser = models.BooleanField(default=False) 
  
-    object = MyAccountManager()  # 헬퍼 클래스 사용
+    objects = MyAccountManager()  # 헬퍼 클래스 사용
  
     USERNAME_FIELD = 'userid'  # 로그인 ID로 사용할 필드
     REQUIRED_FIELDS = ['email', 'username', 'nickname', 'department', 'rank', 'age', 'gender'] # 필수 작성 필드

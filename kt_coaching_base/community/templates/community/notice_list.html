@@ -2,6 +2,9 @@
 {% block content %}
     <h1>공지사항</h1>
     <!-- 공지사항 목록을 순회하며 출력합니다 -->
+    {% if user.is_authenticated and user.is_superuser %}
+        <a href="{% url 'community:notice_create' %}">공지사항 작성</a>
+    {% endif %}
     {% for notice in notices %}
         <h2><a href="{% url 'community:notice_detail' notice.pk %}">{{ notice.title }}</a></h2>
         <p>작성일: {{ notice.created_at }}</p>
@@ -10,7 +13,5 @@
         <p>등록된 공지사항이 없습니다.</p>
     {% endfor %}
 
-    {% if user.is_authenticated and user.is_superuser %}
-        <a href="{% url 'community:notice_create' %}">공지사항 작성</a>
-    {% endif %}
+    
 {% endblock %}

@@ -28,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+LOGIN_URL = '/account/login/'
 
 # Application definition
 
@@ -42,9 +43,6 @@ INSTALLED_APPS = [
     "account",
     "rpg",
     "mypage",
-    "mypage_info",
-    "mypage_self",
-    "mypage_survey",
     "analysis",
     "community",
 ]
@@ -134,6 +132,9 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 STATIC_ROOT = 'mystatic'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

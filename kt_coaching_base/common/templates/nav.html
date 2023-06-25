@@ -3,42 +3,35 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KT Coaching</title>
-</head>
-<body>
-    <header class="header">
-        <div class="container_h">
-            <div id="nav" class="menu-head">
-                <a href="{% url 'common:home' %}" class="logo-link">KT Coaching</a>
-            </div>
-            <div id="nav" class="nav-links">
-                <div class="menu-group">
-                    {% comment %} 헤더로 페이지 들어갔을 때 헤더에 색 입히기 안되네  {% endcomment %}
-                    {% comment %} <a href="{% url 'simulation:simulation_view' %}" class="menu-header{% if request.path == simulation_view %} active-menu{% endif %}">Simulation</a> {% endcomment %}
-                    <a href="{% url 'common:home' %}" class="menu-header{% if request.path == home_view %} active-menu{% endif %}">Analyze</a>
-                    {% comment %} <a href="{% url 'community:community_view' %}" class="menu-header{% if request.path == community_view %} active-menu{% endif %}">Community</a> {% endcomment %}
-                    <a href="{% url 'mypage:mypage_view' %}" class="menu-header{% if request.path == mypage_view %} active-menu{% endif %}">Mypage</a>
+    <body>
+        <header class="header">
+            <div class="container_h">
+                <div id="nav" class="menu-head">
+                    <a href="{% url 'common:home' %}" class="logo-link">KT Coaching</a>
+                </div>
+                <div id="nav" class="nav-links">
+                    <div class="menu-group">
+                        {% comment %} 헤더로 페이지 들어갔을 때 헤더에 색 입히기 안되네  {% endcomment %}
+                        <a href="{% url 'rpg:persona' %}" class="menu-header{% if request.path == 'simulation_view' %} active-menu{% endif %}">Simulation</a>
+                        {% comment %} <a href="{% url 'analysis:intro' %}" class="menu-header{% if request.path == 'home_view' %} active-menu{% endif %}">Analyze</a> {% endcomment %}
+                        <a href="{% url 'community:notice_list' %}" class="menu-header{% if request.path == 'community' %} active-menu{% endif %}">Community</a>
+                        <a href="{% url 'mypage:mypage_view' %}" class="menu-header{% if request.path == 'mypage_view' %} active-menu{% endif %}">Mypage</a>
+                    </div>
+                </div>
+                <div id="nav" class="nav-right">
+                    <div class="menu-group">
+                        {% if user.is_authenticated %}
+                        <a> Hello! {{ user.username }} </a>
+                        <a href="{% url 'account:logout' %}"> 로그아웃 </a>
+                        {% else %}
+                        <a href="{% url 'account:login' %}" class="login-link">Log In</a>
+                        <span class="divider">|</span>
+                        <a href="{% url 'account:signup' %}" class="signup-link">Sign Up</a>
+                        {% endif %}
+                        <a href="{% url 'rpg:persona' %}"></a>
+                    </div>
                 </div>
             </div>
-            <div id="nav" class="nav-right">
-                <div class="menu-group">
-                    {% if user.is_authenticated %}
-                    <a> Hello! {{ user.username }} </a>
-                    <a href="{% url 'account:logout' %}"> 로그아웃 </a>
-                    {% else %}
-                    <a href="{% url 'account:login' %}" class="login-link">Log In</a>
-                    <span class="divider">|</span>
-                    <a href="{% url 'account:signup' %}" class="signup-link">Sign Up</a>
-                    {% endif %}
-                    <a href="{% url 'rpg:persona' %}"></a>
-                    <a href={% url 'community:notice_list' %}> 공지사항 </a>
-                </div>
-            </div>
-        </div>
-    </header>
-</body>
+        </header>
+    </body>
 </html>

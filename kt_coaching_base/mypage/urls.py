@@ -1,11 +1,12 @@
 from django.urls import path
 from . import views
-
+from rpg import views as rpg_views
 app_name = 'mypage'
 
 urlpatterns = [
     path('', views.mypage_view, name='mypage_view'),
-    path('mypage_info/', views.box_info, name='box_info'),
-    path('mypage_self/', views.box_self, name='box_self'),
-    path('mypage_survey/', views.box_survey, name='box_survey'),
+    path('myp_info/', views.myp_info, name='myp_info'),
+    path('myp_survey/', views.myp_survey, name='myp_survey'),
+    path('myp_self/', views.myp_self, name='myp_self'),
+    path('update_profile/', views.update_profile, name='update_profile'),
 ]
