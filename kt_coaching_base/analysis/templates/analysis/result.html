@@ -52,61 +52,47 @@
             </div>
         </div>
         <div class="analysis_content">
-            <div class="analysis_content_left">
-                <div class="analysis_content_left_title">
-                    <div class="analysis_content_left_title_txt">
-                        나의 점수
-                    </div>
-                    <div class="analysis_content_left_title_btn">
-                        <img class="analysis_content_detail_btn" src="/static/img/arrow_btn.png" alt="세부사항버튼">
-                    </div>
+            <div class="analysis_content_title">코칭 질문 분석 결과</div>
+            <div class="analysis_content_score">
+                <div class="analysis_content_score_title">나의 점수 80점</div>
+                <hr>
+                <div class="analysis_content_score_explain">
+                    본 점수는 질문 별 관점변화, 존중, 인정, 판단, 분위기의 다섯 가지 척도 기반 결과입니다.<br>
+                    질문 별 점수는 (각 질문 별 점수 / 최고점수 * 질문 개수) * 100점으로 산출되었습니다.<br>
+                    * 각 질문 별 점수 : 다섯 가지 평가 척도를 기준으로 각 질문에서 얻을 수 있는 점수<br>
+                    * 최고 점수: 질문에서 얻을 수 있는 최고점수 = 2 [점]<br>
+                    * 질문 개수 : 사용자가 질문 개수
                 </div>
-                <div class="analysis_content_left_score_wrapper">
-                    <div class="analysis_content_left_score_average">
-                        평균 실시간 점수 <br>
-                        60점 <!--평균점수-->
-                    </div>
-                    <hr class="analysis_line">
-                    <div class="analysis_content_left_score">
-                        <div class="analysis_content_left_score_average_num">70</div> <!--사용자점수-->
-                        <div class="analysis_content_left_score_average_unit">점</div>
-                    </div>
-                </div>
-                <div class="analysis_content_left_bar_chart">
-                    {% comment %} <div id="barchart_material" style="width: 900px; height: 500px;"></div> {% endcomment %}
-                    <canvas id="bar_chart" style="width: 100px; height: 30px;"></canvas>
-                </div>
-                <div class="analysis_content_left_line_chart">
-                    <canvas id="line_chart" style="width: 100px; height: 30px;"></canvas>
+                <div class="analysis_content_score_graph">
+                    <canvas id="line_chart" style="width: 100px; height: 20px; background-color: white;"></canvas>
                 </div>
             </div>
-            <div class="analysis_content_right">
-                <div class="analysis_content_right_title">
-                    <div class="analysis_content_right_title_txt">
-                        코칭 분석
+            <div class="analysis_content_result">
+                <div class"analysis_content_result_title">코칭 요인 분석</div>
+                <div class="analysis_content_result_graph">
+                    <div class="analysis_content_result_graph_pic">
+                        <canvas id="pie_chart" style="width: 300px; height: 300px;"></canvas>
                     </div>
-                    <div class="analysis_content_right_title_btn">
-                        <img class="analysis_content_detail_btn" src="/static/img/arrow_btn.png" alt="세부사항버튼">
-                    </div>
-                </div>
-                <div class="analysis_content_right_score_wrapper">
-                    <div class="analysis_content_right_score_level">
-                        <div class="analysis_content_right_score_percent">
-                            상위 수준[%] <br>
-                            /100 <!--상위수준-->
-                        </div>
-                        <div class="analysis_content_right_score">
-                            획득 점수[점] <br>
-                            /500 <!--획득점수-->
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="analysis_content_left_score">
-                        150등 <!--사용자등수-->
+                    <div class="analysis_content_result_graph_box">
+                        <label id="buttonGroup">
+                            <div class="analysis_content_result_graph_box_btn">
+                                <button class="analysis_content_result_graph_box_btn_idx" id="perspective_btn" selected> 관점 변화 </button>
+                                <button class="analysis_content_result_graph_box_btn_idx" id="recognition_btn"> 인정 </button>
+                                <button class="analysis_content_result_graph_box_btn_idx" id="respect_btn"> 존중 </button>
+                                <button class="analysis_content_result_graph_box_btn_idx" id="judgment_btn"> 판단 </button>
+                                <button class="analysis_content_result_graph_box_btn_idx" id="mood_btn"> 분위기 </button>
+                            </div>
+                            <div class="analysis_content_result_graph_box_txt" id="info">분석 결과를 선택하세요.</div>
+                        </label>
                     </div>
                 </div>
-                <div class="analysis_content_left_pie_chart">
-                    <canvas id="radar_chart" style="width: 100px; height: 50px;"></canvas>
+                <div class="analysis_content_result_explain">
+                    에이블 님의 코칭 분석 결과,<br>
+                    (관점변화)대화상대가 기존과 다른 관점에서 해결책을 찾을 수 있는 유형의 질문을 많이 하신 것으로 나타납니다. 대화상대가 스스로 해결책을 찾을 수 있도록 질문을 유도하는 것은 코칭 대화에서 중요한 요소입니다.<br>
+                    (인정)대화상대를 믿고 의지를 다질 수 있도록 하는 유형의 질문을 많이 하신 것으로 나타납니다. 대화상대가 스스로 해결할 능력을 가지고 있다고 믿을 수 있도록 질문을 유도하는 것은 코칭 대화에서 중요한 요소입니다.<br>
+                    (존중)대화상대를 존중하는 유형의 질문을 많이 하신 것으로 나타납니다. 대화상대의 동의를 구하며 심리적으로 지지하고 도움을 주는 것은 코칭 대화에서 중요한 요소입니다.<br>
+                    (판단)대화상대가 자율성을 가질 수 있도록 개인의 의견이 들어간 질문보다 개방적인 질문을 통해 대화상대가 스스로 해결 방안을 찾을 수 있도록 유도해 보세요.<br>
+                    (부정)대화상대가 부정적으로 느껴지지 않도록 부정적인 질문보다 긍정적인 질문을 통해 대화의 분위기를 긍정적으로 유도해 보세요.<br>
                 </div>
             </div>
         </div>

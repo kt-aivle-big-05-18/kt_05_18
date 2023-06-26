@@ -24,7 +24,11 @@
 <div class="ana_int_wrapper">
     <div class="ana_int_contain">
         <div class="ana_int_title">
-            에이블 님의 코칭대화 분석 결과
+            {% if user.is_authenticated %}
+            {{ user.username }} 님의 코칭대화 분석 결과
+            {% else %}
+            회원님의 코칭 대화 분석 결과
+            {% endif %}
         </div>
         <div class="ana_int_content">
             <div class="ana_int_content_left">
