@@ -43,7 +43,6 @@ def intro (request):
     request.session["인정"] = 0
     request.session["존중"] = 0
     request.session["판단"] = 0
-    
     l = len(df['predict'])
     if l > 0: 
         for i in range(l):
