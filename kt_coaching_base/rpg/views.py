@@ -135,12 +135,14 @@ def persona(request):
             persona.save()
             request.session['visited_persona'] = True
             request.session.get("persona_set").append({
-                                    "role" : "system", 
-                                    "content" : translate( "다음 대화부터 저는 팀장과 대화하는 {0}세인 {1} {2}{3}입니다.".format(
+                                    "role" : "user", 
+                                    "content" : translate( "다음 대화부터 당신은 팀장님과 대화하는 {0}세인 {1} {2}{3}입니다. 당신은 {4} 상황에서 팀장님과 상담을 시작합니다.".format(
                                         form.cleaned_data['age'], # 0 나이 - gpt
                                         form.cleaned_data['gender'], # 1 성별 - gpt
                                         form.cleaned_data['department'], # 2 직군 - gpt
-                                        form.cleaned_data['rank'],))  # 3 직급 - gpt
+                                        form.cleaned_data['rank'], # 3 직급 - gpt
+                                        form.cleaned_data['rank'], # 4 상황 - gpt
+                                        ))  
                                     })
             persona_id = Persona.objects.filter(nickname=request.user.nickname).last()
             request.session.get("persona_id").append({

@@ -78,6 +78,21 @@
     </div>
   </div>
 
+  {% comment %} kt Coaching에는 hover 지우고 헤더에 밑줄 제거  {% endcomment %}
+  <style>
+  
+    .logo-link:hover {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .menu-header:hover {
+      cursor: pointer;
+      color: #00365f;
+      text-decoration: none;
+    }
+  </style>
+
   <form method="post">
     {% csrf_token %}
     {% if error_message %}
