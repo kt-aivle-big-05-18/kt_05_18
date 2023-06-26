@@ -13,7 +13,47 @@
         headers: { "X-CSRFToken": '{{csrf_token}}' }
     });
 </script>
+<script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script> <!-- IONICONS -->
 
+
+<!-- 사이드 바 -->
+<div class="l-navbar" id="navbar">
+  <nav class="nav">
+    <div>
+      <div class="nav__brand">
+        <ion-icon name="menu-outline" class="nav__toggle" id="nav-toggle"></ion-icon>
+        <a href="#" class="nav__logo">KT coaching</a>
+      </div>
+      <div class="nav__btn">
+        <button class="new_chat_btn">
+          <ion-icon name="add-circle-outline"></ion-icon>
+          <div>New Chat</div>
+        </button>
+      </div>
+      <div class="nav__list">
+        {% comment %} <a href="#" class="nav__link active">
+            <ion-icon name="home-outline" class="nav__icon"></ion-icon>
+            <span class="nav_name">New Chat</span>
+        </a> {% endcomment %}
+        <div href="#" class="nav__link collapse">
+          <ion-icon name="chatbubbles-outline" class="nav__icon"></ion-icon>
+          <span class="nav_name">2023.06.05</span>
+            <ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
+
+            <ul class="collapse__menu">
+                <a href="#" class="collapse__sublink">test1</a>
+                <a href="#" class="collapse__sublink">test2</a>
+            </ul>
+        </div>
+      </div>
+      <div class="nav__submit">
+        <button class="submit_btn" id="end_btn">SUBMIT</button>
+      </div>
+  </nav>
+</div>
+
+<!-- ================================================================ -->
+<!-- 시뮬레이션 메인 -->
 <div class="rpg_wrapper">
     <div class="rpg_wrapper_lay">
         <div class="rpg_content">
@@ -31,9 +71,9 @@
                 <input class="rpg_input_container" type="text" id="user-input" placeholder="이곳에 입력하세요.">
                 <img class="rpg_send_icon" id="send-btn" src="/static/img/send.png" alt="전송아이콘">
             </div>
-            <p>최근 녹음 재생</p>
+            {% comment %} <p>최근 녹음 재생</p>
             <button id="sound-clips">재생</button>
-            <button class="rpg_end_btn" id="end_btn">실습종료</button>
+            <button class="rpg_end_btn" id="end_btn">실습종료</button> {% endcomment %}
         </div>
     </div>
 </div>
