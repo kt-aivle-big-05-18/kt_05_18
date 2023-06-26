@@ -10,7 +10,7 @@ def result (request):
     if request.method == "POST":
         print("abc")
     else :
-        return render(request, "analysis/analysis.html")
+        return render(request, "analysis/result.html")
 # Create your views here.
 
 def intro (request):
@@ -42,13 +42,13 @@ def intro (request):
     request.session["부정"] = 0
     request.session["인정"] = 0
     request.session["존중"] = 0
-    request.session["피드백"] = 0
+    request.session["판단"] = 0
     
     l = len(df['predict'])
     if l > 0: 
         for i in range(l):
             request.session[df['predict'][i]] += 1
-            print(df['predict'][i])
+            print( df['predict'][i])
     else : # 아무 대화도 안한 경우 돌려보내기
         return redirect('rpg:rpg_start')
         
@@ -56,14 +56,15 @@ def intro (request):
     negation        = round((request.session.get("부정")/l) * 100, 0)
     recognition     = round((request.session.get("인정")/l) * 100, 0)
     respect         = round((request.session.get("존중")/l) * 100, 0)
-    judgment        = round((request.session.get("피드백")/l) * 100, 0)
-    
+    judgment        = round((request.session.get("판단")/l) * 100, 0)
     pie_chart =   {
         "Perspective": perspective,
         "Negation": negation,
         "Recognition": recognition,
         "Respect": respect,
-        "Feedback": judgment
+        "Feedback": judgment,
+        "f_score" : request.session["scores"][-1],
+        "socre_mem" : request.session.get("scores")
     }
     
     return render(request, "analysis/intro.html", pie_chart)

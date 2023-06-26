@@ -84,6 +84,7 @@
 	padding: 10px;
 }
 
+/* 스탑 아이콘은 이제 필요 없소 */
 .rpg_record_icon, .rpg_stop_icon, .rpg_send_icon{
 	width: 20px;
 	height: 20px;
