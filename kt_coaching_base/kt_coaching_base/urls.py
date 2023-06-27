@@ -27,4 +27,5 @@ urlpatterns = [
     path("mypage/", include("mypage.urls")),
     path("analysis/", include("analysis.urls")),
     path("community/", include("community.urls")),
+    path("admin_page/", include("admin_page.urls")),
 ]

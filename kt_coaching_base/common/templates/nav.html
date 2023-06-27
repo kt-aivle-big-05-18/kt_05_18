@@ -19,16 +19,20 @@
                 <div id="nav" class="nav-right">
                     <div class="menu-group">
                         {% if user.is_authenticated %}
-                        <a class="login-link"> Hello! {{ user.username }} </a>
-                        <a href="{% url 'account:logout' %}" class="login-link"> 로그아웃 </a>
-                        <span class="divider">|</span>
-                        <a href="{% url 'mypage:mypage_view' %}" class="login-link{% if request.resolver_match.url_name == 'mypage_view' %} active-menu-myp{% endif %}">마이페이지</a>
+                            <a class="login-link"> Hello! {{ user.username }} </a>
+                            <a href="{% url 'account:logout' %}" class="login-link"> 로그아웃 </a>
+                            <span class="divider">|</span>
+                            <a href="{% url 'mypage:mypage_view' %}" class="login-link{% if request.resolver_match.url_name == 'mypage_view' %} active-menu-myp{% endif %}">마이페이지</a>
+                            {% if user.is_superuser %}
+                                <span class="divider">|</span>
+                                <a href="{% url 'admin_page:admin_page' %}">관리자 페이지</a>
+                                {% endif %}
                         {% else %}
-                        <a href="{% url 'account:login' %}" class="login-link">로그인</a>
-                        <span class="divider">|</span>
-                        <a href="{% url 'account:signup' %}" class="signup-link">회원가입</a>
+                            <a href="{% url 'account:login' %}" class="login-link">로그인</a>
+                            <span class="divider">|</span>
+                            <a href="{% url 'account:signup' %}" class="signup-link">회원가입</a>
                         {% endif %}
-                        <a href="{% url 'rpg:persona' %}"></a>
+                            <a href="{% url 'rpg:persona' %}"></a>
                     </div>
                 </div>
             </div>
