@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>설문 상세 내용</h1>
+    <h2>{{ survey.title }}</h2>
+    <p>작성자: {{ survey.author }}</p>
+    <p>내용: {{ survey.content }}</p>
+
+    <h3>대화 내역</h3>
+    <ul>
+        {% for message in messages %}
+            <li>{{ message.name }} - {{ message.content }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>체크리스트</h3>
+    <form id="ratingForm" method="POST" action="{% url 'community:survey_detail' survey.id %}">
+        {% csrf_token %}
+        {% for item in checklist %}
+        <div>
+            <label>{{ item }}</label>
+            <input type="radio" name="rating_{{ forloop.counter0 }}" value="1">매우 그렇지 않다
+            <input type="radio" name="rating_{{ forloop.counter0 }}" value="2">그렇지 않다
+            <input type="radio" name="rating_{{ forloop.counter0 }}" value="3">그렇다
+            <input type="radio" name="rating_{{ forloop.counter0 }}" value="4">매우 그렇다
+        </div>
+        {% endfor %}
+        <div class="form-group">
+            <label for="comment">더 하고 싶은 말이 있다면 자유롭게 적어주세요</label>
+            <textarea name="comment" id="comment" class="form-control"></textarea>
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+
+    <a href="{% url 'community:commu_list' %}">목록</a>
+{% endblock %}

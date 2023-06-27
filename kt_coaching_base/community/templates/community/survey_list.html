@@ -1,0 +1,14 @@
+{% block content %}
+    <h1>설문 목록</h1>
+    {% for survey in surveys %}
+        <h2><a href="{% url 'community:survey_detail' survey.id %}">{{ survey.title }}</a></h2>
+        <p>작성자: {{ survey.author }}</p>
+        <p>내용: {{ survey.content }}</p>
+        {% if survey.id in user_rated_surveys %}
+            <p>[참여완료]</p>
+        {% endif %}
+        <hr>
+    {% empty %}
+        <p>등록된 설문이 없습니다.</p>
+    {% endfor %}
+{% endblock %}
