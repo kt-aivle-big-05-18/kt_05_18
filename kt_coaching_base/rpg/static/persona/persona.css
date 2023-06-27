@@ -205,15 +205,16 @@ div{
 .persona_wrapper{
     display: flex;
     flex-direction: row;
-    background-size: cover;
+    /* background-size: cover; */
     justify-content: center;
-    /* align-items: center; */
+    align-items: center;
     width: 100vw;
-    height: calc(100vh - 202px);
+    height: calc(100vh - 100px);
 }
 .persona_wrapper_layout{
     display: flex;
-    align-items: center;
+    /* align-items: center; */
+    /* justify-content: center; */
 }
 
 /* 왼쪽 영역 */
@@ -222,12 +223,13 @@ div{
     justify-content: center;
     align-items: center;
     text-align: center;
+    margin-right: 20px;
 }
 
 .persona_profile_box{
     /* background-color: #F5F5F5; */
     background-color: #F5F5F5;
-    padding: 20px 40px;
+    padding: 20px 50px;
     border-radius: 45px;
 }
 .persona_profile_name{
@@ -239,7 +241,7 @@ div{
     /* letter-spacing : 70px; */
 }
 .persona_profile_char{
-    width: 210px;
+    width: 250px;
     height: 280px;
     border-radius: 30px;
 }
