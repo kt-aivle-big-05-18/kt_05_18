@@ -8,7 +8,7 @@ import pandas as pd
 import os
 import json
 
-def admin_page(request):
+def admin_persona(request):
     # Rank 종류별 갯수
     rank_counts = list(Persona.objects.values('rank').annotate(rank_count=Count('rank')))
 
@@ -72,4 +72,8 @@ def admin_page(request):
         'age_counts': json.dumps(list(age_counts)),
     }
 
-    return render(request, "admin_page/admin_page.html", context)
+    return render(request, "admin_page/admin_persona.html", context)
+
+
+def admin_page(request):
+    return render(request, "admin_page/admin_page.html")
