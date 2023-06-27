@@ -13,7 +13,7 @@
                     <div class="menu-group">
                         <a href="{% url 'rpg:persona' %}" class="menu-header{% if request.resolver_match.url_name == 'persona' %} active-menu{% endif %}">대화 실습</a>
                         {% comment %} <a href="{% url 'analysis:intro' %}" class="menu-header{% if request.path == 'home_view' %} active-menu{% endif %}">Analyze</a> {% endcomment %}
-                        <a href="{% url 'community:notice_list' %}" class="menu-header{% if request.resolver_match.url_name == 'notice_list' %} active-menu{% endif %}">커뮤니티</a>
+                        <a href="{% url 'community:commu_list' %}" class="menu-header{% if request.resolver_match.url_name == 'commu_list' %} active-menu{% endif %}">커뮤니티</a>
                     </div>
                 </div>
                 <div id="nav" class="nav-right">

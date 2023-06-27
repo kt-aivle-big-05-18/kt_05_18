@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-3">
+    <!-- 좌측 박스 메뉴 -->
+    <div class="list-group">
+      <a href="#" class="list-group-item list-group-item-action" onclick="loadContent('notice_list')">공지사항</a>
+      <a href="#" class="list-group-item list-group-item-action" onclick="loadContent('survey_list')">설문요청</a>
+    </div>
+  </div>
+  <div class="col-md-9">
+    <!-- 오른쪽 내용 -->
+    <div id="content-container">
+      <!-- 내용이 동적으로 로드될 영역 -->
+    </div>
+  </div>
+</div>
+
+<script>
+  // 페이지 로드 시 기본 내용 표시
+  window.onload = function() {
+    loadContent('notice_list');
+  };
+
+  // 내용 로드 함수
+  function loadContent(contentType) {
+    var url;
+    if (contentType === 'notice_list') {
+      url = "{% url 'community:notice_list' %}";
+    } else if (contentType === 'survey_list') {
+      url = "{% url 'community:survey_list' %}";
+    }
+
+    // AJAX 요청을 통해 해당 페이지의 내용 로드
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          // 내용 로드 성공 시, 컨테이너에 내용 삽입
+          document.getElementById('content-container').innerHTML = xhr.responseText;
+        } else {
+          // 내용 로드 실패 시, 에러 메시지 표시
+          document.getElementById('content-container').innerHTML = '내용을 로드할 수 없습니다.';
+        }
+      }
+    };
+    xhr.send();
+  }
+</script>
+{% endblock %}
