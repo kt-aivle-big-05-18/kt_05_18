@@ -2,6 +2,7 @@ from django.db import models
 from account.models import Account
  
 class Persona(models.Model):
+    topic_label   = models.CharField(max_length=64)
     department    = models.CharField(max_length=45)
     rank          = models.CharField(max_length=45)
     age           = models.IntegerField()
@@ -20,7 +21,6 @@ class Message(models.Model):
     csv_url     = models.TextField()
     class Meta:
         ordering    =   ("send_date",)
-        
-    
+
     
     

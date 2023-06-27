@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'analysis/analysis.js' %}" defer></script>
+<link rel="stylesheet" href="{% static 'analysis/analysis.css' %}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">개인 정보 처리 방침</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            설문을 요청하면 다른 사용자들이 나의 대화 내역을 확인하고 설문을 진행할 수 있습니다.<br>
+            설문 결과는 마이페이지-설문결과보기 에서 확인하실 수 있습니다.<br>
+            <br>
+            <label><input type="checkbox" name="agree" value="talk"> 내 대화내역이 다른 사용자에게 공개되는 것에 동의 하십니까?</label>
+            
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="analysis_wrapper">    
+    <div class="analysis_contain">
+        <div class="analysis_title">
+            <div class="analysis_title_text">
+                {% if user.is_authenticated %}
+                {{ user.username }} 님의 코칭 대화 분석 결과
+                {% else %}
+                회원님의 코칭 대화 분석 결과
+                {% endif %}
+            </div>
+            <div class="analysis_title_btn_wrapper">
+                <button class="analysis_title_btn" id="survey_popup" type="button" id="add_feed" data-toggle="modal" data-target="#exampleModal"> 설문 요청하기 </button>
+            </div>
+        </div>
+        <div class="analysis_content">
+            <div class="analysis_content_title">코칭 질문 분석 결과</div>
+            <div class="analysis_content_score">
+                <div class="analysis_content_score_title">나의 점수 80점</div>
+                <hr>
+                <div class="analysis_content_score_explain">
+                    본 점수는 질문 별 관점변화, 존중, 인정, 판단, 분위기의 다섯 가지 척도 기반 결과입니다.<br>
+                    질문 별 점수는 (각 질문 별 점수 / 최고점수 * 질문 개수) * 100점으로 산출되었습니다.<br>
+                    * 각 질문 별 점수 : 다섯 가지 평가 척도를 기준으로 각 질문에서 얻을 수 있는 점수<br>
+                    * 최고 점수: 질문에서 얻을 수 있는 최고점수 = 2 [점]<br>
+                    * 질문 개수 : 사용자가 질문 개수
+                </div>
+                <div class="analysis_content_score_graph">
+                    <canvas id="line_chart" style="width: 100px; height: 20px; background-color: white;"></canvas>
+                </div>
+            </div>
+            <div class="analysis_content_result">
+                <div class"analysis_content_result_title">코칭 요인 분석</div>
+                <div class="analysis_content_result_graph">
+                    <div class="analysis_content_result_graph_pic">
+                        <canvas id="pie_chart" style="width: 300px; height: 300px;"></canvas>
+                    </div>
+                    <div class="analysis_content_result_graph_box">
+                        <label id="buttonGroup">
+                            <div class="analysis_content_result_graph_box_btn">
+                                <button class="analysis_content_result_graph_box_btn_idx" id="perspective_btn" selected> 관점 변화 </button>
+                                <button class="analysis_content_result_graph_box_btn_idx" id="recognition_btn"> 인정 </button>
+                                <button class="analysis_content_result_graph_box_btn_idx" id="respect_btn"> 존중 </button>
+                                <button class="analysis_content_result_graph_box_btn_idx" id="judgment_btn"> 판단 </button>
+                                <button class="analysis_content_result_graph_box_btn_idx" id="mood_btn"> 분위기 </button>
+                            </div>
+                            <div class="analysis_content_result_graph_box_txt" id="info">분석 결과를 선택하세요.</div>
+                        </label>
+                    </div>
+                </div>
+                <div class="analysis_content_result_explain">
+                    에이블 님의 코칭 분석 결과,<br>
+                    (관점변화)대화상대가 기존과 다른 관점에서 해결책을 찾을 수 있는 유형의 질문을 많이 하신 것으로 나타납니다. 대화상대가 스스로 해결책을 찾을 수 있도록 질문을 유도하는 것은 코칭 대화에서 중요한 요소입니다.<br>
+                    (인정)대화상대를 믿고 의지를 다질 수 있도록 하는 유형의 질문을 많이 하신 것으로 나타납니다. 대화상대가 스스로 해결할 능력을 가지고 있다고 믿을 수 있도록 질문을 유도하는 것은 코칭 대화에서 중요한 요소입니다.<br>
+                    (존중)대화상대를 존중하는 유형의 질문을 많이 하신 것으로 나타납니다. 대화상대의 동의를 구하며 심리적으로 지지하고 도움을 주는 것은 코칭 대화에서 중요한 요소입니다.<br>
+                    (판단)대화상대가 자율성을 가질 수 있도록 개인의 의견이 들어간 질문보다 개방적인 질문을 통해 대화상대가 스스로 해결 방안을 찾을 수 있도록 유도해 보세요.<br>
+                    (부정)대화상대가 부정적으로 느껴지지 않도록 부정적인 질문보다 긍정적인 질문을 통해 대화의 분위기를 긍정적으로 유도해 보세요.<br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<script>
+    var pie_chart_vpn = {{pie_chart_vpn}}
+</script>

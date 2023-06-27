@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static%}
-{% block content %}
 
+{% block content %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <div id="user-data" data-user-is-authenticated="{{ request.user.is_authenticated }}"></div>
 
@@ -79,7 +79,7 @@
 
     .box_text {
         font-size: 23px; /* 글자 크기 변경 */
-        font-weight: 545;
+        font-weight: 550;
         width: 100%;
         height: 20%;
         background-color: #FFFF;
@@ -140,12 +140,13 @@
 <h1>마이페이지</h1>
 <div class="content-container">
     <div class="box-container">
+        {% comment %} <div class="box" id="myp_click" data-bs-toggle="modal" data-bs-target="#passwordCheckModal"> {% endcomment %}
         <div class="box" id="myp_click">
-            <a href="{% url 'mypage:myp_info' %}" onclick="javascript:void(0)">
-                <div class="box_text" >개인 정보 수정</div>
+            <a href="{% url 'mypage:myp_info' %}" onclick="javascript:void(0)">    
+                <div class="box_text">개인 정보 수정</div>
                 <img src="..\static\css\image\1.PNG" alt="개인 정보 수정 이미지" />
             </a>
-        </div>
+        </div>        
         <div class="box" id="myp_click">
             <a href="{% url 'mypage:myp_self' %}" onclick="javascript:void(0)">
                 <div class="box_text">자가 진단 서비스</div>
@@ -160,8 +161,7 @@
         </div>
     </div>
 </div>
-
-
+  
 {% endblock %}
 
 {% block footer %}

@@ -5,6 +5,25 @@
 h1 {
     margin-left: 60px;
 }
+
+.back_button {
+    position: absolute;
+    top: 15%;
+    right: 30px;
+    font-size: 18px;
+    padding: 6px 12px;
+    background-color: #99b4da;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.back_button:hover {
+    background-color: #134971;
+}
 </style>
 <h1> 점심 뭐 먹지? </h1>
+<button class="back_button" onclick="window.history.back();">←</button>
 {% endblock %}

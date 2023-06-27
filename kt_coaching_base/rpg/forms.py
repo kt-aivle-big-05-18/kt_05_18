@@ -6,4 +6,4 @@ from rpg.models import Persona
 class RegisterPersona(forms.ModelForm):
     class Meta:
         model = Persona
-        fields = ('department', 'rank', 'age', 'gender', 'career', 'voice',)
+        fields = ('topic_label', 'department', 'rank', 'age', 'gender', 'career', 'voice',)
