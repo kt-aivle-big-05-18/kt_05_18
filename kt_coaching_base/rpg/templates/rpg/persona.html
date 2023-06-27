@@ -60,8 +60,6 @@
             <img class="persona_profile_char" id="persona_image" src="/static/img/default.png" alt="페르소나1">
           </div>
         </div>
-
-
         <div class="persona_setting">
           <div class="persona_setting_title">Make Your Persona</div>
           <div class="persona_setting_content">
@@ -86,9 +84,9 @@
                   ageGroup = "old";
                 }
             
-                if (gender === "M" && ageGroup !== null) {
+                if (gender === "남성" && ageGroup !== null) {
                   imageName = ageGroup + "_male";
-                } else if (gender === "F" && ageGroup !== null) {
+                } else if (gender === "여성" && ageGroup !== null) {
                   imageName = ageGroup + "_female";
                 } else {
                   imageName = "default";
@@ -129,17 +127,20 @@
                       <option value="개발자">IT기술</option>
                       <option value="영업부">영업/마케팅</option>
                       <option value="인사과">경영기획/지원</option>
-                      <option value="인사과">R&D</option>
+                      <option value="RnD">R&D</option>
                     </select>
                   </div>
 
                   <div class="persona_select_wrapper">
                     <label for="rank">직급</label>
                     <select class="persona_select" name="rank" id="rank" required>
+                      <option value="인턴">인턴</option>
+                      <option value="신입사원">신입사원</option>
                       <option value="주임">주임</option>
-                      <option value="주니어개발자">주니어 개발자</option>
-                      <option value="신입 영업사원">신입사원</option>
                       <option value="대리">대리</option>
+                      <option value="과장">과장</option>
+                      <option value="차장">차장</option>
+                      <option value="부장">부장</option>
                     </select>
                   </div>
                 </div>
