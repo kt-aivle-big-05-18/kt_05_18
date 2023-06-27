@@ -27,14 +27,12 @@ from google.cloud import speech_v1p1beta1 as speech
 from google.oauth2 import service_account
 
 # 인코딩 관련
-import soundfile as sf
 import scipy.io.wavfile as wav
 from scipy.signal import resample
 from scipy.io.wavfile import write
 import wave
 import base64
 from io import BytesIO
-import sounddevice as sd
 import subprocess
 
 # 전처리 및 AI 분류 관련
