@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ persona.department }} - {{ persona.rank }} 체크리스트 결과</h1>
+    <ul>
+        <li>질문1 총점: {{ total_scores.score_1_total|default:0 }}</li>
+        <li>질문2 총점: {{ total_scores.score_2_total|default:0 }}</li>
+        <li>질문3 총점: {{ total_scores.score_3_total|default:0 }}</li>
+        <li>질문4 총점: {{ total_scores.score_4_total|default:0 }}</li>
+        <li>질문5 총점: {{ total_scores.score_5_total|default:0 }}</li>
+        <li>질문6 총점: {{ total_scores.score_6_total|default:0 }}</li>
+        <li>질문7 총점: {{ total_scores.score_7_total|default:0 }}</li>
+        <li>질문8 총점: {{ total_scores.score_8_total|default:0 }}</li>
+        <li>질문9 총점: {{ total_scores.score_9_total|default:0 }}</li>
+        <li>질문10 총점: {{ total_scores.score_10_total|default:0 }}</li>
+        <li>질문11 총점: {{ total_scores.score_11_total|default:0 }}</li>
+        <li>질문12 총점: {{ total_scores.score_12_total|default:0 }}</li>
+        <li>질문13 총점: {{ total_scores.score_13_total|default:0 }}</li>
+        <li>질문14 총점: {{ total_scores.score_14_total|default:0 }}</li>
+    </ul>
+    <ul>
+        {% for rating in ratings %}
+            <li>질문: {{ rating.survey.title }}</li>
+            <li>점수: {{ rating.score_1 }}</li>
+            <li>코멘트: {{ rating.comment }}</li>
+            <hr>
+        {% endfor %}
+    </ul>
+{% endblock %}
