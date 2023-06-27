@@ -40,12 +40,6 @@
         {{ department_counts | safe }}
     </script>
     
-    <div class="topic_label_graph">
-        <canvas id="topic_label_Chart"></canvas>
-    </div>
-    <script id="topic_label_counts" type="application/json">
-        {{ topic_label_counts | safe }}
-    </script>
     <a class="go_page"href="{% url 'admin_page:admin_page' %}">페르소나 통계 페이지로 가기</a>
 </body>
 </html>
