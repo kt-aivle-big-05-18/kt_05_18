@@ -81,25 +81,23 @@ $(document).ready(function() {
                     + "<ion-icon class='assistant_message_icon' name='volume-medium-outline'></ion-icon>"
                     + "</div>");
                     document.getElementById('score').innerHTML = response.score + '점';
-
+                
                     var audioElement = document.createElement("audio");
                     audioElement.src = "data:audio/wav;base64," + response.voice;
                     audioElement.id = "myAudio";
-                    
-                    var audioControlButton = document.createElement("button");
-                    audioControlButton.innerHTML = "Play Audio";
-                    audioControlButton.onclick = function() {
+                
+                    var volumeIcon = document.getElementsByClassName('assistant_message_icon')[0];
+                    volumeIcon.onclick = function() {
                         if (audioElement.paused) {
                             audioElement.play();
-                            this.innerHTML = "Stop Audio";
+                            this.name = 'volume-high-outline';
                         } else {
                             audioElement.pause();
                             audioElement.currentTime = 0;
-                            this.innerHTML = "Play Audio";
+                            this.name = 'volume-medium-outline';
                         }
                     };
-                    
-                    chatContainer.append(audioControlButton);
+                
                     chatContainer.append(audioElement);
                     scrollToBottom();
                 },
