@@ -33,6 +33,7 @@ def admin_persona(request):
             When(age__range=(40, 49), then=Value('40대')),
             When(age__range=(50, 59), then=Value('50대')),
             When(age__range=(60, 69), then=Value('60대')),
+            
             # 추가적인 연령대 범위를 필요에 따라 추가해주세요
             default=Value('기타'),
             output_field=CharField(),
