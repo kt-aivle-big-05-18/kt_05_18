@@ -3,6 +3,9 @@
 {% load static %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{% static 'home.js' %}" defer></script>
+
+<div class="go-home-button" id="goHomeButton">처음으로</div>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -83,7 +86,97 @@
 
     <!-- 서비스 이용 방법 -->
     <div id="home_use" class="use_container"> <!-- 3번째 스크롤 -->
-        How to User the Service
+        <div class="use_title">
+            <div class="use_title_text"> How to Use The Service</div>
+        </div>
+        <div class="use_content">
+            <div class="use_content_box">
+                <div class="use_content_img_box">
+                    <img class="use_content_img" src="/static/image/persona-set.png" alt="페르소나 설정">
+                </div>
+                <div class="use_content_txt_box">
+                    <h3 class="use_content_txt_title">페르소나 설정</h3>
+                    <p>코칭 대상의 직무, 직급, 연차, 나이 등을 <br>설정합니다.
+                    <br><small style="font-size: 0.8em; margin-top: 7px; display: block;">* 나이, 성별 페르소나에 따라 이미지가 바뀝니다.</small>
+                    </p>  
+                </div>
+            </div>
+            <div class="arrow">&gt;</div>
+            <div class="use_content_box">
+                <div class="use_content_img_box">
+                    <img class="use_content_img" src="/static/image/simul.png" alt="대화 시뮬레이션 진행">
+                </div>
+                <div class="use_content_txt_box">
+                    <h3 class="use_content_txt_title">대화 시뮬레이션 진행</h3>
+                    <p>설정한 페르소나를 입힌 가상의 대상과 <br>대화 시뮬레이션을 진행합니다.
+                    <br><small style="font-size: 0.8em; margin-top: 7px; display: block;">* 대화는 문자, 음성으로 모두 가능합니다.</small>
+                    </p>
+                </div>
+            </div>
+            <div class="arrow">&gt;</div>
+            <div class="use_content_box">
+                <div class="use_content_img_box">
+                    <img class="use_content_img" src="/static/image/analysis.png" alt="코칭 분석 결과 확인">
+                </div>
+                <div class="use_content_txt_box">
+                    <h3 class="use_content_txt_title">코칭 분석 결과 확인</h3>
+                    <p>
+                    코칭 대화 후 결과를 분석하여 [------------- 토의 후 채울 예정 ---------------] 
+                    </p>
+                </div>
+            </div>
+            <div class="arrow">&gt;</div>
+            <div class="use_content_box">
+                <div class="use_content_img_box">
+                    <img class="use_content_img" src="/static/image/feed-back.png" alt="커뮤니티를 통한 피드백">
+                </div>
+                <div class="use_content_txt_box">
+                    <h3 class="use_content_txt_title">결과 분석 서비스</h3>
+                    <p>
+                    커뮤니티의 [-------------------토의 후 채울 예정 -------------------]
+                    </p>
+                </div>
+            </div>
+        </div> 
+        <div class="useintro_bottom">
+            <a href="#home_about" class="use_bottom_go">
+                <div class="use_bottom_text">GO About Us </div>
+                <img class="use_bottom_arrow" src="/static/image/black_down_arrow.png" alt="아래화살표">   
+            </a>
+        </div>
+    </div>
+
+    <!-- about us  -->
+    <div id="home_about" class="intro_container"><!-- 4번째 스크롤 -->
+        <div class="intro_title">
+            <div class="intro_title_text"> About Us </div>
+        </div>
+        <div class="profile_container">
+            <div class="profile_box_row">
+                <div class="profile_box"></div>
+                <div class="profile_box"></div>
+                <div class="profile_box"></div>
+                <div class="profile_box"></div>
+            </div>
+            <div class="profile_box_row">
+                <div class="profile_box"></div>
+                <div class="profile_box"></div>
+                <div class="profile_box"></div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <footer>
+            <div class="footer">
+                <div style="display: inline;">
+                    {% comment %} href는 아직 구현 안 됨 {% endcomment %}
+                    <a href="/service-intro/" class="footer_text">서비스 소개</a>
+                    <a href="/about-us/" class="footer_text">About us</a>
+                    <a href="/privacy-policy/" class="footer_text">개인정보처리방침</a>
+                    <a href="/partner-inquiry/" class="footer_text">제휴문의</a>
+                    <a href="/customer-service/" class="footer_text">고객센터</a>
+                </div>
+            </div>
+        </footer>
     </div>
 </div>
 {% endblock %}
