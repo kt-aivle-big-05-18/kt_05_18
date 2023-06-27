@@ -116,30 +116,66 @@ def rating_list(request, persona_id):
     persona = get_object_or_404(Persona, id=persona_id)
     ratings = Rating.objects.filter(survey__persona_id=persona)
 
-    total_scores = {
-        'score_1_total': ratings.aggregate(total=Sum('score_1'))['total'],
-        'score_2_total': ratings.aggregate(total=Sum('score_2'))['total'],
-        'score_3_total': ratings.aggregate(total=Sum('score_3'))['total'],
-        'score_4_total': ratings.aggregate(total=Sum('score_4'))['total'],
-        'score_5_total': ratings.aggregate(total=Sum('score_5'))['total'],
-        'score_6_total': ratings.aggregate(total=Sum('score_6'))['total'],
-        'score_7_total': ratings.aggregate(total=Sum('score_7'))['total'],
-        'score_8_total': ratings.aggregate(total=Sum('score_8'))['total'],
-        'score_9_total': ratings.aggregate(total=Sum('score_9'))['total'],
-        'score_10_total': ratings.aggregate(total=Sum('score_10'))['total'],
-        'score_11_total': ratings.aggregate(total=Sum('score_11'))['total'],
-        'score_12_total': ratings.aggregate(total=Sum('score_12'))['total'],
-        'score_13_total': ratings.aggregate(total=Sum('score_13'))['total'],
-        'score_14_total': ratings.aggregate(total=Sum('score_14'))['total'],
+    group_counts = {
+        'G': [0, 0, 0, 0],
+        'R': [0, 0, 0, 0],
+        'O': [0, 0, 0, 0],
+        'W': [0, 0, 0, 0],
     }
+
+    for rating in ratings:
+        for i in range(1, 15):
+            score = getattr(rating, f'score_{i}')
+            if 1 <= i <= 3:
+                group = 'G'
+            elif 4 <= i <= 7:
+                group = 'R'
+            elif 8 <= i <= 10:
+                group = 'O'
+            elif 11 <= i <= 14:
+                group = 'W'
+            else:
+                group = None
+
+            if group:
+                group_counts[group][score-1] += 1
 
     context = {
         'persona': persona,
         'ratings': ratings,
-        'total_scores': total_scores,
+        'group_counts': group_counts,
     }
-
+    print("gc:", group_counts)
     return render(request, 'mypage/rating_list.html', context)
+  
+# def rating_list(request, persona_id):
+#     persona = get_object_or_404(Persona, id=persona_id)
+#     ratings = Rating.objects.filter(survey__persona_id=persona)
+
+#     total_scores = {
+#         'score_1_total': ratings.aggregate(total=Sum('score_1'))['total'],
+#         'score_2_total': ratings.aggregate(total=Sum('score_2'))['total'],
+#         'score_3_total': ratings.aggregate(total=Sum('score_3'))['total'],
+#         'score_4_total': ratings.aggregate(total=Sum('score_4'))['total'],
+#         'score_5_total': ratings.aggregate(total=Sum('score_5'))['total'],
+#         'score_6_total': ratings.aggregate(total=Sum('score_6'))['total'],
+#         'score_7_total': ratings.aggregate(total=Sum('score_7'))['total'],
+#         'score_8_total': ratings.aggregate(total=Sum('score_8'))['total'],
+#         'score_9_total': ratings.aggregate(total=Sum('score_9'))['total'],
+#         'score_10_total': ratings.aggregate(total=Sum('score_10'))['total'],
+#         'score_11_total': ratings.aggregate(total=Sum('score_11'))['total'],
+#         'score_12_total': ratings.aggregate(total=Sum('score_12'))['total'],
+#         'score_13_total': ratings.aggregate(total=Sum('score_13'))['total'],
+#         'score_14_total': ratings.aggregate(total=Sum('score_14'))['total'],
+#     }
+
+#     context = {
+#         'persona': persona,
+#         'ratings': ratings,
+#         'total_scores': total_scores,
+#     }
+
+#     return render(request, 'mypage/rating_list.html', context)
 
 def popup(request):
     message = request.GET.get('message', None)
