@@ -7,17 +7,44 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@latest"></script>
     <script src="{% static '/admin_page/admin_page.js' %}" defer></script>
-    <link rel="stylesheet" href="{% static 'admin_page/admin_page.css' %}">
+    <link rel="stylesheet" href="{% static '/admin_page/admin_page.css' %}">
 </head>
+
 <body>
     <h1>Admin Page</h1>
 
     <div class="gender_graph">
         <canvas id="gender_Chart"></canvas>
     </div>
-
     <script id="gender_counts" type="application/json">
         {{ gender_counts | safe }}
+    </script>
+
+    <div class="age_graph">
+        <canvas id="age_Chart"></canvas>
+    </div>
+    <script id="age_counts" type="application/json">
+        {{ age_counts | safe }}
+    </script>
+    <div class="rank_graph">
+        <canvas id="rank_Chart"></canvas>
+    </div>
+    <script id="rank_counts" type="application/json">
+        {{ rank_counts | safe }}
+    </script>
+    
+    <div class="department_graph">
+        <canvas id="department_Chart"></canvas>
+    </div>
+    <script id="department_counts" type="application/json">
+        {{ department_counts | safe }}
+    </script>
+    
+    <div class="topic_label_graph">
+        <canvas id="topic_label_Chart"></canvas>
+    </div>
+    <script id="topic_label_counts" type="application/json">
+        {{ topic_label_counts | safe }}
     </script>
 </body>
 </html>
