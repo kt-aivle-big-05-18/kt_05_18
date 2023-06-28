@@ -1,4 +1,35 @@
-/* 사이드바  */
+/* ================================ 헤더 ================================= */
+.commu_head_wrapper{
+    position: fixed;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    top:0;
+    left:0;
+    width: 100vw;
+    height: 90px;
+    background-color: white;
+    z-index: 100;
+    border-top: 3px solid #B0DEE1;
+    border-bottom: 3px solid #B0DEE1;
+}
+
+.commu_head_menu_wrapper{
+    margin-right: 40px;
+}
+
+.commu_head_menu{
+    margin: 0px 10px;
+    text-decoration: none;
+}
+
+.commu_head_menu_icon{
+    color: #80dee4;
+    width: 30px;
+    height: 30px;
+}
+
+/* ================================= 사이드바 =============================  */
 /* GOOGLE FONTS */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
 
@@ -97,25 +128,6 @@ a {
     font-weight: 600;
 }
 
-.new_chat_btn, .submit_btn{
-    display: grid;
-    justify-content: center;
-    align-items: center;
-    font-weight: 600;
-    color: white;
-    background-color: transparent;
-    border: white 3px solid;
-    border-radius: 12px;
-    padding: 10px;
-    width: 140px;
-}
-
-.new_chat_btn:hover, .submit_btn:hover{
-    color: #0097FE;
-    background-color: white;
-    border: white 3px solid;
-}
-
 .nav__submit{
     position: grid;
     bottom: 20px;
@@ -139,7 +151,7 @@ a {
 }
 
 .nav__link:hover, .nav__btn:hover, .nav__submit:hover {
-    background-color: var(--first-color);
+    /* background-color: var(--first-color); */
 }
 
 .nav__icon {
@@ -200,152 +212,42 @@ a {
     transition: .5s;
 }
 
+/* ======================================================== */
+/* 페이지 메인 */
 
-/* ======================================================================= */
-/* 시뮬레이션 메인 */
-.rpg_wrapper{
+.row{
+    display: flex;
+    justify-content: center;
     position: absolute;
-    Top:90px;
-    left: 10vw;
-	width: 90vw;
-    height: calc(100vh - 202px);
-	/* background-color: #f6f6f6; */
-	padding-top: 30px;
+    top: 90px;
+    /* left: 92px; */
+    left: var(--nav--width);
+    /* background-color: aqua; */
+    /* width: 94vw; */
+    width: calc(98vw - var(--nav--width));
+    height: calc(95vh - 90px);
+    margin-top: 30px;
+    transition: width 0.5s ease;
 }
 
-.rpg_wrapper_lay{
-	display: flex;
-	flex-direction: column;
-	/* justify-content: center; */
-	align-items: center;
-	margin: 0px 50px;
-	width: 93%;
-	height: 100%;
+.expander ~ .row {
+    left: calc(var(--nav--width) + 9.25rem);
+    width: calc(100vw - var(--nav--width) - 9.25rem);
+    transition: left 0.5s ease, width 0.5s ease;
 }
 
-.rpg_content{
-	display: flex;
-	flex-direction: column;
-	/* justify-content: start; */
-	align-items: start;
-	width: 100%;
-	height: 94%;
-	/* background-color: aqua; */
+.body-pd .row {
+    padding-left: 16rem;
+    transition: padding-left 0.5s ease;
 }
 
-.real_time_score_wrapper{
-	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
-	align-items: center;
-	width: 200px;
-	background-color: #BDF2F6;
-	border-radius: 12px;
-	padding: 5px;
-	font-weight: 600;
+.col-md-9{
+   
+    width: 80vw;
 }
 
-.real_time_score{
-	background-color: #E2FDFF;
-	border-radius: 12px;
-	padding: 3px;
-}
-
-.chat_container {
-	width: 100%;
-    overflow: auto;
-    margin-top: 10px;
-    padding: 15px;
-}
-
-.user_message {
+.commu_content{
     display: flex;
-    flex-direction: row;
-    justify-content: end;
-    align-items: center;
-    /* text-align: right; */
-    font-weight: 500;
-    font-size: 17px;
-	border: 2px solid #B0DEE1;
-	color: black;
-	border-radius: 20px;
-	padding: 20px 30px;
-	margin-top: 20px;
-}
-
-.user_profile{
-    margin-bottom: 10px;
-    margin-left: 10px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-}
-
-.assistant_message {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: 500;
-    font-size: 17px;
-	color: black;
-	border: 2px solid #D3D3D3;
-	background-color: #F1F1F1;
-	border-radius: 20px;
-	padding: 20px;
-	margin-top: 20px;
-}
-
-.assistant_message_left{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-.assistant_profile{
-    margin-right:10px;
-    margin-bottom: 10px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-}
-
-.assistant_message_icon{
-    width: 30px;
-    height: 30px;
-}
-
-/* 입력창 부분 */
-.rpg_bottom{
-	position: fixed;
-	bottom: 0;
-	left: 8vw;
-	width: 90%;
-	background-color: white;
-	padding-top: 10px;
-}
-
-.rpg_input_section{
-	margin: 10px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	box-shadow: 3px 3px 3px 3px lightgray;
-	border-radius: 35px;
-	padding: 10px;
-}
-
-/* 스탑 아이콘은 이제 필요 없소 */
-.rpg_record_icon, .rpg_stop_icon, .rpg_send_icon{
-	width: 20px;
-	height: 20px;
-	margin: 0px 10px;
-}
-
-.rpg_input_container{
-	border: none;
-	font-size: 20px;
-	padding: 5px 0px;
-	width: 80%;
-
+    flex-direction: column;
+    margin-top: 30px;
 }
