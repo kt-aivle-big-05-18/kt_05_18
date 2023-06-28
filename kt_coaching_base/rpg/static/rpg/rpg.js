@@ -73,34 +73,42 @@ $(document).ready(function() {
                     message: userInput
                 },
                 success: function(response) {
+                    var audioID = "myAudio" + Date.now();  // 고유한 id를 생성합니다.
+                
                     chatContainer.append("<div class='assistant_message'>"
                     + "<div class='assistant_message_left'>"
                     + "<img class='assistant_profile' src='/static/img/young_male.png' alt='페르소나이미지'>"
                     + response.message
                     + "</div>"
-                    + "<ion-icon class='assistant_message_icon' name='volume-medium-outline'></ion-icon>"
+                    + "<ion-icon class='assistant_message_icon' name='volume-medium-outline' data-audio-id='" + audioID + "'></ion-icon>"
                     + "</div>");
                     document.getElementById('score').innerHTML = response.score + '점';
                 
                     var audioElement = document.createElement("audio");
                     audioElement.src = "data:audio/wav;base64," + response.voice;
-                    audioElement.id = "myAudio";
+                    audioElement.id = audioID;
                 
-                    var volumeIcon = document.getElementsByClassName('assistant_message_icon')[0];
-                    volumeIcon.onclick = function() {
-                        if (audioElement.paused) {
-                            audioElement.play();
-                            this.name = 'volume-high-outline';
-                        } else {
-                            audioElement.pause();
-                            audioElement.currentTime = 0;
-                            this.name = 'volume-medium-outline';
-                        }
-                    };
+                    var volumeIcons = document.getElementsByClassName('assistant_message_icon');
+                    for (var i = 0; i < volumeIcons.length; i++) {
+                        volumeIcons[i].onclick = function() {
+                            var audioID = this.getAttribute('data-audio-id');
+                            var audioToPlay = document.getElementById(audioID);
+                
+                            if (audioToPlay.paused) {
+                                audioToPlay.play();
+                                this.name = 'volume-high-outline';
+                            } else {
+                                audioToPlay.pause();
+                                audioToPlay.currentTime = 0;
+                                this.name = 'volume-medium-outline';
+                            }
+                        };
+                    }
                 
                     chatContainer.append(audioElement);
                     scrollToBottom();
                 },
+                
                 error: function(xhr, errmsg, err) {
                     console.log(errmsg);
                     chatContainer.append(errmsg);

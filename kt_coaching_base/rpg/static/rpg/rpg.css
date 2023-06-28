@@ -204,7 +204,8 @@ a {
 /* ======================================================================= */
 /* 시뮬레이션 메인 */
 .rpg_wrapper{
-    position: fixed;
+    position: absolute;
+    Top:90px;
     left: 10vw;
 	width: 90vw;
     height: calc(100vh - 202px);
