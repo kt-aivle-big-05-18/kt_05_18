@@ -78,3 +78,6 @@ def admin_persona(request):
 
 def admin_page(request):
     return render(request, "admin_page/admin_page.html")
+
+def admin_user(request):
+    return render(request, "admin_page/admin_user.html")

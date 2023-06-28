@@ -1,29 +1,298 @@
 {% extends "base.html" %}
+{% load static%}
 {% block content %}
 
 <style>
-h1 {
-    margin-left: 60px;
-}
+    body {
+        background-color: #E9F2FF;
+    }
+        
+    h1 {
+        text-align: left;
+        width: 80%;
+        padding-top: 10px;
+        padding-left: 70px;
+        font-size: 28px;
+    }
 
-.back_button {
-    position: absolute;
-    top: 15%;
-    right: 30px;
-    font-size: 18px;
-    padding: 6px 12px;
-    background-color: #99b4da;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-}
+    h3 {
+        text-align: left;
+        width: 80%;
+        padding-left: 70px;
+        font-size: 12px;
+        color: #ABABAB;
+    }
 
-.back_button:hover {
-    background-color: #134971;
-}
+    .white-box {
+        display: flex;
+        flex-direction: column;
+        width: 1350px;
+        height: 80px;
+        background-color: white;
+        margin: 30px auto;
+        margin-left: 70px;
+        padding-bottom: 20px;
+        border-radius: 20px;
+    }
+
+    .white-box-question {
+        margin-left: 30px; 
+        height: 30px;
+        margin-top: 15px;
+        font-weight: 600;
+        font-size: 20px;
+    }
+    
+    .white-box-answer {
+        display: flex;
+        flex-direction: row;
+        margin-top: 15px;
+        margin-left: 30px;
+        height: 20px;
+    }
+    
+    .white-box-answer input[type=radio] {
+        margin-left: 25px;
+    }
+    
+    .white-box-answer label {
+        margin-left: 5px;
+    }
+
+    .back_button {
+        position: absolute;
+        top: 15%;
+        right: 50px;
+        font-size: 18px;
+        padding: 6px 12px;
+        background-color: #99b4da;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .back_button:hover {
+        background-color: #134971;
+    }
+
+    .submit_button {
+        display: inline-block;
+        font-size: 18px;
+        padding: 8px 16px;
+        background-color: #99b4da;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .submit_button:hover {
+        background-color: #134971;
+    }
 </style>
-<h1> 점심 뭐 먹지? </h1>
-<button class="back_button" onclick="window.history.back();">←</button>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
+
+<h1>자가진단 서비스</h1>
+<h3>* 본 설문은 코칭 대화 자가진단 서비스 입니다.<br>* 본 설문을 통해 본인의 코칭 리더십을 자기 진단하여 역량을 파악할 수 있습니다.</h3>
+<form>
+    <button type="button" class="back_button" onclick="goBack();">&lt;</button>
+    <div class="box-container">
+        <div class="white-box">
+            <div class='white-box-question'>1. 구체적인 성과목표를 다시금 인식시켰습니까?</div>
+            <div class='white-box-answer'>
+                <input type="radio" id="q1_1" name="q1" value="1">
+                <label for="q1_1">매우 그렇지 않다</label>
+                <input type="radio" id="q1_2" name="q1" value="2">
+                <label for="q1_2">그렇지 않다</label>
+                <input type="radio" id="q1_3" name="q1" value="3">
+                <label for="q1_3">그렇다</label>
+                <input type="radio" id="q1_4" name="q1" value="4">
+                <label for="q1_4">매우 그렇다</label>
+            </div>
+        </div>
+        <div class="white-box">
+            <div class= 'white-box-question'>2. 원하는 모습이 무엇인지 구체적이고 명확하게 그려보게 하였습니까?</div>
+            <div class='white-box-answer'>
+                <input type="radio" id="q2_1" name="q2" value="1">
+                <label for="q2_1">매우 그렇지 않다</label>
+                <input type="radio" id="q2_2" name="q2" value="2">
+                <label for="q2_2">그렇지 않다</label>
+                <input type="radio" id="q2_3" name="q2" value="3">
+                <label for="q2_3">그렇다</label>
+                <input type="radio" id="q2_4" name="q2" value="4">
+                <label for="q2_4">매우 그렇다</label>
+            </div>
+        </div>
+        <div class="white-box">
+            <div class= 'white-box-question'>3. 목표달성이 스스로에게 어떤 의미가 있는지 생각하게 하였습니까?</div>
+            <div class='white-box-answer'>
+                <input type="radio" id="q3_1" name="q3" value="1">
+                <label for="q3_1">매우 그렇지 않다</label>
+                <input type="radio" id="q3_2" name="q3" value="2">
+                <label for="q3_2">그렇지 않다</label>
+                <input type="radio" id="q3_3" name="q3" value="3">
+                <label for="q3_3">그렇다</label>
+                <input type="radio" id="q3_4" name="q3" value="4">
+                <label for="q3_4">매우 그렇다</label>
+            </div>
+        </div>
+        <div class="white-box">
+            <div class= 'white-box-question'>4. 현재의 성과 추진 상황을 객관적으로 바라볼 수 있게 하였습니까?</div>
+            <div class='white-box-answer'>
+                <input type="radio" id="q4_1" name="q4" value="1">
+                <label for="q4_1">매우 그렇지 않다</label>
+                <input type="radio" id="q4_2" name="q4" value="2">
+                <label for="q4_2">그렇지 않다</label>
+                <input type="radio" id="q4_3" name="q4" value="3">
+                <label for="q4_3">그렇다</label>
+                <input type="radio" id="q4_4" name="q4" value="4">
+                <label for="q4_4">매우 그렇다</label>
+            </div>
+        </div>
+        <div class="white-box">
+            <div class= 'white-box-question'>5. 현재 어떤 일이 일어나고 있는지 인식하게 하였습니까?</div>
+            <div class='white-box-answer'>
+                <input type="radio" id="q5_1" name="q5" value="1">
+                <label for="q5_1">매우 그렇지 않다</label>
+                <input type="radio" id="q5_2" name="q5" value="2">
+                <label for="q5_2">그렇지 않다</label>
+                <input type="radio" id="q5_3" name="q5" value="3">
+                <label for="q5_3">그렇다</label>
+                <input type="radio" id="q5_4" name="q5" value="4">
+                <label for="q5_4">매우 그렇다</label>
+            </div>
+        </div>
+        <div class="white-box">
+            <div class= 'white-box-question'>6. 현재 어떤 도전과 문제가 있는지 파악하게 하였습니까?</div>
+            <div class='white-box-answer'>
+                <input type="radio" id="q6_1" name="q6" value="1">
+                <label for="q6_1">매우 그렇지 않다</label>
+                <input type="radio" id="q6_2" name="q6" value="2">
+                <label for="q6_2">그렇지 않다</label>
+                <input type="radio" id="q6_3" name="q6" value="3">
+                <label for="q6_3">그렇다</label>
+                <input type="radio" id="q6_4" name="q6" value="4">
+                <label for="q6_4">매우 그렇다</label>
+            </div>
+        </div>
+        <div class="white-box">
+            <div class= 'white-box-question'>7. 목표와 현재의 갭(차이)을 확인하도록 하였습니까?</div>
+            <div class='white-box-answer'>
+                <input type="radio" id="q7_1" name="q7" value="1">
+                <label for="q7_1">매우 그렇지 않다</label>
+                <input type="radio" id="q7_2" name="q7" value="2">
+                <label for="q7_2">그렇지 않다</label>
+                <input type="radio" id="q7_3" name="q7" value="3">
+                <label for="q7_3">그렇다</label>
+                <input type="radio" id="q7_4" name="q7" value="4">
+                <label for="q7_4">매우 그렇다</label>
+            </div>
+        </div>
+        <div class="white-box">
+            <div class= 'white-box-question'>8. 성과목표 달성을 위한 발전적 대안을 모색하게 하였습니까?</div>
+            <div class='white-box-answer'>
+                <input type="radio" id="q8_1" name="q8" value="1">
+                <label for="q8_1">매우 그렇지 않다</label>
+                <input type="radio" id="q8_2" name="q8" value="2">
+                <label for="q8_2">그렇지 않다</label>
+                <input type="radio" id="q8_3" name="q8" value="3">
+                <label for="q8_3">그렇다</label>
+                <input type="radio" id="q8_4" name="q8" value="4">
+                <label for="q8_4">매우 그렇다</label>
+            </div>
+        </div>
+        <div class="white-box">
+            <div class= 'white-box-question'>9. 고정관념에서 벗어나 새로운 시각으로 보도록 하였습니까?</div>
+            <div class='white-box-answer'>
+                <input type="radio" id="q9_1" name="q9" value="1">
+                <label for="q9_1">매우 그렇지 않다</label>
+                <input type="radio" id="q9_2" name="q9" value="2">
+                <label for="q9_2">그렇지 않다</label>
+                <input type="radio" id="q9_3" name="q9" value="3">
+                <label for="q9_3">그렇다</label>
+                <input type="radio" id="q9_4" name="q9" value="4">
+                <label for="q9_4">매우 그렇다</label>
+            </div>
+        </div>
+        <div class="white-box">
+            <div class= 'white-box-question'>10. 발상 단계에서 아이디어를 평가하지 않았습니까?</div>
+            <div class='white-box-answer'>
+                <input type="radio" id="q14_1" name="q14" value="1">
+                <label for="q14_1">매우 그렇지 않다</label>
+                <input type="radio" id="q14_2" name="q14" value="2">
+                <label for="q14_2">그렇지 않다</label>
+                <input type="radio" id="q14_3" name="q14" value="3">
+                <label for="q14_3">그렇다</label>
+                <input type="radio" id="q14_4" name="q14" value="4">
+                <label for="q14_4">매우 그렇다</label>
+            </div>
+        </div>
+        <div class="white-box">
+            <div class= 'white-box-question'>11. 성과목표의 최종 달성을 위한 구성원의 실행의지를 다졌습니까?</div>
+            <div class='white-box-answer'>
+                <input type="radio" id="q10_1" name="q10" value="1">
+                <label for="q10_1">매우 그렇지 않다</label>
+                <input type="radio" id="q10_2" name="q10" value="2">
+                <label for="q10_2">그렇지 않다</label>
+                <input type="radio" id="q10_3" name="q10" value="3">
+                <label for="q10_3">그렇다</label>
+                <input type="radio" id="q10_4" name="q10" value="4">
+                <label for="q10_4">매우 그렇다</label>
+            </div>
+        </div>
+        <div class="white-box">
+            <div class= 'white-box-question'>12. 목표를 달성하기 위한 대안 중에서 실행할 것을 선택하도록 하였습니까?</div>
+            <div class='white-box-answer'>
+                <input type="radio" id="q11_1" name="q11" value="1">
+                <label for="q11_1">매우 그렇지 않다</label>
+                <input type="radio" id="q11_2" name="q11" value="2">
+                <label for="q11_2">그렇지 않다</label>
+                <input type="radio" id="q11_3" name="q11" value="3">
+                <label for="q11_3">그렇다</label>
+                <input type="radio" id="q11_4" name="q11" value="4">
+                <label for="q11_4">매우 그렇다</label>
+            </div>
+        </div>
+        <div class="white-box">
+            <div class= 'white-box-question'>13. 구체적으로 무엇을, 언제, 어떻게 할 것인지 명확히 하도록 하였습니까?</div>
+            <div class='white-box-answer'>
+                <input type="radio" id="q12_1" name="q12" value="1">
+                <label for="q12_1">매우 그렇지 않다</label>
+                <input type="radio" id="q12_2" name="q12" value="2">
+                <label for="q12_2">그렇지 않다</label>
+                <input type="radio" id="q12_3" name="q12" value="3">
+                <label for="q12_3">그렇다</label>
+                <input type="radio" id="q12_4" name="q12" value="4">
+                <label for="q12_4">매우 그렇다</label>
+            </div>
+        </div>
+        <div class="white-box">
+            <div class= 'white-box-question'>14. 격려하고 지지하며 신뢰를 표시하였습니까?</div>
+            <div class='white-box-answer'>
+                <input type="radio" id="q13_1" name="q13" value="1">
+                <label for="q13_1">매우 그렇지 않다</label>
+                <input type="radio" id="q13_2" name="q13" value="2">
+                <label for="q13_2">그렇지 않다</label>
+                <input type="radio" id="q13_3" name="q13" value="3">
+                <label for="q13_3">그렇다</label>
+                <input type="radio" id="q13_4" name="q13" value="4">
+                <label for="q13_4">매우 그렇다</label>
+            </div>
+        </div>
+    </div>
+    <div style="text-align:center;">
+        <button type="submit" class="submit_button">제출</button>
+    </div>
+</form>
 {% endblock %}
