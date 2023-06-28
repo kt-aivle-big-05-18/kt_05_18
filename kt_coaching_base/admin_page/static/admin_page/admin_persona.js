@@ -11,17 +11,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
             labels: genderLabels,
             datasets: [{
                 data: genderData,
-                backgroundColor: [
-                    'rgba(231, 84, 128, 0.6)',
-                    'rgba(0, 128, 128, 0.6)'
-                ]
+                backgroundColor: genderLabels.map(x => x === '남성' ? 'rgba(0, 128, 128, 0.6)' : 'rgba(231, 84, 128, 0.6)'),
             }]
         },
         options: {
             responsive: true,
             plugins: {
                 legend: {
-                    display: false,
+                    display: false
                 },
                 title: {
                     display: true,
@@ -44,7 +41,17 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     beginAtZero: true
                 },
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    ticks: {
+                        precision: 0, // 소수점 이하 자릿수를 0으로 설정하여 정수로 표시
+                        callback: function(value, index, values) {
+                            if (Math.floor(value) === value) {
+                                return value;
+                            }
+                        }
+                    },
+                    autoSkip: true, // 데이터에 맞게 눈금 간격 자동 조정
+                    maxTicksLimit: 10 // 최대 눈금 개수 제한 (원하는 값으로 조정)
                 }
             },
             animation: {
@@ -66,14 +73,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
             labels: ageLabels,
             datasets: [{
                 data: ageData,
-                backgroundColor: 'rgba(143, 185, 219, 0.6)',
+                backgroundColor: 'rgba(143, 170, 220, 1)',
             }]
         },
         options: {
             responsive: true,
             plugins: {
                 legend: {
-                    display: false,
+                    display: false
                 },
                 title: {
                     display: true,
@@ -97,6 +104,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 },
                 y: {
                     beginAtZero: true,
+                    ticks: {
+                        precision: 0, // 소수점 이하 자릿수를 0으로 설정하여 정수로 표시
+                        callback: function(value, index, values) {
+                            if (Math.floor(value) === value) {
+                                return value;
+                            }
+                        }
+                    },
+                    autoSkip: true, // 데이터에 맞게 눈금 간격 자동 조정
+                    maxTicksLimit: 10 // 최대 눈금 개수 제한 (원하는 값으로 조정)
                 },
             },
             animation: {
@@ -135,7 +152,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
            plugins: {
                title: {
                    display: true,
-                   text: 'Rank 비율'
+                   text: '선택한 직급'
                },
                datalabels: {
                    display: true,
@@ -164,7 +181,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         'rgba(250, 166, 178, 1)',
         'rgba(167, 226, 225, 1)',
         'rgba(193, 167, 226, 1)',
-   ];
+   ]
 
    const ctxDepartment = document.getElementById('department_Chart').getContext('2d');
    new Chart(ctxDepartment, {
@@ -181,7 +198,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
            plugins: {
                title: {
                    display: true,
-                   text: 'Department 비율'
+                   text: '선택한 직무'
                },
                datalabels: {
                    display: true,

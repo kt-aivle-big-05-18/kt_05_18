@@ -4,13 +4,23 @@ from rpg.models import Message
 from account.models import Account
 import numpy as np
 import pandas as pd
-import os
+import os, json
 
 def result (request):
-    if request.method == "POST":
-        print("abc")
-    else :
-        return render(request, "analysis/result.html")
+    pie_counts_new = request.session["pie_counts"]
+    scores = request.session.get("scores")
+    d_scores = []
+    for i in range(len(scores)):
+        d_scores.append({"{0}".format(i+1) : scores[i]})
+    print(1111111, pie_counts_new, request.session["scores"][-1], d_scores)
+    
+    pie_chart_new = {
+        "socre_mem" : json.dumps(list(d_scores)),
+        "pie_counts": json.dumps(list(pie_counts_new), ensure_ascii=False),
+        "f_score" : request.session["scores"][-1],
+        "pie_word": pie_counts_new,
+    }
+    return render(request, "analysis/result.html", {'pie_chart': pie_chart_new})
 # Create your views here.
 
 def intro (request):
@@ -56,14 +66,16 @@ def intro (request):
     recognition     = round((request.session.get("인정")/l) * 100, 0)
     respect         = round((request.session.get("존중")/l) * 100, 0)
     judgment        = round((request.session.get("판단")/l) * 100, 0)
+    pie_counts = [
+        {"name": "관점변화", "value": perspective},
+        {"name": "인정", "value": recognition},
+        {"name": "존중", "value": respect},
+        {"name": "판단", "value": judgment},
+        {"name": "부정", "value": negation},
+    ]
+    request.session["pie_counts"] = pie_counts
     pie_chart =   {
-        "Perspective": perspective,
-        "Negation": negation,
-        "Recognition": recognition,
-        "Respect": respect,
-        "Feedback": judgment,
+        "pie_counts": json.dumps(list(pie_counts)),
         "f_score" : request.session["scores"][-1],
-        "socre_mem" : request.session.get("scores")
     }
-    
-    return render(request, "analysis/intro.html", pie_chart)
+    return render(request, "analysis/intro.html", {'pie_chart': pie_chart})
