@@ -84,3 +84,10 @@ class Account(AbstractBaseUser):
  
     def has_module_perms(self, app_lable):
         return True
+    
+    
+class admin_info(models.Model):
+    login_date   = models.DateTimeField(auto_now_add=True)
+    count   = models.IntegerField()
+    class Meta:
+        ordering    =   ("login_date",)

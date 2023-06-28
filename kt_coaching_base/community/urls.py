@@ -6,10 +6,12 @@ from . import views
 
 app_name = 'community'
 urlpatterns = [
-    path('', views.notice_list, name='notice_list'),
+    path('', views.commu_list, name='commu_list'),
+    path("notice/", views.notice_list, name="notice_list"),
     path("notice/<int:pk>/", views.notice_detail, name="notice_detail"),
     path("notice/create/", views.notice_create, name="notice_create"),
-    path('survey/', views.survey_list, name="survey_list")
+    path('survey/', views.survey_list, name="survey_list"),
+    path('survey/<int:survey_id>/', views.survey_detail, name='survey_detail'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

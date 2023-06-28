@@ -53,6 +53,7 @@
         background-color: white;
         box-shadow: 2px 5.5px 10px rgba(0, 0, 0, 0.3);
         margin-right: 1%;
+        overflow: auto;
     }
 
     .box_result {
@@ -183,7 +184,7 @@
             <div id="simulation3" class="menu-item" onclick="changePage(3)">코칭 시뮬레이션 3</div>
         </div>
         <div class="box_result">
-            <div id="page0">
+            {% comment %} <div id="page0">
                 <div class="box_result_graph">
                         <p class="box_result_grow">GROW 코칭 모델기반 설문결과</p>
                         <p class="box_result_grow_info">코칭이란 과거의 실수 보다는 미래의 가능성에 초점을 맞추는 것입니다.</p>
@@ -274,28 +275,65 @@
                 <div class="box_result_graph_sections">
                 </div> 
             </div>
+            </div> {% endcomment %}
+            {% for persona in personas %}
+                <div class="menu-item" onclick="changePage('{{ persona.id }}')">{{ persona.department }} - {{ persona.rank }}</div>
+            {% endfor %}
+        </div>
+        <div class="box_result">
+            {% for persona in personas %}
+                <div id="page{{ persona.id }}" style="display: none;">
+                    <h2>{{ persona.department }} - {{ persona.rank }}</h2>
+                    <ul>
+                        {% for message in messages %}
+                            {% if message.persona == persona %}
+                                <li>{{ message.name }} - {{ message.content }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% if persona.shared %}
+                    <form action="{% url 'mypage:stop_sharing' persona.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="persona_id" value="{{ persona.id }}">
+                        <button type="submit">공유 중지</button>
+                    </form>
+                {% else %}
+                <form action="{% url 'mypage:share_persona' persona.id %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="persona_id" value="{{ persona.id }}">
+                    <input type="text" name="title" placeholder="제목">
+                    <textarea name="content" placeholder="내용"></textarea>
+                    <button type="submit">공유 시작</button>
+                </form>
+                {% endif %}
+                <a href="{% url 'mypage:rating_list' persona.id %}">체크리스트 점수 보기</a>
             </div>
+            {% endfor %}
         </div>
     </div>
 </div>
 
 <script>
     function changePage(page) {
-        const pages = [document.getElementById("page0"), document.getElementById("page1"), document.getElementById("page2"), document.getElementById("page3")];
-        const simulations = [document.getElementById("simulation0"), document.getElementById("simulation1"), document.getElementById("simulation2"), document.getElementById("simulation3")];
+        const pages = document.querySelectorAll('.box_result > div');
+        const menus = document.querySelectorAll('.box_menu > div');
 
-        for (let i = 0; i < pages.length; i++) {
-            pages[i].style.display = (i) === page ? 'block' : 'none';
-            simulations[i].classList.remove('selected');
-            if ((i) === page) {
-                simulations[i].classList.add('selected');
-            }
-        }
+        pages.forEach(page => {
+            page.style.display = 'none';
+        });
+        menus.forEach(menu => {
+            menu.classList.remove('selected');
+        });
+
+        const currentPage = document.getElementById(`page${page}`);
+        const currentMenu = document.querySelector(`.box_menu > div[onclick="changePage('${page}')"]`);
+
+        currentPage.style.display = 'block';
+        currentMenu.classList.add('selected');
     }
 
     window.onload = function() {
         changePage(0);
     }
 </script>
-
 {% endblock %}

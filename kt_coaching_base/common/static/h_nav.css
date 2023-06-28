@@ -48,6 +48,7 @@
     font-weight: 500px;
     margin-left: 80px;
     text-decoration: none;
+    font-weight: 600;
     color: #2FC4CE;
     height: 92px; /* 헤더 높이와 일치하게 변경 */
     line-height: 92px; /* 텍스트가 헤더 높이와 일치하게 세로 가운데 정렬 */

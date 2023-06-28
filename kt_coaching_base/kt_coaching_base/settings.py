@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "mypage",
     "analysis",
     "community",
+    "admin_page",
 ]
 
 MIDDLEWARE = [

@@ -36,4 +36,9 @@ document.addEventListener(function () {
     window.location.href = `${window.origin}/`;
   });
 });
+
+$(function() {
+	$("#modal").modal("show");
+});
+
   
