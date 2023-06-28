@@ -22,7 +22,7 @@
                         <a class="login-link"> Hello! {{ user.username }} </a>
                         <a href="{% url 'account:logout' %}" class="login-link"> 로그아웃 </a>
                         <span class="divider">|</span>
-                        <a href="{% url 'mypage:mypage_view' %}" class="login-link{% if request.resolver_match.url_name == 'mypage_view' %} active-menu-myp{% endif %}">마이페이지</a>
+                        <a href="{% url 'mypage:mypage_view' %}" class="login-link{% if request.resolver_match.url_name == 'mypage_view' or request.resolver_match.url_name == 'myp_info' or request.resolver_match.url_name == 'myp_survey' or request.resolver_match.url_name == 'myp_self' %} active-menu-myp{% endif %}">마이페이지</a>
                         {% else %}
                         <a href="{% url 'account:login' %}" class="login-link">로그인</a>
                         <span class="divider">|</span>
