@@ -134,14 +134,24 @@ def persona(request):
             persona.nickname = Account.objects.get(nickname=request.user.nickname)
             persona.save()
             request.session['visited_persona'] = True
-            request.session.get("persona_set").append({
+            request.session["persona_set"].append({
                                     "role" : "user", 
-                                    "content" : translate( "다음 대화부터 당신은 팀장님과 상담하는 {4} {0}세인 {1} {2}{3}입니다. 대답은 3문장 이내로 합니다.".format(
+                                    "content" : translate( "다음 대화부터 당신은 팀장님과 대화하는 {0}세인 {1} {2}{3}이며, 차분한 {4} 팀원의 역할로 팀장인 저와 상담을 시작합니다. 당신은 절대로 역할에서 벗어나지 않습니다. 이 역할을 맡고 있을 때 당신은 3문장 이하로 대답합니다.".format(
                                         form.cleaned_data['age'], # 0 나이 - gpt
                                         form.cleaned_data['gender'], # 1 성별 - gpt
                                         form.cleaned_data['department'], # 2 직군 - gpt
                                         form.cleaned_data['rank'], # 3 직급 - gpt
-                                        form.cleaned_data['rank'], # 4 상황 - gpt
+                                        form.cleaned_data['topic_label'], # 4 상황 - gpt
+                                        ))  
+                                    })
+            request.session["persona_set"].append({
+                                    "role" : "assistant", 
+                                    "content" : translate( "네! 저는 지금부터 {0}세인 {1} {2}{3}이며, {4} 팀원의 역할을 수행합니다. 안녕하세요! 팀장님.".format(
+                                        form.cleaned_data['age'], # 0 나이 - gpt
+                                        form.cleaned_data['gender'], # 1 성별 - gpt
+                                        form.cleaned_data['department'], # 2 직군 - gpt
+                                        form.cleaned_data['rank'], # 3 직급 - gpt
+                                        form.cleaned_data['topic_label'], # 4 상황 - gpt
                                         ))  
                                     })
             persona_id = Persona.objects.filter(nickname=request.user.nickname).last()
