@@ -1,4 +1,18 @@
-<p> 여긴 결과 보기 전 설명 페이지 </p>
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'analysis/intro.js' %}" defer></script>
+<link rel="stylesheet" href="{% static 'analysis/intro.css' %}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+{% comment %} <p> 여긴 결과 보기 전 설명 페이지 </p>
 
 <p>Perspective value: {{ Perspective }}</p>
 <p>Negation value: {{ Negation }}</p>
@@ -6,5 +20,45 @@
 <p>Respect value: {{ Respect }}</p>
 <p>Feedback value: {{ Feedback }}</p>
 <p>Feedback value: {{ f_score }}</p>
-<p>Feedback value: {{ socre_mem }}</p>
-<a href="{% url 'analysis:result' %}">결과분석 페이지로 가기</a>
+<p>Feedback value: {{ socre_mem }}</p> {% endcomment %}
+<div class="ana_int_wrapper">
+    <div class="ana_int_contain">
+        <div class="ana_int_title">
+            {% if user.is_authenticated %}
+            {{ user.username }} 님의 코칭대화 분석 결과
+            {% else %}
+            회원님의 코칭 대화 분석 결과
+            {% endif %}
+        </div>
+        <div class="ana_int_content">
+            <div class="ana_int_content_left">
+                본 결과는 코칭 대화에 중요한 5가지 요인을 진단하여 개인의 코칭 리더십 특성을 제공합니다. <br>
+                <br>
+                코칭 리더십에 대한 5가지 요인은 관점 변화, 존중, 인정, 판단, 분위기 영역으로 구성됩니다.
+                관점 변화는 대화 상대가 기존과 다른 관점에서 해결책을 찾도록 질문하는 것, 존중은 대화 상대를
+                존중하고 심리적으로 지지하고 돕는 질문하는 것, 인정은 대화 상대가 스스로 문제를 해결할 능력을
+                가지고 있다고 믿는 것, 판단은 대화 상대에게 선택지를 제공하거나 개인적인 의견이 포함된 질문을
+                하는 것, 그리고 분위기는 긍정 및 부정적인 질문과 관련이 있습니다. <br>
+                <br>
+                자세한 결과 분석 내용은 상세 결과 페이지에서 확인하실 수 있습니다.
+            </div>
+            <div class="ana_int_content_right">
+                <div class="ana_int_content_right_score">
+                    <div class="ana_int_content_right_score_title"> 나의 점수 70점 </div>
+                    <div> 상세 결과 페이지에서 실시간 점수 변화를 확인하실 수 있습니다. </div>
+                </div>
+                <div class="ana_int_content_right_graph">
+                    <div class="ana_int_content_right_graph_title"> 코칭 리더십 요인 분석 </div>
+                    <canvas id="pie_chart" style="width: 100px; height: 50px;" data="[{{Perspective}}, {{Respect}}, {{Recognition}}, {{Negation}}, {{Feedback}}"]></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a class="go_detail"href="{% url 'analysis:result' %}">결과분석 페이지로 가기</a>
+</div>
+
+{% endblock %}
+
+<script>
+    var pie_chart_vpn = {{pie_chart_vpn}}
+</script>

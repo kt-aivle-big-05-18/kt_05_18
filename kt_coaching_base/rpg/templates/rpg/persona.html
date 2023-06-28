@@ -10,40 +10,43 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'persona/persona.css' %}">
-<script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script> <!-- IONICONS -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{% static 'persona/persona.js' %}" defer></script>
+<script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script> <!-- IONICONS -->
+
 
 <!-- 사이드 바 -->
-<div class="l-navbar" id="navbar">
+<!-- <div class="l-navbar" id="navbar">
   <nav class="nav">
     <div>
       <div class="nav__brand">
-          <ion-icon name="menu-outline" class="nav__toggle" id="nav-toggle"></ion-icon>
-          <a href="#" class="nav__logo">KT coaching</a>
+        <ion-icon name="menu-outline" class="nav__toggle" id="nav-toggle"></ion-icon>
+        <a href="#" class="nav__logo">KT coaching</a>
       </div>
       <div class="nav__btn">
-        <button class="new_chat_btn">New Chat</button>
-      <div>
-      <div class="nav__list">
-          {% comment %} <a href="#" class="nav__link active">
-              <ion-icon name="home-outline" class="nav__icon"></ion-icon>
-              <span class="nav_name">New Chat</span>
-          </a> {% endcomment %}
-          <div href="#" class="nav__link collapse">
-            <ion-icon name="chatbubbles-outline" class="nav__icon"></ion-icon>
-            <span class="nav_name">2023.06.05</span>
-              <ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
-
-              <ul class="collapse__menu">
-                  <a href="#" class="collapse__sublink">코칭시뮬레이션2차</a>
-                  <a href="#" class="collapse__sublink">코칭시뮬레이션1차</a>
-              </ul>
-          </div>
+        <button class="new_chat_btn">
+          <ion-icon name="add-circle-outline"></ion-icon>
+          <div>New Chat</div>
+        </button>
       </div>
-    </div>
+      <div class="nav__list">
+        {% comment %} <a href="#" class="nav__link active">
+            <ion-icon name="home-outline" class="nav__icon"></ion-icon>
+            <span class="nav_name">New Chat</span>
+        </a> {% endcomment %}
+        <div href="#" class="nav__link collapse">
+          <ion-icon name="chatbubbles-outline" class="nav__icon"></ion-icon>
+          <span class="nav_name">2023.06.05</span>
+            <ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
+
+            <ul class="collapse__menu">
+                <a href="#" class="collapse__sublink">코칭시뮬레이션2차</a>
+                <a href="#" class="collapse__sublink">코칭시뮬레이션1차</a>
+            </ul>
+        </div>
+      </div>
   </nav>
-</div>
+</div> --> 
 
   <!-- 페르소나 메인 -->
     <div class="con"></div>
@@ -106,11 +109,13 @@
                 {% endif %}
               <div class="persona_setting_topic">
                 <div class="persona_setting_content_topic">
-                  <label class="persona_setting_content_topic_label" for="department">대화 주제</label>
-                  <select class="persona_select"name="department" id="department" required>
+                  <label class="persona_setting_content_topic_label" for="topic_label">대화 주제</label>
+                  <select class="persona_select"name="topic_label" id="topic_label" required>
                     <option value="none" select>주제를 선택하세요.</option>
-                    <option value="상황1">상황1</option>
-                    <option value="상황2">상황2</option>
+                    <option value="지금보다 성과를 더 늘리고 싶어하는">성과에 대해 고민인 팀원과의 대화</option>
+                    <option value="지금 직장에 더 잘 적응하고 싶어하는">직장생활이 익숙하지 않은 팀원과의 대화</option>
+                    <option value="업무능력이 조금 떨어져 더 성장하고 싶어하는">업무에 대한 자신감이 부족한 팀원과의 대화</option>
+                    <option value="개인적인 발전을 위해 진로를 고민하는">개인적인 진로가 걱정인 팀원과의 대화</option>
                   </select>
                 </div>
               </div>
@@ -121,17 +126,19 @@
                   <div class="persona_select_wrapper">
                     <label for="department">직군</label>
                     <select class="persona_select" name="department" id="department" required>
-                      <option value="개발자">개발자</option>
-                      <option value="영업부">영업부</option>
-                      <option value="인사과">인사과</option>
+                      <option value="개발자">IT기술</option>
+                      <option value="영업부">영업/마케팅</option>
+                      <option value="인사과">경영기획/지원</option>
+                      <option value="인사과">R&D</option>
                     </select>
                   </div>
 
                   <div class="persona_select_wrapper">
                     <label for="rank">직급</label>
                     <select class="persona_select" name="rank" id="rank" required>
+                      <option value="주임">주임</option>
                       <option value="주니어개발자">주니어 개발자</option>
-                      <option value="신입 영업사원">신입 영업사원</option>
+                      <option value="신입 영업사원">신입사원</option>
                       <option value="대리">대리</option>
                     </select>
                   </div>
@@ -150,8 +157,8 @@
                     <input type="radio" name="gender" id="gender_female" value="F" required/>
                     <label for="gender_female">여성</label> {% endcomment %}
                     <select class="persona_select" name="gender" id="gender" oninput="updatePersonaImage()" required>
-                      <option value="M">남성</option>
-                      <option value="F">여성</option>
+                      <option value="남성">남성</option>
+                      <option value="여성">여성</option>
                     </select>
                   </div>
                 </div>
