@@ -25,7 +25,7 @@
                             <a href="{% url 'mypage:mypage_view' %}" class="login-link{% if request.resolver_match.url_name == 'mypage_view' %} active-menu-myp{% endif %}">마이페이지</a>
                             {% if user.is_superuser %}
                                 <span class="divider">|</span>
-                                <a href="{% url 'admin_page:admin_page' %}">관리자 페이지</a>
+                                <a href="{% url 'admin_page:admin_page' %}" class="signup-link">관리자 페이지</a>
                                 {% endif %}
                         {% else %}
                             <a href="{% url 'account:login' %}" class="login-link">로그인</a>

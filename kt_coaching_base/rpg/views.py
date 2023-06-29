@@ -134,14 +134,24 @@ def persona(request):
             persona.nickname = Account.objects.get(nickname=request.user.nickname)
             persona.save()
             request.session['visited_persona'] = True
-            request.session.get("persona_set").append({
+            request.session["persona_set"].append({
                                     "role" : "user", 
-                                    "content" : translate( "다음 대화부터 당신은 팀장님과 대화하는 {0}세인 {1} {2}{3}입니다. 당신은 {4} 상황입니다.".format(
+                                    "content" : translate( "다음 대화부터 당신은 팀장님과 대화하는 {0}세인 {1} {2}{3}이며, 차분한 {4} 팀원의 역할로 팀장인 저와 상담을 시작합니다. 당신은 절대로 역할에서 벗어나지 않습니다. 이 역할을 맡고 있을 때 당신은 3문장 이하로 대답합니다.".format(
                                         form.cleaned_data['age'], # 0 나이 - gpt
                                         form.cleaned_data['gender'], # 1 성별 - gpt
                                         form.cleaned_data['department'], # 2 직군 - gpt
                                         form.cleaned_data['rank'], # 3 직급 - gpt
-                                        form.cleaned_data['rank'], # 4 상황 - gpt
+                                        form.cleaned_data['topic_label'], # 4 상황 - gpt
+                                        ))  
+                                    })
+            request.session["persona_set"].append({
+                                    "role" : "assistant", 
+                                    "content" : translate( "네! 저는 지금부터 {0}세인 {1} {2}{3}이며, {4} 팀원의 역할을 수행합니다. 안녕하세요! 팀장님.".format(
+                                        form.cleaned_data['age'], # 0 나이 - gpt
+                                        form.cleaned_data['gender'], # 1 성별 - gpt
+                                        form.cleaned_data['department'], # 2 직군 - gpt
+                                        form.cleaned_data['rank'], # 3 직급 - gpt
+                                        form.cleaned_data['topic_label'], # 4 상황 - gpt
                                         ))  
                                     })
             persona_id = Persona.objects.filter(nickname=request.user.nickname).last()
@@ -420,7 +430,7 @@ def classification_model(new_sentence, new_voice):
   # wav 파일 불러오기
   model_path = os.path.join(settings.BASE_DIR, 'rpg/analysis_model/')
   new_wav = new_voice # wav 파일 경로
-  
+  scaler = StandardScaler()
   # 데이터 전처리 함수 불러오기
   with open('voice_scaler.pkl', 'rb') as f:
     v_scaler = pickle.load(f)
@@ -438,14 +448,18 @@ def classification_model(new_sentence, new_voice):
     new_df = pd.concat([new_voice, new_sent], axis=1)
 
     # read voice training data
-    voice_df = pd.read_csv(os.path.join(model_path, '230621_voice_df.csv'))
+    # voice_df = pd.read_csv(os.path.join(model_path, '230628_voice_df.csv'))
+    # v_scaler = scaler.fit(voice_df)
+    # with open('voice_scaler.pkl', 'wb') as f:
+    #     pickle.dump(v_scaler, f)
+    
     # 새로운 데이터 전처리
     X_test = txt_embed.transform(new_df) # extract text embedding vector
     x_test = v_scaler.transform(X_test)
 #-----------------------------------------------------------------------#
     # 긍정 부정 분류 모델 불러옴, 긍부정 예측
    
-    model1 = load_model(os.path.join(model_path, '230621_voice_model1.h5'))
+    model1 = load_model(os.path.join(model_path, '230628_voice_model1.h5'))
     y_pred1 = model1.predict(x_test, verbose=0).round()
 
     pred1_df = pd.DataFrame(x_test)
@@ -463,7 +477,7 @@ def classification_model(new_sentence, new_voice):
           x_test2 = pd.DataFrame(x_test2).drop(voice_cols, axis=1) # delete voice feature vector
 
       # 2차 분류 모델 불러옴, 최종 분류
-      model2 = load_model(os.path.join(model_path, '230621_result_model2.h5'))
+      model2 = load_model(os.path.join(model_path, '230628_result_model2.h5'))
       y_fin = np.argmax(model2.predict(x_test2, verbose=0), axis=1)
 
       pred_pos['predict'] = np.vectorize(output_dic.get)(y_fin)
@@ -474,7 +488,12 @@ def classification_model(new_sentence, new_voice):
   else: # wav 없거나 3문장 이상이면 text만 사용
     new_sents.columns = ['sentence']
     
-    text_df = pd.read_csv(os.path.join(model_path, '230621_text_df.csv'))
+    # text_df = pd.read_csv(os.path.join(model_path, '230628_text_df.csv'))
+    
+    scaler = StandardScaler()
+    # t_scaler = scaler.fit(text_df)
+    # with open('text_scaler.pkl', 'wb') as f:
+    #     pickle.dump(t_scaler, f)
 
     # 새로운 데이터 전처리
     X_test = txt_embed.transform(new_sents) # extract text embedding vector
@@ -482,7 +501,7 @@ def classification_model(new_sentence, new_voice):
 
     # 긍정 부정 분류 모델 불러옴, 긍부정 예측
     
-    model1 = load_model(os.path.join(model_path, '230621_text_model1.h5'))
+    model1 = load_model(os.path.join(model_path, '230628_text_model1.h5'))
     y_pred1 = model1.predict(x_test, verbose=0).round()
 
     pred1_df = pd.DataFrame(x_test)
@@ -496,7 +515,7 @@ def classification_model(new_sentence, new_voice):
 
     if len(x_test2) > 0:
       # 2차 분류 모델 불러옴, 최종 분류
-      model2 = load_model(os.path.join(model_path, '230621_result_model2.h5'))
+      model2 = load_model(os.path.join(model_path, '230628_result_model2.h5'))
       y_fin = np.argmax(model2.predict(x_test2, verbose=0), axis=1)
 
       pred_pos['predict'] = np.vectorize(output_dic.get)(y_fin)
@@ -545,7 +564,6 @@ def score_count(p_id, nickname):
     l = len(df['predict'])
     score = 0
     for i in df['predict']:
-        print(i , "2222222222222222222222222222222")
         if i == "관점변화" or i == "인정" or i == "존중" :
             score += 2
         elif i == "판단" :

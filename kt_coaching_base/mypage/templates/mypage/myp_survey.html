@@ -15,6 +15,13 @@
         font-size: 30px;
     }
 
+    h3 {
+        text-align: left;
+        width: 80%;
+        padding-left: 21px;
+        font-size: 22px;
+    }
+
     .content-container {
         display: flex;
         flex-direction: column;
@@ -52,12 +59,13 @@
     .box_result {
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: top;
         font-size: 23px;
         font-weight: 520;
         width: 1400px;
         height: 100%;
-        padding-right: 50px;
+        padding-right: 7px;
+        padding-left: 7px;
         margin-left: 15px;
         border-radius: 20px;
         background-color: white;
@@ -70,7 +78,6 @@
         padding: 10px 30px;
         margin-top: 10px;
         font-size: 16px;
-        border-bottom: 3px solid #BBB;
     }
     
     .menu-item:last-child {
@@ -78,7 +85,7 @@
     }
 
     .selected {
-        background-color: #DBDBDB;
+        background-color: #CADDF9;
     }
 
     .back_button {
@@ -99,13 +106,177 @@
     .back_button:hover {
         background-color: #134971;
     }
+
+    .box_result_graph {
+        background-color: #F1F1F1;
+        width: calc(1050px - 40px);
+        height: 180px;
+        border-radius: 15px;
+        margin-top: 20px;
+        margin-left: 30px;
+        padding: 20px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+
+    .box_result_grow {
+        font-size: 22px;
+        font-weight: 600;
+        font-family: 'Noto Sans KR', sans-serif;
+        margin-top: 1px;
+    }   
+    
+    .box_result_grow_info {
+        font-size: 14px;
+        font-weight: 400;
+        font-family: 'Noto Sans KR', sans-serif;
+        margin: 3px 2px;
+        margin-bottom: 2px;
+    }
+
+    .text-container {
+        text-align: left;
+        max-width: 80%;
+    }    
+
+    .box_result_graph_section {
+        background-color: #FFFFF;
+        width: calc(1147px - 47px);
+        height: 180px;
+        border-radius: 15px;
+        margin-top: 20px;
+        margin-left: 20px;
+        padding-top: 20px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+    }
+
+    .box_result_graph_sections {
+        background-color: #F1F1F1;
+        width: 240px;
+        height: 230px;
+        border-radius: 15px;
+        margin-top: 5px;
+        margin-right: 30px;
+
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
 </style>
 
 <h1>설문 요청 결과</h1>
-<button class="back_button" onclick="window.history.back();">←</button>
+<button class="back_button" onclick="window.history.back();">&lt</button>
 <div class="content-container">
     <div class="box-container">
         <div class="box_menu">
+            <h3>자가진단 결과</h3>
+            <div id="simulation0" class="menu-item selected" onclick="changePage(0)">자가진단 설문 결과</div>
+            <h3>설문 요청 결과</h3>
+            <div id="simulation1" class="menu-item" onclick="changePage(1)">코칭 시뮬레이션 1</div>
+            <div id="simulation2" class="menu-item" onclick="changePage(2)">코칭 시뮬레이션 2</div>
+            <div id="simulation3" class="menu-item" onclick="changePage(3)">코칭 시뮬레이션 3</div>
+        </div>
+        <div class="box_result">
+            {% comment %} <div id="page0">
+                <div class="box_result_graph">
+                        <p class="box_result_grow">GROW 코칭 모델기반 설문결과</p>
+                        <p class="box_result_grow_info">코칭이란 과거의 실수 보다는 미래의 가능성에 초점을 맞추는 것입니다.</p>
+                        <p class="box_result_grow_info">GROW 모델은 Goal, Reality, Options, Will의 약자입니다.</p>
+                    <div class="text-container">
+                        <p class="box_result_grow_info">- Goal : 목표 - 단기 및 장기 목표 정의</p>
+                        <p class="box_result_grow_info">- Reality : 현실 - 현재 상황 및 문제 탐색</p>
+                        <p class="box_result_grow_info">- Options : 옵션 - 해결 가능한 옵션 및 평가</p>
+                        <p class="box_result_grow_info">- Will : 의지 - 실행할 업무와 시기 설정</p>
+                    </div>
+                </div> 
+                <div class="box_result_graph_section">
+                    <div class="box_result_graph_sections">
+                    </div>
+                    <div class="box_result_graph_sections">
+                    </div>
+                    <div class="box_result_graph_sections">
+                    </div>
+                    <div class="box_result_graph_sections">
+                    </div> 
+                </div>                                           
+            </div>
+            <div id="page1">
+                <div class="box_result_graph">
+                    <p class="box_result_grow">GROW 코칭 모델기반 설문결과</p>
+                    <p class="box_result_grow_info">코칭이란 과거의 실수 보다는 미래의 가능성에 초점을 맞추는 것입니다.</p>
+                    <p class="box_result_grow_info">GROW 모델은 Goal, Reality, Options, Will의 약자입니다.</p>
+                <div class="text-container">
+                    <p class="box_result_grow_info">- Goal : 목표 - 단기 및 장기 목표 정의</p>
+                    <p class="box_result_grow_info">- Reality : 현실 - 현재 상황 및 문제 탐색</p>
+                    <p class="box_result_grow_info">- Options : 옵션 - 해결 가능한 옵션 및 평가</p>
+                    <p class="box_result_grow_info">- Will : 의지 - 실행할 업무와 시기 설정</p>
+                </div>
+            </div> 
+            <div class="box_result_graph_section">
+                <div class="box_result_graph_sections">
+                </div>
+                <div class="box_result_graph_sections">
+                </div>
+                <div class="box_result_graph_sections">
+                </div>
+                <div class="box_result_graph_sections">
+                </div> 
+            </div>
+            </div>
+            <div id="page2">
+                <div class="box_result_graph">
+                    <p class="box_result_grow">GROW 코칭 모델기반 설문결과</p>
+                    <p class="box_result_grow_info">코칭이란 과거의 실수 보다는 미래의 가능성에 초점을 맞추는 것입니다.</p>
+                    <p class="box_result_grow_info">GROW 모델은 Goal, Reality, Options, Will의 약자입니다.</p>
+                <div class="text-container">
+                    <p class="box_result_grow_info">- Goal : 목표 - 단기 및 장기 목표 정의</p>
+                    <p class="box_result_grow_info">- Reality : 현실 - 현재 상황 및 문제 탐색</p>
+                    <p class="box_result_grow_info">- Options : 옵션 - 해결 가능한 옵션 및 평가</p>
+                    <p class="box_result_grow_info">- Will : 의지 - 실행할 업무와 시기 설정</p>
+                </div>
+            </div> 
+            <div class="box_result_graph_section">
+                <div class="box_result_graph_sections">
+                </div>
+                <div class="box_result_graph_sections">
+                </div>
+                <div class="box_result_graph_sections">
+                </div>
+                <div class="box_result_graph_sections">
+                </div> 
+            </div>
+            </div>
+            <div id="page3">
+                <div class="box_result_graph">
+                    <p class="box_result_grow">GROW 코칭 모델기반 설문결과</p>
+                    <p class="box_result_grow_info">코칭이란 과거의 실수 보다는 미래의 가능성에 초점을 맞추는 것입니다.</p>
+                    <p class="box_result_grow_info">GROW 모델은 Goal, Reality, Options, Will의 약자입니다.</p>
+                <div class="text-container">
+                    <p class="box_result_grow_info">- Goal : 목표 - 단기 및 장기 목표 정의</p>
+                    <p class="box_result_grow_info">- Reality : 현실 - 현재 상황 및 문제 탐색</p>
+                    <p class="box_result_grow_info">- Options : 옵션 - 해결 가능한 옵션 및 평가</p>
+                    <p class="box_result_grow_info">- Will : 의지 - 실행할 업무와 시기 설정</p>
+                </div>
+            </div> 
+            <div class="box_result_graph_section">
+                <div class="box_result_graph_sections">
+                </div>
+                <div class="box_result_graph_sections">
+                </div>
+                <div class="box_result_graph_sections">
+                </div>
+                <div class="box_result_graph_sections">
+                </div> 
+            </div>
+            </div> {% endcomment %}
             {% for persona in personas %}
                 <div class="menu-item" onclick="changePage('{{ persona.id }}')">{{ persona.department }} - {{ persona.rank }}</div>
             {% endfor %}
@@ -163,7 +334,7 @@
     }
 
     window.onload = function() {
-        changePage(1);
+        changePage(0);
     }
 </script>
 {% endblock %}

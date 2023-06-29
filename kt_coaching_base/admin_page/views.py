@@ -8,7 +8,7 @@ import pandas as pd
 import os
 import json
 
-def admin_page(request):
+def admin_persona(request):
     # Rank 종류별 갯수
     rank_counts = list(Persona.objects.values('rank').annotate(rank_count=Count('rank')))
 
@@ -33,6 +33,7 @@ def admin_page(request):
             When(age__range=(40, 49), then=Value('40대')),
             When(age__range=(50, 59), then=Value('50대')),
             When(age__range=(60, 69), then=Value('60대')),
+            
             # 추가적인 연령대 범위를 필요에 따라 추가해주세요
             default=Value('기타'),
             output_field=CharField(),
@@ -71,5 +72,12 @@ def admin_page(request):
         'career_counts': json.dumps(list(career_counts)),
         'age_counts': json.dumps(list(age_counts)),
     }
+            
+    return render(request, "admin_page/admin_persona.html", context)
 
-    return render(request, "admin_page/admin_page.html", context)
+
+def admin_page(request):
+    return render(request, "admin_page/admin_page.html")
+
+def admin_user(request):
+    return render(request, "admin_page/admin_user.html")

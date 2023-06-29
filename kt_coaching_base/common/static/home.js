@@ -27,3 +27,18 @@ $(document).ready(function() {
     }, 500);
     return false;
   });
+
+
+// 처음으로 버튼 클릭 이벤트 처리
+document.addEventListener(function () {
+  const goHomeButton = document.getElementById('goHomeButton');
+  goHomeButton.addEventListener('click', function () {
+    window.location.href = `${window.origin}/`;
+  });
+});
+
+$(function() {
+	$("#modal").modal("show");
+});
+
+  
