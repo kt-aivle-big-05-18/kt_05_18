@@ -41,6 +41,20 @@ for(i=0;i<linkCollapse.length;i++) {
 // =====================================================================
 // 시뮬레이션 메인
 $(document).ready(function() {
+    updateChatUserProfileImage();
+});
+
+function updateChatUserProfileImage() {
+    let images = document.querySelectorAll(".user_profile");
+    
+    for (let img of images) {
+        img.src = document.getElementById("myp_info_image").src;
+    }
+}
+
+
+
+$(document).ready(function() {
     var chatContainer = $("#chat-container");
 
     $("#send-btn").click(function() {
@@ -59,10 +73,12 @@ $(document).ready(function() {
 
     function sendMessage() {
         var userInput = $("#user-input").val();
+        
         if (userInput !== "") {
+            let userImageSrc = document.getElementById("myp_info_image").src;
             chatContainer.append("<div class='user_message'>" 
             + userInput
-            + "<img class='user_profile' src='/static/img/won.png' alt='사용자이미지'>"
+            + "<img class='user_profile' src='" + userImageSrc + "' alt='사용자이미지'>"
             + "</div>");
             scrollToBottom();
 

@@ -12,7 +12,9 @@
                 <div id="nav" class="nav-links">
                     <div class="menu-group">
                         <a href="{% url 'rpg:persona' %}" class="menu-header{% if request.resolver_match.url_name == 'persona' %} active-menu{% endif %}">대화 실습</a>
-                        {% comment %} <a href="{% url 'analysis:intro' %}" class="menu-header{% if request.path == 'home_view' %} active-menu{% endif %}">Analyze</a> {% endcomment %}
+                        <a href="{% url 'mypage:myp_survey' %}" class="menu-header{% if request.resolver_match.url_name == 'myp_survey' %} active-menu{% endif %}">대화 내역 보기</a>
+                        <a href="{% url 'analysis:result' %}" class="menu-header{% if request.resolver_match.url_name == 'result' %} active-menu{% endif %}">결과 분석</a>
+                        <a href="{% url 'mypage:myp_self' %}" class="menu-header{% if request.resolver_match.url_name == 'myp_self' %} active-menu{% endif %}">자가진단서비스</a>
                         <a href="{% url 'community:commu_list' %}" class="menu-header{% if request.resolver_match.url_name == 'commu_list' %} active-menu{% endif %}">커뮤니티</a>
                     </div>
                 </div>
