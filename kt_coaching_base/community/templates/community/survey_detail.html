@@ -16,7 +16,7 @@
     <form id="ratingForm" method="POST" action="{% url 'community:survey_detail' survey.id %}">
         {% csrf_token %}
         {% for item in checklist %}
-        <div>
+        <div class="rating-group">
             <label>{{ item }}</label>
             <input type="radio" name="rating_{{ forloop.counter0 }}" value="1">매우 그렇지 않다
             <input type="radio" name="rating_{{ forloop.counter0 }}" value="2">그렇지 않다
@@ -32,4 +32,25 @@
     </form>
 
     <a href="{% url 'community:commu_list' %}">목록</a>
+
+    <script>
+        document.getElementById("ratingForm").addEventListener("submit", function(event) {
+            var checklist = document.getElementsByClassName("rating-group");
+            for (var i = 0; i < checklist.length; i++) {
+                var radios = checklist[i].querySelectorAll("input[type='radio']");
+                var checked = false;
+                for (var j = 0; j < radios.length; j++) {
+                    if (radios[j].checked) {
+                        checked = true;
+                        break;
+                    }
+                }
+                if (!checked) {
+                    event.preventDefault(); // 폼 제출 막기
+                    alert("모든 항목을 완성해주세요.");
+                    break;
+                }
+            }
+        });
+    </script>
 {% endblock %}

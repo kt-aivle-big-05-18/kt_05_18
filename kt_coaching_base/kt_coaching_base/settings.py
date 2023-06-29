@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
+# from captcha.helpers import image_url, hidden_field
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,13 +27,14 @@ SECRET_KEY = "django-insecure-fem(l*&i+f$!g2mm$@9cbsaq#03n80gw3l^jom!frk2&m#1@oj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 LOGIN_URL = '/account/login/'
 
 # Application definition
 
 INSTALLED_APPS = [
+    "captcha",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -138,3 +140,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+CAPTCHA_FONT_SIZE = 30  # 원하는 폰트 크기로 설정
+CAPTCHA_LENGTH = 6  # 원하는 캡챠 길이로 설정
+CAPTCHA_IMAGE = 'captcha.image'
+CAPTCHA_HIDDEN_FIELD = 'captcha.field'

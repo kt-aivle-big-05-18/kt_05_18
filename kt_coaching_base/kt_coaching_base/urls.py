@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.shortcuts import render
+from captcha import urls as captcha_urls
 from rpg import views
 
 urlpatterns = [
@@ -28,4 +29,5 @@ urlpatterns = [
     path("analysis/", include("analysis.urls")),
     path("community/", include("community.urls")),
     path("admin_page/", include("admin_page.urls")),
+    path('captcha/', include(captcha_urls)),
 ]
