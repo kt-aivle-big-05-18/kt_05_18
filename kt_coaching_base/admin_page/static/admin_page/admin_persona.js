@@ -15,13 +15,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }]
         },
         options: {
-            responsive: true,
+            responsive: false,
             plugins: {
                 legend: {
                     display: false
                 },
                 title: {
-                    display: true,
+                    display: false,
                     text: '성별 비율'
                 },
                 datalabels: {
@@ -73,17 +73,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
             labels: ageLabels,
             datasets: [{
                 data: ageData,
-                backgroundColor: 'rgba(143, 170, 220, 1)',
+                backgroundColor: 'rgba(220, 170, 220, 1)',
             }]
         },
         options: {
-            responsive: true,
+            responsive: false,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     display: false
                 },
                 title: {
-                    display: true,
+                    display: false,
                     text: '선택한 연령대',
                 },
                 datalabels: {
@@ -113,7 +114,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                         }
                     },
                     autoSkip: true, // 데이터에 맞게 눈금 간격 자동 조정
-                    maxTicksLimit: 10 // 최대 눈금 개수 제한 (원하는 값으로 조정)
+                    maxTicksLimit: 20 // 최대 눈금 개수 제한 (원하는 값으로 조정)
                 },
             },
             animation: {
@@ -148,10 +149,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
            }]
        },
        options: {
-           responsive: true,
+           responsive: false,
            plugins: {
                title: {
-                   display: true,
+                   display: false,
                    text: '선택한 직급'
                },
                datalabels: {
@@ -194,10 +195,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
            }]
        },
        options: {
-           responsive: true,
+           responsive: false,
            plugins: {
                title: {
-                   display: true,
+                   display: false,
                    text: '선택한 직무'
                },
                datalabels: {

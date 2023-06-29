@@ -200,11 +200,11 @@ def rpg(request):
         convert_webm_to_wav(user_voice_url, wav_voice_url)
         
         print(user_voice_url)
-        # ---------------------- AI 전처리 / AI prediction -----------------------#
+        # ----------------------------------- AI 전처리 / AI prediction ------------------------------------#
         m_df = classification_model(message, wav_voice_url)
         m_df_url = os.path.join(base_dir, 'rpg/static/df_csv/{0}_{1}.csv'.format(p_id, count))
         m_df.to_csv(m_df_url, index=False)
-        # ------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------#
         
         # 유저 메세지내용, 음성녹음 내용을 테이블에 저장
         user_message_obj = Message(
@@ -268,9 +268,9 @@ def rpg(request):
         request.session['messages'] = request.session.get("persona_set") # 초기 패르소나 설정을 메세지에 추가하기
         return render(request, "rpg/rpg.html")
 
-#----------------------------------------------------------------------------#
+#-----------------------------------------------------------------------------------------#
 # 4. tts
-#----------------------------------------------------------------------------#
+#-----------------------------------------------------------------------------------------#
 
 def generate_speech(text, voice, gender, p_id, count):
     # 클라이언트 인스턴스화
@@ -431,6 +431,7 @@ def classification_model(new_sentence, new_voice):
   model_path = os.path.join(settings.BASE_DIR, 'rpg/analysis_model/')
   new_wav = new_voice # wav 파일 경로
   scaler = StandardScaler()
+  
   # 데이터 전처리 함수 불러오기
   with open('voice_scaler.pkl', 'rb') as f:
     v_scaler = pickle.load(f)
@@ -451,7 +452,7 @@ def classification_model(new_sentence, new_voice):
     # voice_df = pd.read_csv(os.path.join(model_path, '230628_voice_df.csv'))
     # v_scaler = scaler.fit(voice_df)
     # with open('voice_scaler.pkl', 'wb') as f:
-    #     pickle.dump(v_scaler, f)
+    # pickle.dump(v_scaler, f)
     
     # 새로운 데이터 전처리
     X_test = txt_embed.transform(new_df) # extract text embedding vector
@@ -500,7 +501,6 @@ def classification_model(new_sentence, new_voice):
     x_test = t_scaler.transform(X_test)
 
     # 긍정 부정 분류 모델 불러옴, 긍부정 예측
-    
     model1 = load_model(os.path.join(model_path, '230628_text_model1.h5'))
     y_pred1 = model1.predict(x_test, verbose=0).round()
 
