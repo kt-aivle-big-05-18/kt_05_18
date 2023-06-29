@@ -172,13 +172,21 @@
                         <input class="signup_content_detail_birth_box" placeholder="나이를 입력하세요." type="number" name="age" id="id_age" required>
                           {% comment %} <select class="signup_content_detail_birth_box" name="age" id="id_age" required>
                               <option>출생 연도</option>
-                              <!-- <option v-for="yearindex in year">{{yearindex}}</option> -->
-                          </select>
+                              {% for year in range(2004, 1899, -1) %}
+                                <option>{{ year }}</option>
+                              {% endfor %}
+                            </select>
                           <select class="signup_content_detail_birth_box" id="birth-month">
                               <option>월</option>
+                              {% for month in range(1, 13) %}
+                                  <option>{{ month }}</option>
+                              {% endfor %}
                           </select>
                           <select class="signup_content_detail_birth_box" id="birth-day">
                               <option>일</option>
+                              {% for day in range(1, 32) %}
+                                  <option>{{ day }}</option>
+                              {% endfor %}
                           </select> {% endcomment %}
                       </div>
 

@@ -43,6 +43,47 @@ for(i=0;i<linkCollapse.length;i++) {
 $(document).ready(function() {
     var chatContainer = $("#chat-container");
 
+    // Persona 리마인드 버튼 (충영)
+    $("#remind-btn").click(function() {
+        PersonaRemind();
+    });
+
+    function PersonaRemind() {
+        var remind = "역할 리마인드"
+        chatContainer.append("<div class='user_message'>" 
+        + remind
+        + "<img class='user_profile' src='/static/img/won.png' alt='사용자이미지'>"
+        + "</div>");
+        scrollToBottom();
+
+        $.ajax({
+            url: "/rpg/rpg_start/",
+            type: "POST",
+            data: {
+                message: remind
+            },
+            success: function(response) {
+                chatContainer.append("<div class='assistant_message'>"
+                + "<div class='assistant_message_left'>"
+                + "<img class='assistant_profile' src='/static/img/young_male.png' alt='페르소나이미지'>"
+                + response.message
+                + "</div>"
+                + "<ion-icon class='assistant_message_icon' name='volume-medium-outline'></ion-icon>"
+                + "</div>");
+            
+                chatContainer.append(audioElement);
+                scrollToBottom();
+            },
+            error: function(xhr, errmsg, err) {
+                console.log(errmsg);
+                chatContainer.append(errmsg);
+            }
+        });
+
+        $("#user-input").val("");
+    }
+
+
     $("#send-btn").click(function() {
         sendMessage();
     });
@@ -60,7 +101,10 @@ $(document).ready(function() {
     function sendMessage() {
         var userInput = $("#user-input").val();
         if (userInput !== "") {
-            chatContainer.append("<div class='user_message'> " + userInput + "</div>");
+            chatContainer.append("<div class='user_message'>" 
+            + userInput
+            + "<img class='user_profile' src='/static/img/won.png' alt='사용자이미지'>"
+            + "</div>");
             scrollToBottom();
 
             $.ajax({
@@ -70,27 +114,31 @@ $(document).ready(function() {
                     message: userInput
                 },
                 success: function(response) {
-                    chatContainer.append("<div class='assistant_message'>" + response.message + "</div>");
+                    chatContainer.append("<div class='assistant_message'>"
+                    + "<div class='assistant_message_left'>"
+                    + "<img class='assistant_profile' src='/static/img/young_male.png' alt='페르소나이미지'>"
+                    + response.message
+                    + "</div>"
+                    + "<ion-icon class='assistant_message_icon' name='volume-medium-outline'></ion-icon>"
+                    + "</div>");
                     document.getElementById('score').innerHTML = response.score + '점';
-
+                
                     var audioElement = document.createElement("audio");
                     audioElement.src = "data:audio/wav;base64," + response.voice;
                     audioElement.id = "myAudio";
-                    
-                    var audioControlButton = document.createElement("button");
-                    audioControlButton.innerHTML = "Play Audio";
-                    audioControlButton.onclick = function() {
+                
+                    var volumeIcon = document.getElementsByClassName('assistant_message_icon')[0];
+                    volumeIcon.onclick = function() {
                         if (audioElement.paused) {
                             audioElement.play();
-                            this.innerHTML = "Stop Audio";
+                            this.name = 'volume-high-outline';
                         } else {
                             audioElement.pause();
                             audioElement.currentTime = 0;
-                            this.innerHTML = "Play Audio";
+                            this.name = 'volume-medium-outline';
                         }
                     };
-                    
-                    chatContainer.append(audioControlButton);
+                
                     chatContainer.append(audioElement);
                     scrollToBottom();
                 },
@@ -129,8 +177,8 @@ $(document).ready(function() {
                 if (!isRecording) {
                     mediaRecorder.start();
                     isRecording = true;
-                    record.style.background = "#BDF2F6";
-                    record.style.color = "black";
+                    // record.style.background = "#BDF2F6";
+                    record.style.color = "#BDF2F6";
                 } else {
                     mediaRecorder.stop();
                     isRecording = false;

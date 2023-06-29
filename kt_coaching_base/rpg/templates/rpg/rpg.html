@@ -1,5 +1,21 @@
-{% extends "base.html" %}
+{% comment %} {% extends "base.html" %} {% endcomment %}
 {% load static %}
+
+<!-- {% block headers %}
+<div class="footer">
+    <div style="display: inline;">
+        {% comment %} href는 아직 구현 안 됨 {% endcomment %}
+        <a href="/service-intro/" class="footer_text">서비스 소개</a>
+        <a href="/about-us/" class="footer_text">About us</a>
+        <a href="/privacy-policy/" class="footer_text">개인정보처리방침</a>
+        <a href="/partner-inquiry/" class="footer_text">제휴문의</a>
+        <a href="/customer-service/" class="footer_text">고객센터</a>
+    </div>
+    <div>
+        <a href="/mobile-version/" class="mobile-button">모바일 버전으로 보기</a>
+    </div>
+</div>
+{% endblock %} -->
 
 {% block content %}
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,8 +41,8 @@
         <a href="#" class="nav__logo">KT coaching</a>
       </div>
       <div class="nav__btn">
+        <ion-icon name="add-circle-outline" class="nav__icon"></ion-icon>
         <button class="new_chat_btn">
-          <ion-icon name="add-circle-outline"></ion-icon>
           <div>New Chat</div>
         </button>
       </div>
@@ -46,7 +62,8 @@
             </ul>
         </div>
       </div>
-      <div class="nav__submit">
+      <div class="nav__submit collapse">
+        <ion-icon name="checkbox-outline" class="nav__icon"></ion-icon>
         <button class="submit_btn" id="end_btn">SUBMIT</button>
       </div>
   </nav>
@@ -66,11 +83,16 @@
         {% csrf_token %}
         <div class="rpg_bottom">
             <div class="rpg_input_section">
-                <img class="rpg_record_icon" id="record" src="/static/img/mice.png" alt="녹음아이콘">
+                {% comment %} <img class="rpg_record_icon" id="record" src="/static/img/mice.png" alt="녹음아이콘"> {% endcomment %}
+                <ion-icon name="mic-circle-outline" class="rpg_record_icon" id="record"></ion-icon>
+                {% comment %} <ion-icon name="mic-off-outline"></ion-icon> {% endcomment %}
                 {% comment %} <img class="rpg_stop_icon" id="stop" src="/static/img/check.png" alt="중지아이콘"> {% endcomment %}
                 <input class="rpg_input_container" type="text" id="user-input" placeholder="이곳에 입력하세요.">
-                <img class="rpg_send_icon" id="send-btn" src="/static/img/send.png" alt="전송아이콘">
-            </div>
+                {% comment %} <img class="rpg_send_icon" id="send-btn" src="/static/img/send.png" alt="전송아이콘"> {% endcomment %}
+                <ion-icon name="send-outline" class="rpg_send_icon" id="send-btn"></ion-icon>
+                {% comment %} 충영 {% endcomment %}
+                <ion-icon name="construct-outline" class="persona_remind_icon" id="remind-btn"></ion-icon>
+              </div>
             {% comment %} <p>최근 녹음 재생</p>
             <button id="sound-clips">재생</button>
             <button class="rpg_end_btn" id="end_btn">실습종료</button> {% endcomment %}

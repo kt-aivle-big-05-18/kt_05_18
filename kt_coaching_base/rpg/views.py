@@ -134,12 +134,12 @@ def persona(request):
             request.session['visited_persona'] = True
             request.session.get("persona_set").append({
                                     "role" : "user", 
-                                    "content" : translate( "다음 대화부터 당신은 팀장님과 대화하는 {0}세인 {1} {2}{3}입니다. 당신은 {4} 상황에서 팀장님과 상담을 시작합니다.".format(
+                                    "content" : translate( "다음 대화부터 당신은 팀장님과 대화하는 {0}세인 {1} {2}{3}입니다. 당신은 {4} 상황입니다. 당신은 절대로 역할에서 벗어나지 않습니다. 대답은 짧게 합니다.".format(
                                         form.cleaned_data['age'], # 0 나이 - gpt
                                         form.cleaned_data['gender'], # 1 성별 - gpt
                                         form.cleaned_data['department'], # 2 직군 - gpt
                                         form.cleaned_data['rank'], # 3 직급 - gpt
-                                        form.cleaned_data['rank'], # 4 상황 - gpt
+                                        form.cleaned_data['topic_label'], # 4 상황 - gpt
                                         ))  
                                     })
             persona_id = Persona.objects.filter(nickname=request.user.nickname).last()
@@ -166,6 +166,7 @@ def convert_webm_to_wav(input_file, output_file): #webm wav로 바꾸는 코드
     command = ['ffmpeg', '-i', input_file, output_file]
     subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
+
 def rpg(request):
     if len(request.session.get("persona_set")) == 0 :
         form = RegisterPersona(request.POST or None)
@@ -178,83 +179,97 @@ def rpg(request):
     # HTTP 요청이 POST 방식일 경우
     if request.method == "POST":
         message = request.POST.get("message") # 사용자가 입력한 한국어 메세지
-        
-        # 번역된 사용자 입력 메세지를 messages에 추가
-        request.session.get('messages').append({"role": "user", "content": translate(message)})
-        count = request.session.get("count") # url 경로 저장을 위한 대화 카운트 설정
-        user_voice_url = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.webm'.format(p_id, count))
-        wav_voice_url = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.wav'.format(p_id, count))
-        
-        convert_webm_to_wav(user_voice_url, wav_voice_url)
-        
-        print(user_voice_url)
-        # ---------------------- AI 전처리 / AI prediction -----------------------#
-        # m_df = classification_model(message, wav_voice_url)
-        # m_df_url = os.path.join(base_dir, 'rpg/static/df_csv/{0}_{1}.csv'.format(p_id, count))
-        # m_df.to_csv(m_df_url, index=False)
-        # # ------------------------------------------------------------------------#
-        
-        # 유저 메세지내용, 음성녹음 내용을 테이블에 저장
-        user_message_obj = Message(
-            name = request.user.nickname,
-            persona = Persona.objects.get(id=int(p_id)),
-            content = request.POST.get("message"),
-            voice_url = user_voice_url,
-            # csv_url = m_df_url
-        )
-        user_message_obj.save()
-        
-        request.session["count"] += 1
-        count = request.session.get("count")
-        
-        request.session['score'] = score_count(p_id, request.user.nickname)
-        request.session['scores'].append(request.session['score'])
-        # OpenAI의 챗봇 API에 메시지 리스트를 전달하고 응답을 받아오기
-        messages = request.session.get('messages')
-        messages[1]['content'] += " Please answer within 3 sentences."
-        print(messages)
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=messages
-        )
-        
-        # 번역된 챗봇의 메시지를 메시지 리스트에 추가
-        request.session.get('messages').append({"role": "assistant", "content": response.choices[0].message.content})
-        trans_ = retranslate(response.choices[0].message.content) # 한국어 번역한 chatgpt 답변 메세지
-        
-        voice_select = request.session.get('voice')  # 선택한 음성 옵션 가져오기
-        if voice_select=='ko-KR-Neural2-A' or voice_select=='ko-KR-Neural2-B' or voice_select=='ko-KR-Wavenet-B':
-            gender_select = 'FEMALE'
-            generate_speech(trans_, voice_select, gender_select, p_id , count)  # 음성 파일 생성 함수 호출
+        # 충영
+        if message == "역할 리마인드":
+            request.session.get('messages').append({"role": "user", "content": request.session.get('messages')[0]['content']})
+            message = request.session.get('messages')
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=message
+            )    
+            data = { # json형식으로 respone 해줄 데이터
+                'message' : "아이코! 제가 잠시 멍때렸습니다! 다시 집중하겠습니다!",
+            }
             
-        elif voice_select == 'ko-KR-Standard-D' or voice_select=='ko-KR-Wavenet-C' or voice_select=='ko-KR-Standard-C':
-            gender_select = 'MALE'
-            generate_speech(trans_, voice_select, gender_select, p_id, count)  # 음성 파일 생성 함수 호출
-        
-        # 답장 온거 저장된 wav파일 경로
-        path_gpt_voice = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.wav'.format(p_id, count))
-        
-        # gpt 답장 메세지 DB 전송
-        gpt_response_obj = Message(
-            name="gpt",
-            persona = Persona.objects.get(id=int(p_id)),
-            content = trans_,
-            voice_url = path_gpt_voice
-        )
-        gpt_response_obj.save()
-        
-        # 음성 파일의 경로를 반환하는 HttpResponse 객체 생성
-        with open(path_gpt_voice, 'rb') as voice_file:
-            encoded_voice = base64.b64encode(voice_file.read()).decode('utf-8')
+            print(request.session.get('messages'))
+            return JsonResponse(data)
+        else:
+            # 번역된 사용자 입력 메세지를 messages에 추가
+            request.session.get('messages').append({"role": "user", "content": translate(message) + " Please answer briefly."})
+            count = request.session.get("count") # url 경로 저장을 위한 대화 카운트 설정
+            user_voice_url = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.webm'.format(p_id, count))
+            wav_voice_url = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.wav'.format(p_id, count))
+            
+            convert_webm_to_wav(user_voice_url, wav_voice_url)
+            
+            print(user_voice_url)
+            # ---------------------- AI 전처리 / AI prediction -----------------------#
+            m_df = classification_model(message, wav_voice_url)
+            m_df_url = os.path.join(base_dir, 'rpg/static/df_csv/{0}_{1}.csv'.format(p_id, count))
+            m_df.to_csv(m_df_url, index=False)
+            # # ------------------------------------------------------------------------#
+            
+            # 유저 메세지내용, 음성녹음 내용을 테이블에 저장
+            user_message_obj = Message(
+                name = request.user.nickname,
+                persona = Persona.objects.get(id=int(p_id)),
+                content = request.POST.get("message"),
+                voice_url = user_voice_url,
+                csv_url = m_df_url
+            )
+            user_message_obj.save()
+            
+            request.session["count"] += 1
+            count = request.session.get("count")
+            
+            request.session['score'] = score_count(p_id, request.user.nickname)
+            request.session['scores'].append(request.session['score'])
+            
+            # OpenAI의 챗봇 API에 메시지 리스트를 전달하고 응답을 받아오기
+            messages = request.session.get('messages')
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=messages
+            )
+            
+            # 번역된 챗봇의 메시지를 메시지 리스트에 추가
+            request.session.get('messages').append({"role": "assistant", "content": response.choices[0].message.content})
+            trans_ = retranslate(response.choices[0].message.content) # 한국어 번역한 chatgpt 답변 메세지
+            print(request.session.get('messages'))
+            
+            voice_select = request.session.get('voice')  # 선택한 음성 옵션 가져오기
+            if voice_select=='ko-KR-Neural2-A' or voice_select=='ko-KR-Neural2-B' or voice_select=='ko-KR-Wavenet-B':
+                gender_select = 'FEMALE'
+                generate_speech(trans_, voice_select, gender_select, p_id , count)  # 음성 파일 생성 함수 호출
+                
+            elif voice_select == 'ko-KR-Standard-D' or voice_select=='ko-KR-Wavenet-C' or voice_select=='ko-KR-Standard-C':
+                gender_select = 'MALE'
+                generate_speech(trans_, voice_select, gender_select, p_id, count)  # 음성 파일 생성 함수 호출
+            
+            # 답장 온거 저장된 wav파일 경로
+            path_gpt_voice = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.wav'.format(p_id, count))
+            
+            # gpt 답장 메세지 DB 전송
+            gpt_response_obj = Message(
+                name="gpt",
+                persona = Persona.objects.get(id=int(p_id)),
+                content = trans_,
+                voice_url = path_gpt_voice
+            )
+            gpt_response_obj.save()
+            
+            # 음성 파일의 경로를 반환하는 HttpResponse 객체 생성
+            with open(path_gpt_voice, 'rb') as voice_file:
+                encoded_voice = base64.b64encode(voice_file.read()).decode('utf-8')
 
-        data = { # json형식으로 respone 해줄 데이터
-            'message' : trans_,
-            'voice': encoded_voice,
-            'path': "{0}_{1}.wav".format(p_id, count),
-            'score' : "{0}".format(request.session.get('score'))
-        }
-        request.session["count"] += 1 # 음성녹음 이름을 조합을 위한 count + 1
-        return JsonResponse(data)
+            data = { # json형식으로 respone 해줄 데이터
+                'message' : trans_,
+                'voice': encoded_voice,
+                'path': "{0}_{1}.wav".format(p_id, count),
+                'score' : "{0}".format(request.session.get('score'))
+            }
+            request.session["count"] += 1 # 음성녹음 이름을 조합을 위한 count + 1
+            return JsonResponse(data)
     else :
         request.session['messages'] = request.session.get("persona_set") # 초기 패르소나 설정을 메세지에 추가하기
         return render(request, "rpg/rpg.html")
@@ -348,164 +363,164 @@ def transcribe_audio(file_path):
 #---------------------------------------------------------------------------#
 
 #-------- 전처리 함수 정의 ----------#
-# def noise(data):
-#     noise_amp = 0.035*np.random.uniform()*np.amax(data)
-#     data = data + noise_amp*np.random.normal(size=data.shape[0])
-#     return data
+def noise(data):
+    noise_amp = 0.035*np.random.uniform()*np.amax(data)
+    data = data + noise_amp*np.random.normal(size=data.shape[0])
+    return data
 
-# def extract_features(data, sample_rate):
-#     # ZCR
-#     result = np.array([])
-#     zcr = np.mean(librosa.feature.zero_crossing_rate(y=data).T, axis=0)
-#     result=np.hstack((result, zcr)) # stacking horizontally
+def extract_features(data, sample_rate):
+    # ZCR
+    result = np.array([])
+    zcr = np.mean(librosa.feature.zero_crossing_rate(y=data).T, axis=0)
+    result=np.hstack((result, zcr)) # stacking horizontally
 
-#     # Chroma_stft
-#     stft = np.abs(librosa.stft(data))
-#     chroma_stft = np.mean(librosa.feature.chroma_stft(S=stft, sr=sample_rate).T, axis=0)
-#     result = np.hstack((result, chroma_stft)) # stacking horizontally
+    # Chroma_stft
+    stft = np.abs(librosa.stft(data))
+    chroma_stft = np.mean(librosa.feature.chroma_stft(S=stft, sr=sample_rate).T, axis=0)
+    result = np.hstack((result, chroma_stft)) # stacking horizontally
 
-#     # MFCC
-#     mfcc = np.mean(librosa.feature.mfcc(y=data, sr=sample_rate).T, axis=0)
-#     result = np.hstack((result, mfcc)) # stacking horizontally
+    # MFCC
+    mfcc = np.mean(librosa.feature.mfcc(y=data, sr=sample_rate).T, axis=0)
+    result = np.hstack((result, mfcc)) # stacking horizontally
 
-#     # Root Mean Square Value
-#     rms = np.mean(librosa.feature.rms(y=data).T, axis=0)
-#     result = np.hstack((result, rms)) # stacking horizontally
+    # Root Mean Square Value
+    rms = np.mean(librosa.feature.rms(y=data).T, axis=0)
+    result = np.hstack((result, rms)) # stacking horizontally
 
-#     # MelSpectogram
-#     mel = np.mean(librosa.feature.melspectrogram(y=data, sr=sample_rate).T, axis=0)
-#     result = np.hstack((result, mel)) # stacking horizontally
+    # MelSpectogram
+    mel = np.mean(librosa.feature.melspectrogram(y=data, sr=sample_rate).T, axis=0)
+    result = np.hstack((result, mel)) # stacking horizontally
 
-#     return result
+    return result
 
-# def get_features(path):
-#     data, sample_rate = librosa.load(path, duration=2.5, offset=0.0)
+def get_features(path):
+    data, sample_rate = librosa.load(path, duration=2.5, offset=0.0)
 
-#     # without augmentation
-#     res1 = extract_features(data, sample_rate)
-#     result = np.array(res1)
+    # without augmentation
+    res1 = extract_features(data, sample_rate)
+    result = np.array(res1)
 
-#     # data with noise
-#     noise_data = noise(data)
-#     res2 = extract_features(noise_data, sample_rate)
-#     result = np.concatenate((result, res2), axis = 0)
+    # data with noise
+    noise_data = noise(data)
+    res2 = extract_features(noise_data, sample_rate)
+    result = np.concatenate((result, res2), axis = 0)
 
-#     return result
+    return result
 
-# class text_embedding():
-#   def __init__(self, model_name):
-#     self.model_name = model_name
+class text_embedding():
+  def __init__(self, model_name):
+    self.model_name = model_name
 
-#   def fit(self, new_sent, y=None):
-#         return self
+  def fit(self, new_sent, y=None):
+        return self
 
-#   def transform(self, new_sent):
-#         embedding_model = SentenceTransformer(self.model_name)
-#         embedding_vec = embedding_model.encode(new_sent['sentence'])
-#         X_val = np.concatenate((new_sent.drop(['sentence'], axis = 1), embedding_vec), axis = 1)
-#         return X_val
+  def transform(self, new_sent):
+        embedding_model = SentenceTransformer(self.model_name)
+        embedding_vec = embedding_model.encode(new_sent['sentence'])
+        X_val = np.concatenate((new_sent.drop(['sentence'], axis = 1), embedding_vec), axis = 1)
+        return X_val
 
-# ## 문단 > 문장 단위로 나누기
-# def split_into_sentences(paragraph):
-#     sentences = re.split("(?<=[.!?])\s+", paragraph)
-#     return sentences
+## 문단 > 문장 단위로 나누기
+def split_into_sentences(paragraph):
+    sentences = re.split("(?<=[.!?])\s+", paragraph)
+    return sentences
 
 
-# # #---------------- 모델 불러와서 분류하기 -------------#
+# #---------------- 모델 불러와서 분류하기 -------------#
 
-# def classification_model(new_sentence, new_voice):
-#   output_dic = {0:'관점변화', 1:'부정', 2:'인정', 3:'존중', 4:'판단'}
-#   final_result = pd.DataFrame()
-#   new_sents = pd.DataFrame(split_into_sentences(new_sentence))
+def classification_model(new_sentence, new_voice):
+  output_dic = {0:'관점변화', 1:'부정', 2:'인정', 3:'존중', 4:'판단'}
+  final_result = pd.DataFrame()
+  new_sents = pd.DataFrame(split_into_sentences(new_sentence))
 
-#   # wav 파일 불러오기
-#   model_path = os.path.join(settings.BASE_DIR, 'rpg/analysis_model/')
-#   new_wav = new_voice # wav 파일 경로
+  # wav 파일 불러오기
+  model_path = os.path.join(settings.BASE_DIR, 'rpg/analysis_model/')
+  new_wav = new_voice # wav 파일 경로
   
-#   # 데이터 전처리 함수 불러오기
-#   with open('voice_scaler.pkl', 'rb') as f:
-#     v_scaler = pickle.load(f)
+  # 데이터 전처리 함수 불러오기
+  with open('voice_scaler.pkl', 'rb') as f:
+    v_scaler = pickle.load(f)
 
-#   txt_embed = text_embedding(model_name = 'jhgan/ko-sroberta-multitask')
-#   with open('text_scaler.pkl', 'rb') as w:
-#     t_scaler = pickle.load(w)
+  txt_embed = text_embedding(model_name = 'jhgan/ko-sroberta-multitask')
+  with open('text_scaler.pkl', 'rb') as w:
+    t_scaler = pickle.load(w)
 
-#   if os.path.isfile(new_wav) and len(new_sents)<3:  # wav파일 있고 2문장 이하면 voice+text 사용
-#     new_sent = pd.DataFrame([new_sentence])
-#     new_sent.columns = ['sentence']
+  if os.path.isfile(new_wav) and len(new_sents)<3:  # wav파일 있고 2문장 이하면 voice+text 사용
+    new_sent = pd.DataFrame([new_sentence])
+    new_sent.columns = ['sentence']
 
-#     # extract voice feature vector
-#     new_voice = pd.DataFrame(get_features(new_wav)).transpose()
-#     new_df = pd.concat([new_voice, new_sent], axis=1)
+    # extract voice feature vector
+    new_voice = pd.DataFrame(get_features(new_wav)).transpose()
+    new_df = pd.concat([new_voice, new_sent], axis=1)
 
-#     # read voice training data
-#     voice_df = pd.read_csv(os.path.join(model_path, '230621_voice_df.csv'))
-#     # 새로운 데이터 전처리
-#     X_test = txt_embed.transform(new_df) # extract text embedding vector
-#     x_test = v_scaler.transform(X_test)
-# #-----------------------------------------------------------------------#
-#     # 긍정 부정 분류 모델 불러옴, 긍부정 예측
+    # read voice training data
+    voice_df = pd.read_csv(os.path.join(model_path, '230621_voice_df.csv'))
+    # 새로운 데이터 전처리
+    X_test = txt_embed.transform(new_df) # extract text embedding vector
+    x_test = v_scaler.transform(X_test)
+#-----------------------------------------------------------------------#
+    # 긍정 부정 분류 모델 불러옴, 긍부정 예측
    
-#     model1 = load_model(os.path.join(model_path, '230621_voice_model1.h5'))
-#     y_pred1 = model1.predict(x_test, verbose=0).round()
+    model1 = load_model(os.path.join(model_path, '230621_voice_model1.h5'))
+    y_pred1 = model1.predict(x_test, verbose=0).round()
 
-#     pred1_df = pd.DataFrame(x_test)
-#     pred1_df['predict1'] = y_pred1
+    pred1_df = pd.DataFrame(x_test)
+    pred1_df['predict1'] = y_pred1
 
-#     pred_neg = pred1_df.loc[pred1_df['predict1'] == 1]
-#     pred_neg['predict'] = '부정'
+    pred_neg = pred1_df.loc[pred1_df['predict1'] == 1]
+    pred_neg['predict'] = '부정'
 
-#     pred_pos = pred1_df.loc[pred1_df['predict1'] == 0]
-#     x_test2 = pred_pos.drop('predict1', axis=1)
+    pred_pos = pred1_df.loc[pred1_df['predict1'] == 0]
+    x_test2 = pred_pos.drop('predict1', axis=1)
 
-#     if len(x_test2) > 0:
-#       if os.path.isfile(new_wav): # wav 파일 있으면 voice feature 제거하고 text로만 2차분류함
-#           voice_cols = [x for x in range(324)]
-#           x_test2 = pd.DataFrame(x_test2).drop(voice_cols, axis=1) # delete voice feature vector
+    if len(x_test2) > 0:
+      if os.path.isfile(new_wav): # wav 파일 있으면 voice feature 제거하고 text로만 2차분류함
+          voice_cols = [x for x in range(324)]
+          x_test2 = pd.DataFrame(x_test2).drop(voice_cols, axis=1) # delete voice feature vector
 
-#       # 2차 분류 모델 불러옴, 최종 분류
-#       model2 = load_model(os.path.join(model_path, '230621_result_model2.h5'))
-#       y_fin = np.argmax(model2.predict(x_test2, verbose=0), axis=1)
+      # 2차 분류 모델 불러옴, 최종 분류
+      model2 = load_model(os.path.join(model_path, '230621_result_model2.h5'))
+      y_fin = np.argmax(model2.predict(x_test2, verbose=0), axis=1)
 
-#       pred_pos['predict'] = np.vectorize(output_dic.get)(y_fin)
+      pred_pos['predict'] = np.vectorize(output_dic.get)(y_fin)
 
-#     final_result['sentence'] = new_sent['sentence']
-#     final_result['predict'] = pd.concat([pred_neg, pred_pos]).sort_index()['predict']
+    final_result['sentence'] = new_sent['sentence']
+    final_result['predict'] = pd.concat([pred_neg, pred_pos]).sort_index()['predict']
 
-#   else: # wav 없거나 3문장 이상이면 text만 사용
-#     new_sents.columns = ['sentence']
+  else: # wav 없거나 3문장 이상이면 text만 사용
+    new_sents.columns = ['sentence']
     
-#     text_df = pd.read_csv(os.path.join(model_path, '230621_text_df.csv'))
+    text_df = pd.read_csv(os.path.join(model_path, '230621_text_df.csv'))
 
-#     # 새로운 데이터 전처리
-#     X_test = txt_embed.transform(new_sents) # extract text embedding vector
-#     x_test = t_scaler.transform(X_test)
+    # 새로운 데이터 전처리
+    X_test = txt_embed.transform(new_sents) # extract text embedding vector
+    x_test = t_scaler.transform(X_test)
 
-#     # 긍정 부정 분류 모델 불러옴, 긍부정 예측
+    # 긍정 부정 분류 모델 불러옴, 긍부정 예측
     
-#     model1 = load_model(os.path.join(model_path, '230621_text_model1.h5'))
-#     y_pred1 = model1.predict(x_test, verbose=0).round()
+    model1 = load_model(os.path.join(model_path, '230621_text_model1.h5'))
+    y_pred1 = model1.predict(x_test, verbose=0).round()
 
-#     pred1_df = pd.DataFrame(x_test)
-#     pred1_df['predict1'] = y_pred1
+    pred1_df = pd.DataFrame(x_test)
+    pred1_df['predict1'] = y_pred1
 
-#     pred_neg = pred1_df.loc[pred1_df['predict1'] == 1]
-#     pred_neg['predict'] = '부정'
+    pred_neg = pred1_df.loc[pred1_df['predict1'] == 1]
+    pred_neg['predict'] = '부정'
 
-#     pred_pos = pred1_df.loc[pred1_df['predict1'] == 0]
-#     x_test2 = pred_pos.drop('predict1', axis=1)
+    pred_pos = pred1_df.loc[pred1_df['predict1'] == 0]
+    x_test2 = pred_pos.drop('predict1', axis=1)
 
-#     if len(x_test2) > 0:
-#       # 2차 분류 모델 불러옴, 최종 분류
-#       model2 = load_model(os.path.join(model_path, '230621_result_model2.h5'))
-#       y_fin = np.argmax(model2.predict(x_test2, verbose=0), axis=1)
+    if len(x_test2) > 0:
+      # 2차 분류 모델 불러옴, 최종 분류
+      model2 = load_model(os.path.join(model_path, '230621_result_model2.h5'))
+      y_fin = np.argmax(model2.predict(x_test2, verbose=0), axis=1)
 
-#       pred_pos['predict'] = np.vectorize(output_dic.get)(y_fin)
+      pred_pos['predict'] = np.vectorize(output_dic.get)(y_fin)
 
-#     final_result['sentence'] = new_sents['sentence']
-#     final_result['predict'] = pd.concat([pred_neg, pred_pos]).sort_index()['predict']
+    final_result['sentence'] = new_sents['sentence']
+    final_result['predict'] = pd.concat([pred_neg, pred_pos]).sort_index()['predict']
 
-#   return final_result
+  return final_result
 
 
 # # ----------------------------------------------------------------
@@ -519,40 +534,40 @@ def loading(request):
 # 7. 실시간 점수
 #---------------------------------------------------------------------------#
 
-# def score_count(p_id, nickname):
-#     df = pd.DataFrame()
-#     questions = Message.objects.filter(persona=p_id, name=nickname)
-#     questions_list = [
-#         {
-#             'id': msg.id, 
-#             'name': msg.name, 
-#             'persona': msg.persona.id,  # assuming persona object has an id
-#             'content': msg.content, 
-#             'send_date': msg.send_date.isoformat(), 
-#             'voice_url': msg.voice_url,
-#             'csv_url': msg.csv_url
-#         } 
-#         for msg in questions
-#     ]
+def score_count(p_id, nickname):
+    df = pd.DataFrame()
+    questions = Message.objects.filter(persona=p_id, name=nickname)
+    questions_list = [
+        {
+            'id': msg.id, 
+            'name': msg.name, 
+            'persona': msg.persona.id,  # assuming persona object has an id
+            'content': msg.content, 
+            'send_date': msg.send_date.isoformat(), 
+            'voice_url': msg.voice_url,
+            'csv_url': msg.csv_url
+        } 
+        for msg in questions
+    ]
     
-#     for question in questions_list:
-#         csv_url = question['csv_url']
+    for question in questions_list:
+        csv_url = question['csv_url']
 
-#         # csv_url에서 CSV 파일을 읽어옴
-#         df_temp = pd.read_csv(csv_url)
-#         # 읽어온 DataFrame을 df 아래에 붙임
-#         df = pd.concat([df, df_temp], ignore_index=True)
+        # csv_url에서 CSV 파일을 읽어옴
+        df_temp = pd.read_csv(csv_url)
+        # 읽어온 DataFrame을 df 아래에 붙임
+        df = pd.concat([df, df_temp], ignore_index=True)
     
-#     l = len(df['predict'])
-#     score = 0
-#     for i in df['predict']:
-#         print(i , "2222222222222222222222222222222")
-#         if i == "관점변화" or i == "인정" or i == "존중" :
-#             score += 2
-#         elif i == "판단" :
-#             score += 1
+    l = len(df['predict'])
+    score = 0
+    for i in df['predict']:
+        print(i , "2222222222222222222222222222222")
+        if i == "관점변화" or i == "인정" or i == "존중" :
+            score += 2
+        elif i == "판단" :
+            score += 1
     
-#     f_score = int(round((score/(2*l)) * 100))
-#     print(f_score)
-#     return f_score
+    f_score = int(round((score/(2*l)) * 100))
+    print(f_score)
+    return f_score
     
