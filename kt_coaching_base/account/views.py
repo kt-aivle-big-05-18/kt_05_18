@@ -88,7 +88,12 @@ def login_view(request):
                 if account:
                     account.password_attempt_count = 0  # 로그인 성공 시, 로그인 시도 횟수 초기화
                     account.save()
+                    admin_info_count = admin_info(
+                        count   = 1
+                    )
+                    admin_info_count.save()
                 return redirect("common:home")
+            
             else:
                 # 로그인 실패 시, 로그인 시도 횟수 증가
                 if account:

@@ -189,88 +189,71 @@ def rpg(request):
     # HTTP 요청이 POST 방식일 경우
     if request.method == "POST":
         message = request.POST.get("message") # 사용자가 입력한 한국어 메세지
-        # 충영
-        if message == "역할 리마인드":
-            request.session.get('messages').append({"role": "user", "content": request.session.get('messages')[0]['content']})
-            message = request.session.get('messages')
-            response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
-                messages=message
-            )    
-            data = { # json형식으로 respone 해줄 데이터
-                'message' : "아이코! 제가 잠시 멍때렸습니다! 다시 집중하겠습니다!",
-            }
+        
+        # 번역된 사용자 입력 메세지를 messages에 추가
+        request.session.get('messages').append({"role": "user", "content": translate(message)})
+        count = request.session.get("count") # url 경로 저장을 위한 대화 카운트 설정
+        user_voice_url = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.webm'.format(p_id, count))
+        wav_voice_url = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.wav'.format(p_id, count))
+        
+        convert_webm_to_wav(user_voice_url, wav_voice_url)
+        
+        print(user_voice_url)
+        # ----------------------------------- AI 전처리 / AI prediction ------------------------------------#
+        m_df = classification_model(message, wav_voice_url)
+        m_df_url = os.path.join(base_dir, 'rpg/static/df_csv/{0}_{1}.csv'.format(p_id, count))
+        m_df.to_csv(m_df_url, index=False)
+        # --------------------------------------------------------------------------------------------------#
+        
+        # 유저 메세지내용, 음성녹음 내용을 테이블에 저장
+        user_message_obj = Message(
+            name = request.user.nickname,
+            persona = Persona.objects.get(id=int(p_id)),
+            content = request.POST.get("message"),
+            voice_url = user_voice_url,
+            csv_url = m_df_url
+        )
+        user_message_obj.save()
+        
+        request.session["count"] += 1
+        count = request.session.get("count")
+        
+        request.session['score'] = score_count(p_id, request.user.nickname)
+        request.session['scores'].append(request.session['score'])
+        # OpenAI의 챗봇 API에 메시지 리스트를 전달하고 응답을 받아오기
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=request.session.get('messages')
+        )
+        
+        # 번역된 챗봇의 메시지를 메시지 리스트에 추가
+        request.session.get('messages').append({"role": "assistant", "content": response.choices[0].message.content})
+        trans_ = retranslate(response.choices[0].message.content) # 한국어 번역한 chatgpt 답변 메세지
+        
+        voice_select = request.session.get('voice')  # 선택한 음성 옵션 가져오기
+        if voice_select=='ko-KR-Neural2-A' or voice_select=='ko-KR-Neural2-B' or voice_select=='ko-KR-Wavenet-B':
+            gender_select = 'FEMALE'
+            generate_speech(trans_, voice_select, gender_select, p_id , count)  # 음성 파일 생성 함수 호출
             
-            print(request.session.get('messages'))
-            return JsonResponse(data)
-        else:
-            # 번역된 사용자 입력 메세지를 messages에 추가
-            request.session.get('messages').append({"role": "user", "content": translate(message) + " Please answer briefly."})
-            count = request.session.get("count") # url 경로 저장을 위한 대화 카운트 설정
-            user_voice_url = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.webm'.format(p_id, count))
-            wav_voice_url = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.wav'.format(p_id, count))
-            
-            convert_webm_to_wav(user_voice_url, wav_voice_url)
-            
-            print(user_voice_url)
-            # ---------------------- AI 전처리 / AI prediction -----------------------#
-            m_df = classification_model(message, wav_voice_url)
-            m_df_url = os.path.join(base_dir, 'rpg/static/df_csv/{0}_{1}.csv'.format(p_id, count))
-            m_df.to_csv(m_df_url, index=False)
-            # # ------------------------------------------------------------------------#
-            
-            # 유저 메세지내용, 음성녹음 내용을 테이블에 저장
-            user_message_obj = Message(
-                name = request.user.nickname,
-                persona = Persona.objects.get(id=int(p_id)),
-                content = request.POST.get("message"),
-                voice_url = user_voice_url,
-                csv_url = m_df_url
-            )
-            user_message_obj.save()
-            
-            request.session["count"] += 1
-            count = request.session.get("count")
-            
-            request.session['score'] = score_count(p_id, request.user.nickname)
-            request.session['scores'].append(request.session['score'])
-            
-            # OpenAI의 챗봇 API에 메시지 리스트를 전달하고 응답을 받아오기
-            messages = request.session.get('messages')
-            response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
-                messages=messages
-            )
-            
-            # 번역된 챗봇의 메시지를 메시지 리스트에 추가
-            request.session.get('messages').append({"role": "assistant", "content": response.choices[0].message.content})
-            trans_ = retranslate(response.choices[0].message.content) # 한국어 번역한 chatgpt 답변 메세지
-            print(request.session.get('messages'))
-            
-            voice_select = request.session.get('voice')  # 선택한 음성 옵션 가져오기
-            if voice_select=='ko-KR-Neural2-A' or voice_select=='ko-KR-Neural2-B' or voice_select=='ko-KR-Wavenet-B':
-                gender_select = 'FEMALE'
-                generate_speech(trans_, voice_select, gender_select, p_id , count)  # 음성 파일 생성 함수 호출
-                
-            elif voice_select == 'ko-KR-Standard-D' or voice_select=='ko-KR-Wavenet-C' or voice_select=='ko-KR-Standard-C':
-                gender_select = 'MALE'
-                generate_speech(trans_, voice_select, gender_select, p_id, count)  # 음성 파일 생성 함수 호출
-            
-            # 답장 온거 저장된 wav파일 경로
-            path_gpt_voice = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.wav'.format(p_id, count))
-            
-            # gpt 답장 메세지 DB 전송
-            gpt_response_obj = Message(
-                name="gpt",
-                persona = Persona.objects.get(id=int(p_id)),
-                content = trans_,
-                voice_url = path_gpt_voice
-            )
-            gpt_response_obj.save()
-            
-            # 음성 파일의 경로를 반환하는 HttpResponse 객체 생성
-            with open(path_gpt_voice, 'rb') as voice_file:
-                encoded_voice = base64.b64encode(voice_file.read()).decode('utf-8')
+        elif voice_select == 'ko-KR-Standard-D' or voice_select=='ko-KR-Wavenet-C' or voice_select=='ko-KR-Standard-C':
+            gender_select = 'MALE'
+            generate_speech(trans_, voice_select, gender_select, p_id, count)  # 음성 파일 생성 함수 호출
+        
+        # 답장 온거 저장된 wav파일 경로
+        path_gpt_voice = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.wav'.format(p_id, count))
+        
+        # gpt 답장 메세지 DB 전송
+        gpt_response_obj = Message(
+            name="gpt",
+            persona = Persona.objects.get(id=int(p_id)),
+            content = trans_,
+            voice_url = path_gpt_voice
+        )
+        gpt_response_obj.save()
+        
+        # 음성 파일의 경로를 반환하는 HttpResponse 객체 생성
+        with open(path_gpt_voice, 'rb') as voice_file:
+            encoded_voice = base64.b64encode(voice_file.read()).decode('utf-8')
 
             data = { # json형식으로 respone 해줄 데이터
                 'message' : trans_,
@@ -284,9 +267,9 @@ def rpg(request):
         request.session['messages'] = request.session.get("persona_set") # 초기 패르소나 설정을 메세지에 추가하기
         return render(request, "rpg/rpg.html")
 
-#----------------------------------------------------------------------------#
+#-----------------------------------------------------------------------------------------#
 # 4. tts
-#----------------------------------------------------------------------------#
+#-----------------------------------------------------------------------------------------#
 
 def generate_speech(text, voice, gender, p_id, count):
     # 클라이언트 인스턴스화
@@ -447,6 +430,7 @@ def classification_model(new_sentence, new_voice):
   model_path = os.path.join(settings.BASE_DIR, 'rpg/analysis_model/')
   new_wav = new_voice # wav 파일 경로
   scaler = StandardScaler()
+  
   # 데이터 전처리 함수 불러오기
   with open('voice_scaler.pkl', 'rb') as f:
     v_scaler = pickle.load(f)
@@ -467,7 +451,7 @@ def classification_model(new_sentence, new_voice):
     # voice_df = pd.read_csv(os.path.join(model_path, '230628_voice_df.csv'))
     # v_scaler = scaler.fit(voice_df)
     # with open('voice_scaler.pkl', 'wb') as f:
-    #     pickle.dump(v_scaler, f)
+    # pickle.dump(v_scaler, f)
     
     # 새로운 데이터 전처리
     X_test = txt_embed.transform(new_df) # extract text embedding vector
@@ -516,7 +500,6 @@ def classification_model(new_sentence, new_voice):
     x_test = t_scaler.transform(X_test)
 
     # 긍정 부정 분류 모델 불러옴, 긍부정 예측
-    
     model1 = load_model(os.path.join(model_path, '230628_text_model1.h5'))
     y_pred1 = model1.predict(x_test, verbose=0).round()
 
