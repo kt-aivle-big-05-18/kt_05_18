@@ -23,9 +23,6 @@ def myp_info(request):
 def myp_self(request):
     return render(request, 'mypage/myp_self.html')
 
-# def myp_survey(request):
-#     return render(request, 'mypage/myp_survey.html')
-
 @login_required
 def myp_survey(request):
     user = request.user.nickname
@@ -38,17 +35,6 @@ def myp_survey(request):
     }
     
     return render(request, 'mypage/myp_survey.html', context)
-
-# @login_required
-# def share_persona(request, persona_id):
-#     try:
-#         persona = Persona.objects.get(pk=persona_id, nickname=request.user)
-#         persona.shared = True
-#         persona.save()
-#     except Persona.DoesNotExist:
-#         return redirect('mypage:myp_survey')
-
-#     return redirect('mypage:myp_survey')
 
 @login_required
 @require_POST
@@ -147,35 +133,6 @@ def rating_list(request, persona_id):
     }
     print("gc:", group_counts)
     return render(request, 'mypage/rating_list.html', context)
-  
-# def rating_list(request, persona_id):
-#     persona = get_object_or_404(Persona, id=persona_id)
-#     ratings = Rating.objects.filter(survey__persona_id=persona)
-
-#     total_scores = {
-#         'score_1_total': ratings.aggregate(total=Sum('score_1'))['total'],
-#         'score_2_total': ratings.aggregate(total=Sum('score_2'))['total'],
-#         'score_3_total': ratings.aggregate(total=Sum('score_3'))['total'],
-#         'score_4_total': ratings.aggregate(total=Sum('score_4'))['total'],
-#         'score_5_total': ratings.aggregate(total=Sum('score_5'))['total'],
-#         'score_6_total': ratings.aggregate(total=Sum('score_6'))['total'],
-#         'score_7_total': ratings.aggregate(total=Sum('score_7'))['total'],
-#         'score_8_total': ratings.aggregate(total=Sum('score_8'))['total'],
-#         'score_9_total': ratings.aggregate(total=Sum('score_9'))['total'],
-#         'score_10_total': ratings.aggregate(total=Sum('score_10'))['total'],
-#         'score_11_total': ratings.aggregate(total=Sum('score_11'))['total'],
-#         'score_12_total': ratings.aggregate(total=Sum('score_12'))['total'],
-#         'score_13_total': ratings.aggregate(total=Sum('score_13'))['total'],
-#         'score_14_total': ratings.aggregate(total=Sum('score_14'))['total'],
-#     }
-
-#     context = {
-#         'persona': persona,
-#         'ratings': ratings,
-#         'total_scores': total_scores,
-#     }
-
-#     return render(request, 'mypage/rating_list.html', context)
 
 def popup(request):
     message = request.GET.get('message', None)

@@ -70,7 +70,8 @@ class Account(AbstractBaseUser):
     is_active   = models.BooleanField(default=True)
     is_staff    = models.BooleanField(default=False) 
     is_superuser = models.BooleanField(default=False) 
- 
+    password_attempt_count = models.IntegerField(default=0)
+    
     objects = MyAccountManager()  # 헬퍼 클래스 사용
  
     USERNAME_FIELD = 'userid'  # 로그인 ID로 사용할 필드

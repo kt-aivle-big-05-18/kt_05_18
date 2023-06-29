@@ -6,5 +6,5 @@ migrations/
 __pycache__/
 *.py[cod]
 media/
-voice/
-df_csv/
+*/voice/
+*/df_csv/
