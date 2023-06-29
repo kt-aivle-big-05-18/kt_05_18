@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 import os
 import json
+from django.db.models.functions import ExtractWeekDay, ExtractHour
 
 def admin_persona(request):
     # Rank 종류별 갯수
@@ -21,7 +22,7 @@ def admin_persona(request):
     # 상황 종류별 갯수
     topic_label_counts = list(Persona.objects.values('topic_label').annotate(topic_label_count=Count('topic_label')))
 
-    # 성별 종류별 갯수
+    # 연차 종류별 갯수
     career_counts = Persona.objects.values('career').annotate(career_count=Count('career'))
 
     # 상황 종류별 갯수
@@ -72,12 +73,50 @@ def admin_persona(request):
         'career_counts': json.dumps(list(career_counts)),
         'age_counts': json.dumps(list(age_counts)),
     }
-            
+    print(context)
     return render(request, "admin_page/admin_persona.html", context)
 
 
-def admin_page(request):
-    return render(request, "admin_page/admin_page.html")
-
 def admin_user(request):
-    return render(request, "admin_page/admin_user.html")
+    
+    weekday_mapping = {
+        0: '토요일',
+        1: '일요일',
+        2: '월요일',
+        3: '화요일',
+        4: '수요일',
+        5: '목요일',
+        6: '금요일',
+    }
+    
+    login_counts_by_weekday = admin_info.objects.annotate(weekday=ExtractWeekDay('login_date')).values('weekday').annotate(count=Count('id')).order_by('weekday')
+
+    # 시간대별로 로그인 횟수를 추출
+    login_counts_by_hour = admin_info.objects.annotate(hour=ExtractHour('login_date')).values('hour').annotate(count=Count('id')).order_by('hour')
+
+    # 요일별 로그인 횟수를 저장할 리스트 변수
+    weekday_counts = [0] * 7  # 0부터 6까지의 인덱스를 가진 리스트
+
+    # 시간대별 로그인 횟수를 저장할 리스트 변수
+    hour_counts = [0] * 24  # 0부터 23까지의 인덱스를 가진 리스트
+
+    # 요일별 로그인 횟수 추출 결과를 리스트 변수에 저장
+    for entry in login_counts_by_weekday:
+        weekday_counts[entry['weekday']] = entry['count']
+        print(entry['weekday'])
+    for i in range(len(weekday_counts)):
+        weekday_counts[i] = { "weekday" : weekday_mapping[i], 'value' : weekday_counts[i]}
+    print(weekday_counts)
+    
+    # 시간대별 로그인 횟수 추출 결과를 리스트 변수에 저장
+    for entry in login_counts_by_hour:
+        hour_counts[entry['hour']] = entry['count']
+    for i in range(len(hour_counts)):
+        hour_counts[i] = { 'time' : i , "vlaue_hour" : hour_counts[i]}
+
+    context = {
+        'weekday_counts': json.dumps(list(weekday_counts),ensure_ascii=False),
+        'hour_counts': json.dumps(list(hour_counts)),
+    }
+    print(context)
+    return render(request, "admin_page/admin_page.html", context)

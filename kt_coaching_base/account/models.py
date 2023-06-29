@@ -1,7 +1,7 @@
 # account/model.py
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
- 
+
 class MyAccountManager(BaseUserManager):
     # 일반 user 생성, username 이 userID를 의미함
     def create_user(self, userid, email, username, nickname, department, rank, age, gender, password=None):
@@ -34,7 +34,7 @@ class MyAccountManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
- 
+
     # 관리자 User 생성
     def create_superuser(self, userid, email, username, nickname, department, rank, age, gender, password):
         user = self.create_user(
@@ -54,7 +54,7 @@ class MyAccountManager(BaseUserManager):
         user.is_superuser = True
         user.save(using=self._db)
         return user
- 
+
 class Account(AbstractBaseUser):
     userid      = models.CharField(max_length=32, unique=True, primary_key=True)
     email       = models.EmailField(verbose_name='email', max_length=60, unique=True)
@@ -76,7 +76,7 @@ class Account(AbstractBaseUser):
  
     USERNAME_FIELD = 'userid'  # 로그인 ID로 사용할 필드
     REQUIRED_FIELDS = ['email', 'username', 'nickname', 'department', 'rank', 'age', 'gender'] # 필수 작성 필드
- 
+
     def __str__(self):
         return self.nickname
  
@@ -85,8 +85,8 @@ class Account(AbstractBaseUser):
  
     def has_module_perms(self, app_lable):
         return True
-    
-    
+
+
 class admin_info(models.Model):
     login_date   = models.DateTimeField(auto_now_add=True)
     count   = models.IntegerField()
