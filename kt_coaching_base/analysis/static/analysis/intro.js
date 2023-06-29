@@ -1,53 +1,51 @@
-// 차트그리기
-// 파이차트
-$(document).ready(function() {
-    // var perspective = {{Perspective}};
-    // var respect = {{Respect}};
-    // var recognition = {{Recognition}};
-    // var negation = {{Negation}};
-    // var feedback = {{Feedback}};
+document.addEventListener('DOMContentLoaded', (event) => {
+    var ctx = document.getElementById('myChart').getContext('2d');
+
+    // Get the data from the script tag
+    var pieChartDataElement = document.getElementById('pieChartData');
+    var pieChartData = JSON.parse(pieChartDataElement.textContent);
     
-    var context = $('#pie_chart')[0].getContext('2d');
-    var myChart = new Chart(context, {
-      type: 'pie',
-      data: {
-        labels: ['관점 변화', '존중', '인정', '부정', '판단'],
-        datasets: [{
-          label: '점수',
-          fill: false,
-          data: [21, 19, 17, 34, 23],
-          backgroundColor: [
-            '#E9FFFF',
-            '#F0F0F0',
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
-          ],
-          borderColor: [
-            '#2FC4CE',
-            '#919191',
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
-          ],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        // indexAxis: 'y',
-        scales: {
-          xAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
-          }],
-        }
-      }
+    // Extract the labels and values from the data
+    var labels = pieChartData.map(function(e) {
+        return e.name;
     });
-  });
+    var data = pieChartData.map(function(e) {
+        return e.value;
+    });
+
+    var myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: [
+                    'rgba(143, 170, 220, 1)',
+                    'rgba(244, 177, 131, 1)',
+                    'rgba(169, 209, 142, 1)',
+                    'rgba(255, 217, 102, 1)',
+                    'rgba(250, 166, 178, 1)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                datalabels: {
+                    formatter: (value, ctx) => {
+                        let sum = 0;
+                        let dataArr = ctx.chart.data.datasets[0].data;
+                        dataArr.map(data => {
+                            sum += data;
+                        });
+                        let percentage = (value*100 / sum).toFixed(2)+"%";
+                        return percentage;
+                    },
+                    color: '#fff',
+                }
+            }
+        }
+    });    
+});

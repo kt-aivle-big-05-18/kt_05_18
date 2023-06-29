@@ -72,9 +72,12 @@ def admin_persona(request):
         'career_counts': json.dumps(list(career_counts)),
         'age_counts': json.dumps(list(age_counts)),
     }
-
+            
     return render(request, "admin_page/admin_persona.html", context)
 
 
 def admin_page(request):
     return render(request, "admin_page/admin_page.html")
+
+def admin_user(request):
+    return render(request, "admin_page/admin_user.html")

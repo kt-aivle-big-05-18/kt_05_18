@@ -1,3 +1,238 @@
-<p>여긴 유저 페이지 </p>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<a class="go_persona"href="{% url 'admin_page:admin_persona' %}">페르소나 통계 페이지로 가기</a>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .sidebar {
+      position: fixed;
+      width: 250px;
+      min-height: 100vh;
+      background-color: #002C4D;
+      padding: 0;
+      margin: 0;
+      top: 0;
+    }
+    .sidebar a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      padding: 8px 16px;
+    }
+
+    .separator {
+      background-color: white;
+      height: 1px;
+      width: 80%;
+      margin: 18px 0;
+      margin-left: 20px;
+    }
+
+    .kt-coaching {
+      font-size: 28px;
+      font-weight: bold;
+      margin-top: 15px;
+      margin-left: 20px;
+    }
+
+    .kt-coaching:hover {
+        color: #4C92C7;
+    }
+
+    .inside-info {
+        margin-left: 19px;
+        font-size: 14px;
+    }
+
+    .inside-info:hover {
+        color: #4C92C7;
+    }
+
+    .main-top {
+        position: fixed;
+        width: calc(100% - 250px); 
+        height: 85px;
+        background-color: #002C4D;
+        padding: 0;
+        margin: 0;
+        top: 0;
+        right: 0;
+    }
+
+    .main-top-text {
+        font-size: 28px;
+        font-weight: 500;
+        color: white;
+        margin-top: 20px;
+        margin-left: 20px;
+    }
+
+    .main-section {
+        background-color: lightgray;
+    }
+
+    .main-content {
+        margin-top: 85px;
+        margin-left: 270px;
+        padding: 10px;
+        width: calc(100% - 260px - 17px); 
+        height: 635px;
+        box-sizing: border-box;
+        background-color: lightgray; 
+    }
+
+    .main-graph-box {
+        margin-top: 10px;
+        margin-bottom: 15px;
+        height: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* 변경된 부분 */
+    }
+
+    .sub-graph-box {
+        margin-top: 10px;
+        margin-bottom: 15px;
+        height: 300px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center; /* 변경된 부분 */
+    }
+
+    .graph1-title, .graph2-title, .graph3-title {
+        margin-left: 12px;
+        background-color: lightgray;
+    }
+
+    .graph1-title {
+        padding: 5px;
+        left: 13px;
+        font-size: 20px;
+        font-weight: bold;
+        width: 30%;
+        height: 25px;
+    }
+
+    .graph2-title{
+        padding: 5px;
+        font-size: 20px;
+        font-weight: bold;
+        width: 50%;
+        height: 25px;
+    }
+
+    .graph3-title{
+        padding: 5px;
+        font-size: 20px;
+        font-weight: bold;
+        width: 50%;
+        height: 25px;
+    }
+
+    .graph1, .graph2, .graph3 {
+        background-color: #ffff;
+        border-radius: 5px;
+        margin: 10px;
+    }
+
+    .graph1 {
+        width: 90%;
+        height: 250px;
+    }
+
+    .graph2, .graph3 {
+        position: relative;
+        width: 80%;
+        height: 235px;
+    }
+
+
+    .main-sub-graph-box1 {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start; /* 변경된 부분 */
+        width: 50%; /* 변경된 부분 */
+        height: 290px
+    }
+
+    .main-sub-graph-box2 {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start; /* 변경된 부분 */
+        width: 50%; /* 변경된 부분 */
+        height: 290px
+    }
+
+    .arrow {
+      float: right;
+      font-size: 15px;
+      margin-top: 5px;
+      margin-left: 150px;
+    }
+
+    .statistics {
+        display: inline-block;
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+        text-decoration: none;
+        padding: 8px 16px;
+    }
+
+  </style>
+
+  <!-- Add jQuery to the project -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  {% comment %} <script>
+    // Add jQuery function to handle the click events
+    $(document).ready(function() {
+      $('#statistics').click(function() {
+        // 슬라이드 효과를 사용하여 하위 메뉴를 추가/삭제
+        $('.inside-info').slideToggle();
+      });
+    });
+  </script> {% endcomment %}
+</head>
+
+<body>
+    <div class="sidebar">
+        <a href="{% url 'admin_page:admin_page' %}" class="kt-coaching">KT coaching</a>
+        <div class="separator"></div>
+        <div class="statistics">통계<span class="arrow">▼</span></div>
+        <div class= "inside-info">
+            <a href="{% url 'admin_page:admin_user' %}" id="visitors">사용자</a>
+            <a href="{% url 'admin_page:admin_persona' %}" id="member-ratio">페르소나</a>
+        </div>
+    </div>
+    <div class="main-section">
+        <div class="main-top">
+            <div class="main-top-text">
+                여기는 어드민 홈 입니다.
+            </div>
+        </div>   
+        <div class="main-content">
+            <div class="main-graph-box">
+                <div class="graph1-title">이용자 실습결과 분석</div>
+                <div class="graph1"></div>    
+            </div>
+            <div class="sub-graph-box">
+                <div class="main-sub-graph-box1">
+                    <div class="graph2-title">요일 별 서비스 이용 횟수</div>
+                    <div class="graph2"></div>
+                </div>
+                <div class="main-sub-graph-box2">
+                    <div class="graph3-title">시간대 별 서비스 이용 횟수</div>
+                    <div class="graph3"></div>
+                </div>
+            </div>
+        </div>    
+    </div>  
+</body>
+</html>

@@ -1,29 +1,11 @@
 {% extends "base.html" %} 
 {% load static %}
+
 {% block content %}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'account/login.css' %}">
-
-{% comment %} <h3>여기는 login</h3>
-<form method="post">
-  <!-- 폼 필드들 -->
-  {% csrf_token %}
-  <label for="userid">User ID:</label>
-  <input type="text" id="userid" name="userid" required /><br /><br />
-  <label for="password">Password:</label>
-  <input type="password" id="password" name="password" required /><br /><br />
-  <!-- 에러 메시지 표시 -->
-  {% if error_message %}
-  <div class="alert alert-danger">
-    <p>{{ error_message }}</p>
-  </div>
-  {% endif %}
-
-  <!-- Submit 버튼 -->
-  <button type="submit">Login</button>
-</form> {% endcomment %}
 
 <form method="post">
   {% csrf_token %}
@@ -36,11 +18,21 @@
             <input class="login_content_detail_input" placeholder="아이디를 입력해 주세요." type="text" id="userid" name="userid" required/>
             <input class="login_content_detail_input" placeholder="비밀번호를 입력해 주세요." type="password" id="password" name="password" required/>
             <label><input class="login_content_detail_idsave" type="checkbox" name="id" value="id_save"> 아이디 저장</label>
+            
+            {% if show_captcha %}
+            <div class="captcha_wrapper">
+              <img class="captcha_image" src="{{ captcha_image_url }}" alt="Captcha Image">
+              <input class="captcha_input" type="text" id="captcha" name="captcha" required placeholder="캡챠 입력">
+              <input type="hidden" name="captcha_0" value="{{ captcha_key }}">
+            </div>
+            {% endif %}
+            
             {% if error_message %}
             <div class="alert alert-danger">
               <p>{{ error_message }}</p>
             </div>
             {% endif %}
+            
             <button class="login_content_detail_button" type="submit">로그인하기</button>
             <hr class="login_line">
           </div>

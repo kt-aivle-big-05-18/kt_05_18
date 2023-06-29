@@ -4,7 +4,7 @@ $(document).ready(function() {
     $(window).scroll(function() {
       clearTimeout($.data(this, 'scrollTimer'));
       $.data(this, 'scrollTimer', setTimeout(function() {
-        var pageList = ['#page1', '#page2', '#page3'];
+        var pageList = ['#page1', '#page2', '#page3', '#page4'];
         var previousPage = "";
   
         for (var i = 0; i < pageList.length; i++) {

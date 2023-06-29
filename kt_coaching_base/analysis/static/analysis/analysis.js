@@ -38,86 +38,121 @@ $(function() {
 
 // 차트그리기
 // 라인차트
-  $(document).ready(function() {
-    var context = $('#line_chart')[0].getContext('2d');
-    var myChart = new Chart(context, {
-      type: 'line',
-      data: {
-        labels: ['1', '2', '3', '4', '5', '6', '7'],
-        datasets: [{
-          label: 'test1',
-          fill: false,
-          data: [21, 19, 25, 20, 23, 26, 25],
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
-          ],
-          borderWidth: 1
-        }]
+$(document).ready(function() {
+  var context = document.getElementById('line_chart').getContext('2d');
+
+  // Parse the JSON data
+  var lineChartDataElement = JSON.parse(document.getElementById('lineData').textContent);
+
+  var labels = [];
+  var values = [];
+
+  lineChartDataElement.forEach(function(item) {
+    var key = Object.keys(item)[0];
+    var value = item[key];
+
+    labels.push(key);
+    values.push(value);
+  });
+
+  var myChart = new Chart(context, {
+    type: 'line',
+    data: {
+      labels: labels,  // Use the extracted labels
+      datasets: [{
+        fill: false,
+        data: values,  // Use the extracted values
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      indexAxis: 'x',  // Change this to 'x'
+      scales: {
+        y: {  // Also, use 'y' instead of 'yAxes'
+          beginAtZero: true
+        }
       },
-      options: {
-        indexAxis: 'y',
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
-          }]
+      plugins: {
+        legend: {
+            display: false
+        },
+        title: {
+            display: true,
+            text: '실시간 점수 변화'
         }
       }
-    });
+    }
   });
+});
+
 
   // 파이차트
   $(document).ready(function() {
-    var context = $('#pie_chart')[0].getContext('2d');
-    var myChart = new Chart(context, {
-      type: 'pie',
-      data: {
-        labels: ['관점 변화', '인정', '존중', '판단', '분위기'],
-        datasets: [{
-          label: 'test1',
-          fill: false,
-          data: [21, 19, 25, 20, 23],
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)'
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)'
-          ],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
-          }]
-        }
-      }
+    var ctx = document.getElementById('pie_chart').getContext('2d');
+
+    // Get the data from the script tag
+    var pieChartDataElement = document.getElementById('pieChartData');
+    var pieChartData = JSON.parse(pieChartDataElement.textContent);
+    
+    // Extract the labels and values from the data
+    var labels = pieChartData.map(function(e) {
+        return e.name;
     });
+    var data = pieChartData.map(function(e) {
+        return e.value;
+    });
+
+    var myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: [
+                    'rgba(143, 170, 220, 1)',
+                    'rgba(244, 177, 131, 1)',
+                    'rgba(169, 209, 142, 1)',
+                    'rgba(255, 217, 102, 1)',
+                    'rgba(250, 166, 178, 1)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                datalabels: {
+                    formatter: (value, ctx) => {
+                        let sum = 0;
+                        let dataArr = ctx.chart.data.datasets[0].data;
+                        dataArr.map(data => {
+                            sum += data;
+                        });
+                        let percentage = (value*100 / sum).toFixed(2)+"%";
+                        return percentage;
+                    },
+                    color: '#fff',
+                }
+            }
+        }
+    });    
   });
 
   $(document).ready(function() {

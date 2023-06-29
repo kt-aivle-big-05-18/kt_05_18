@@ -3,7 +3,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate
 from account.models import Account
- 
+from captcha.fields import CaptchaField
+
 # 회원 가입 폼
 class RegistrationForm(UserCreationForm):
     
@@ -65,3 +66,6 @@ class RegistrationForm(UserCreationForm):
         if commit:
             instance.save()
         return instance
+    
+class CaptchaForm(forms.Form):
+    captcha = CaptchaField()
