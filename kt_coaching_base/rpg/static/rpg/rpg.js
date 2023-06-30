@@ -46,46 +46,10 @@ for(i=0;i<linkCollapse.length;i++) {
 $(document).ready(function() {
     var chatContainer = $("#chat-container");
 
-    // Persona 리마인드 버튼 (충영)
+
     $("#remind-btn").click(function() {
         PersonaRemind();
     });
-
-    function PersonaRemind() {
-        var remind = "역할 리마인드"
-        chatContainer.append("<div class='user_message'>" 
-        + remind
-        + "<img class='user_profile' src='/static/img/won.png' alt='사용자이미지'>"
-        + "</div>");
-        scrollToBottom();
-
-        $.ajax({
-            url: "/rpg/rpg_start/",
-            type: "POST",
-            data: {
-                message: remind
-            },
-            success: function(response) {
-                chatContainer.append("<div class='assistant_message'>"
-                + "<div class='assistant_message_left'>"
-                + "<img class='assistant_profile' src='/static/img/young_male.png' alt='페르소나이미지'>"
-                + response.message
-                + "</div>"
-                + "<ion-icon class='assistant_message_icon' name='volume-medium-outline'></ion-icon>"
-                + "</div>");
-            
-                chatContainer.append(audioElement);
-                scrollToBottom();
-            },
-            error: function(xhr, errmsg, err) {
-                console.log(errmsg);
-                chatContainer.append(errmsg);
-            }
-        });
-
-        $("#user-input").val("");
-    }
-
 
     $("#send-btn").click(function() {
         sendMessage();
@@ -263,7 +227,7 @@ $(document).ready(function() {
 // 모달창 //
 document.addEventListener("DOMContentLoaded", function() {
     // 토글 버튼 클릭 이벤트
-    document.getElementById("nav-toggle").addEventListener("click", function() {
+    document.getElementById("grow-ex").addEventListener("click", function() {
       showModal();
     });
   

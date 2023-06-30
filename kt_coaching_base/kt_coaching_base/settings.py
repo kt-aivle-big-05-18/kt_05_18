@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "analysis",
     "community",
     "admin_page",
+    "grow_practice",
 ]
 
 MIDDLEWARE = [
