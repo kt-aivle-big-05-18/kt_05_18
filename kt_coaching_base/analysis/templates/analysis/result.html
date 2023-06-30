@@ -58,7 +58,7 @@
                             <div class="analysis_content_result_graph_box_btn">
                                 <button class="analysis_content_result_graph_box_btn_idx" id="recognition_btn"> 인정 </button>
                                 <button class="analysis_content_result_graph_box_btn_idx" id="respect_btn"> 존중 </button>
-                                <button class="analysis_content_result_graph_box_btn_idx" id="perspective_btn" selected> 관점 전환 </button>
+                                <button class="analysis_content_result_graph_box_btn_idx" id="perspective_btn" selected> 관점전환 </button>
                                 <button class="analysis_content_result_graph_box_btn_idx" id="judgment_btn"> 판단 </button>
                                 <button class="analysis_content_result_graph_box_btn_idx" id="mood_btn"> 분위기 </button>
                             </div>
@@ -74,7 +74,7 @@
                             {% if item.value < 20 %}
                             <span style="color: #F15F5F;">다소 적게</span>
                             {% elif item.value >= 20 and item.value < 30 %}
-                                <span>적절히</span>
+                                <span>적절히 활용</span>
                             {% elif item.value >= 30 %}
                             <span style="color: #4374D9;">잘 활용</span>
                             {% endif %}
@@ -87,20 +87,20 @@
                             {% if item.value < 20 %}
                             <span style="color: #F15F5F;">다소 적게</span>
                             {% elif item.value >= 20 and item.value < 30 %}
-                            <span style="color: #4374D9;">적절히</span>
+                            <span style="color: #4374D9;">적절히 활용</span>
                             {% elif item.value >= 30 %}
                             <span style="color: #4374D9;">잘 활용</span>
                             {% endif %}
                         {% endif %}
                     {% endfor %}
                      하신 것으로 나타납니다. 대화상대의 동의를 구하며 심리적으로 지지하고 도움을 주는 것은 코칭 대화에서 중요한 요소입니다.<br>
-                     (관점 전환) 대화상대가 기존과 다른 관점에서 해결책을 찾도록 돕는 유형의 질문을 
+                     (관점전환) 대화상대가 기존과 다른 관점에서 해결책을 찾도록 돕는 유형의 질문을 
                      {% for item in pie_chart.pie_word %}
                          {% if item.name == "관점전환" %}
                              {% if item.value < 20 %}
                              <span style="color: #F15F5F;">다소 적게</span>
                              {% elif item.value >= 20 and item.value < 30 %}
-                             <span style="color: #4374D9;">적절히</spanp>
+                             <span style="color: #4374D9;">적절히 활용</spanp>
                              {% elif item.value >= 30 %}
                              <span style="color: #4374D9;">잘 활용</span>
                              {% endif %}
@@ -119,7 +119,7 @@
                             {% endif %}
                         {% endif %}
                     {% endfor %}
-                     하신 것으로 나타납니다. 대화상대가 자율성을 가질 수 있도록 개인의 의견이 들어간 질문보다 개방적인 질문을 통해 대화상대가 스스로 해결 방안을 찾을 수 있도록 유도해 보세요.<br>
+                     하신 것으로 나타납니다. 대화상대가 자율성을 가질 수 있도록 개인의 의견이 들어간 질문보다 개방적인 질문을 통해 대화상대가 스스로 해결 방안을 찾을 수 있도록 유도하는 것은 중요한 요소입니다.<br>
                     (부정) 대화상대를 부정하는 유형의 질문을 
                     {% for item in pie_chart.pie_word %}
                         {% if item.name == "부정" %}
@@ -132,7 +132,7 @@
                             {% endif %}
                         {% endif %}
                     {% endfor %}
-                     하신 것으로 나타납니다. 대화상대가 부정적으로 느껴지지 않도록 부정적인 질문보다 긍정적인 질문을 통해 대화의 분위기를 긍정적으로 유도해 보세요.<br>
+                     하신 것으로 나타납니다. 대화상대가 부정적으로 느껴지지 않도록 부정적인 질문보다 긍정적인 질문을 통해 대화의 분위기를 긍정적으로 유도하는 것은 중요한 요소입니다.<br>
                 </div>
             </div>
         </div>
