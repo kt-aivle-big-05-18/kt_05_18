@@ -16,7 +16,7 @@ from captcha.models import CaptchaStore
 
 # Create your views here.
 def signup(request):
-    if request.method == "POST":
+    if request.method == "POST":        
         form = RegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
@@ -132,3 +132,22 @@ def check_duplicate(request):
 
     return JsonResponse(response_data)
 
+@require_POST
+def check_duplicate_email(request):
+    email = request.POST.get('email', None)
+
+    response_data = {
+        'is_taken': Account.objects.filter(email=email).exists()
+    }
+
+    return JsonResponse(response_data)
+
+@require_POST
+def check_nickname(request):
+    nickname = request.POST.get('nickname', None)
+
+    response_data = {
+        'is_taken': Account.objects.filter(nickname=nickname).exists()
+    }
+
+    return JsonResponse(response_data)

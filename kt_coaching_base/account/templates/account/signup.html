@@ -102,136 +102,103 @@
     {% endif %}
 
     <div class="signup_wrapper">
-      <div class="signup_content_wrapper"> <!-- 흰박스 -->
-          <div class="signup_content_wrapper_layout">
-              <div class="signup_content_title">회원가입</div>
-              <div class="signup_content_detail"> <!-- 아이디 박스 ~ 가입하기 묶는 div -->
-                  <div class="signup_content_detail_input_wrapper"><!-- 아이디 ~ 직무선택 -->
-                      <input class="signup_content_detail_input" placeholder="아이디를 입력해 주세요." type="text" name="userid" id="userid" required />
-                      {% if form.userid.errors %}
-                            <div class="error-message">
-                                {% for error in form.userid.errors %}
-                                    <p>{{ error }}</p>
-                                {% endfor %}
-                            </div>
-                      {% endif %}
-                      <!-- 중복 확인 -->
-                      <div class="signup_content_detail_duplicate">
-                        <button class="signup_duplicate_btn" type="button">중복확인</button>
-                        <div id="duplicate-message"></div>
-                      </div>
-                      <input class="signup_content_detail_input" placeholder="비밀번호를 입력해 주세요." type="password" name="password1" id="password1" required/>
-                      {% if form.password1.errors %}
-                            <div class="error-message">
-                                {% for error in form.password1.errors %}
-                                    <p>{{ error }}</p>
-                                {% endfor %}
-                            </div>
-                      {% endif %}
-                      <input class="signup_content_detail_input" placeholder="비밀번호를 다시 입력해 주세요." type="password" name="password2" id="password2" required/>
-                      {% if form.password2.errors %}
-                            <div class="error-message">
-                                {% for error in form.password2.errors %}
-                                    <p>{{ error }}</p>
-                                {% endfor %}
-                            </div>
-                      {% endif %}
-                      <input class="signup_content_detail_input" placeholder="이메일을 입력해 주세요." type="email" name="email" id="email" required/>
-                      {% if form.email.errors %}
-                            <div class="error-message">
-                                {% for error in form.email.errors %}
-                                    <p>{{ error }}</p>
-                                {% endfor %}
-                            </div>
-                      {% endif %}
-                      <input class="signup_content_detail_input" placeholder="이름을 입력해 주세요." type="text" name="username" id="username" required/>
-                      {% if form.username.errors %}
-                            <div class="error-message">
-                                {% for error in form.username.errors %}
-                                    <p>{{ error }}</p>
-                                {% endfor %}
-                            </div>
-                      {% endif %}
-                      <input class="signup_content_detail_input" placeholder="닉네임을 입력해 주세요." type="text" name="nickname" id="nickname" required/>
-                      {% if form.nickname.errors %}
-                            <div class="error-message">
-                                {% for error in form.nickname.errors %}
-                                    <p>{{ error }}</p>
-                                {% endfor %}
-                            </div>
-                      {% endif %}
-                      <select class="signup_content_detail_job" name="job">
-                          <option value="none" selected>직무를 선택하세요.</option>
-                          <option value="개발">개발</option>
-                          <option value="기획">기획</option>
-                          <option value="마케팅">마케팅</option>
-                          <option value="영업">영업</option>
-                          <option value="인사">인사</option>
-                      </select>
-                      <div class="signup_content_detail_birth"> <!-- 나이 -->
-                        <input class="signup_content_detail_birth_box" placeholder="나이를 입력하세요." type="number" name="age" id="id_age" required>
-                          {% comment %} <select class="signup_content_detail_birth_box" name="age" id="id_age" required>
-                              <option>출생 연도</option>
-                              {% for year in range(2004, 1899, -1) %}
-                                <option>{{ year }}</option>
-                              {% endfor %}
+        <div class="signup_content_wrapper">
+            <div class="signup_content_wrapper_layout">
+                <div class="signup_content_title">회원가입</div>
+                <div class="signup_content_detail">
+                    <div class="signup_content_detail_input_wrapper">
+                        <input class="signup_content_detail_input" placeholder="아이디를 입력해 주세요." type="text" name="userid" id="userid" required />
+                        <input type="hidden" name="hidden_userid" id="hidden_userid" />
+                        <div class="signup_error_message" id="userid-error"></div>
+                        <div class="signup_content_detail_duplicate">
+                            <button class="signup_duplicate_btn" type="button" id="id_duplicate_btn">중복확인</button>
+                            <div id="duplicate-message"></div>
+                        </div>
+
+                        <input class="signup_content_detail_input" placeholder="비밀번호를 입력해 주세요." type="password" name="password1" id="password1" required/>
+                        <div class="signup_error_message" id="password1-error"></div>
+
+                        <input class="signup_content_detail_input" placeholder="비밀번호를 다시 입력해 주세요." type="password" name="password2" id="password2" required/>
+                        <div class="signup_error_message" id="password2-error"></div>
+
+                        <input class="signup_content_detail_input" placeholder="이메일을 입력해 주세요." type="email" name="email" id="email" required />
+                        <input type="hidden" name="hidden_email" id="hidden_email" />
+                        <div class="signup_error_message" id="email-error"></div>
+                        <div class="signup_content_detail_duplicate">
+                            <button class="signup_duplicate_btn" type="button" id="email_duplicate_btn">중복확인</button>
+                            <div id="email-duplicate-message"></div>
+                        </div>
+
+                        <input class="signup_content_detail_input" placeholder="이름을 입력해 주세요." type="text" name="username" id="username" required/>
+                        <div class="signup_error_message" id="username-error"></div>
+                        
+                        <input class="signup_content_detail_input" placeholder="닉네임을 입력해 주세요." type="text" name="nickname" id="nickname" required/>
+                        <input type="hidden" name="hidden_nickname" id="hidden_nickname" />
+                        <div class="signup_error_message" id="nickname-error"></div>
+                        <div class="signup_content_detail_duplicate">
+                            <button class="signup_duplicate_btn" type="button" id="nickname_duplicate_btn">중복확인</button>
+                            <div id="nickname-duplicate-message"></div>
+                        </div>                          
+
+                        <select class="signup_content_detail_job" name="job">
+                            <option value="none" selected>직무를 선택하세요.</option>
+                            <option value="개발">개발</option>
+                            <option value="기획">기획</option>
+                            <option value="마케팅">마케팅</option>
+                            <option value="영업">영업</option>
+                            <option value="인사">인사</option>
+                        </select>
+
+                        <div class="signup_content_detail_birth">
+                            <input class="signup_content_detail_birth_box" placeholder="나이를 입력하세요." type="number" name="age" id="id_age" min="20" max="99" required>
+                        </div>
+
+                        <div class="signup_content_detail_dp">
+                            <select class="signup_content_detail_job" name="department" id="department" required>
+                                <option value="none" selected>부서를 선택하세요.</option>
+                                <option value="개발자">IT기술</option>
+                                <option value="영업부">영업/마케팅</option>
+                                <option value="인사과">경영기획/지원</option>
+                                <option value="RnD">R&D</option>
                             </select>
-                          <select class="signup_content_detail_birth_box" id="birth-month">
-                              <option>월</option>
-                              {% for month in range(1, 13) %}
-                                  <option>{{ month }}</option>
-                              {% endfor %}
-                          </select>
-                          <select class="signup_content_detail_birth_box" id="birth-day">
-                              <option>일</option>
-                              {% for day in range(1, 32) %}
-                                  <option>{{ day }}</option>
-                              {% endfor %}
-                          </select> {% endcomment %}
-                      </div>
-
-                      <div class="signup_content_detail_dp">
-                        {% comment %} <label for="department">부서:</label> {% endcomment %}
-                        <select class="signup_content_detail_job" name="department" id="department" required>
-                          <option value="none" selected>부서를 선택하세요.</option>
-                          <option value="부서1">부서1</option>
-                          <option value="부서2">부서2</option>
-                          <option value="부서3">부서3</option>
-                        </select>
-                      </div>
+                        </div>
                       
-                      <div class="signup_content_detail_dp">
-                        {% comment %} <label for="rank">직급:</label> {% endcomment %}
-                        <select class="signup_content_detail_job" name="rank" id="rank" required>
-                          <option value="none" selected>직급을 선택하세요.</option>
-                          <option value="직급1">직급1</option>
-                          <option value="직급2">직급2</option>
-                          <option value="직급3">직급3</option>
-                        </select>
-                      </div>
+                        <div class="signup_content_detail_dp">
+                            <select class="signup_content_detail_job" name="rank" id="rank" required>
+                                <option value="none" selected>직급을 선택하세요.</option>
+                                <option value="인턴">인턴</option>
+                                <option value="사원">사원</option>
+                                <option value="주임">주임</option>
+                                <option value="대리">대리</option>
+                                <option value="과장">과장</option>
+                                <option value="차장">차장</option>
+                                <option value="부장">부장</option>
+                                <option value="이사급">이사급</option>
+                            </select>
+                        </div>
 
-                      <div class="signup_content_detail_gender">
-                        {% comment %} <label for="gender">성별:</label> {% endcomment %}
-                        <input type="radio" name="gender" id="gender_male" value="M" required>
-                        <label for="gender_male">남성</label>
-                        <input type="radio" name="gender" id="gender_female" value="F" required>
-                        <label for="gender_female">여성</label>
-                      </div>
+                        <div class="signup_content_detail_gender">
+                            <input type="radio" name="gender" id="gender_male" value="M" required>
+                            <label for="gender_male">남성</label>
+                            <input type="radio" name="gender" id="gender_female" value="F" required>
+                            <label for="gender_female">여성</label>
+                        </div>
 
-                      <hr class="signup_line">
-                  </div>
-                  <div class="signup_content_detail_submit"> <!-- 개인정보 수집 -->
-                      <label>
-                          <input class="signup_content_detail_person_info" type="checkbox" name="person_info" value="person_info"> 개인정보 수집 및 이용 동의(필수)
-                          <button class="signup_content_detail_person_info_btn" type="button" id="add_feed" data-toggle="modal" data-target="#exampleModal">내용보기</button>
-                      </label>
-                      <div class="signup_content_detail_submit_btn_wrapper">
-                        <button class="signup_content_detail_submit_btn" id="signup_btn" type="submit">가입하기</button>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
+                        <hr class="signup_line">
+                    </div>
+                    <div class="signup_content_detail_submit">
+                        <label>
+                            <input class="signup_content_detail_person_info" type="checkbox" name="person_info" value="person_info" required> 개인정보 수집 및 이용 동의(필수)
+                            <button class="signup_content_detail_person_info_btn" type="button" id="add_feed" data-toggle="modal" data-target="#exampleModal">내용보기</button>
+                        </label>
+                        <div class="signup_content_detail_submit_btn_wrapper">
+                            <button class="signup_content_detail_submit_btn" id="signup_btn" type="submit">가입하기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    {% endblock %}
-  </form>
+</form>
+
+{% endblock %}  
