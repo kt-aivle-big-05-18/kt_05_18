@@ -25,46 +25,61 @@
         <div class="survey_detail_head_wrapper">
             <div class="survey_detail_head_title">설문 요청</div>
             <div class="survey_detail_head_content">
-                <div>{{ survey.title }}</div>
+                <div>제목: {{ survey.title }}</div>
                 <div>내용: {{ survey.content }}</div>
             </div>
         </div>
+        
         <div class="survey_detail_content_wrapper">
-            <div class="survey_detail_conversation_wrapper">
-                <div>{{ survey.author }} 님의 코칭 대화</div>
-                <ul>
-                    {% for message in messages %}
-                        <li>{{ message.name }} - {{ message.content }}</li>
-                    {% endfor %}
-                </ul>
+            <div class="survey_detail_conversation_contain">
+                <div class="survey_detail_conversation_title">{{ survey.author }} 님의 코칭 대화</div>
+                <div class="survey_detail_conversation_wrapper">
+                    {% comment %} {{ message.name }} {% endcomment %}
+                    <ul>
+                        {% for message in messages %}
+                            {% if forloop.counter|divisibleby:2 %}
+                            <div class="survey_detail_conversation_list_coach">
+                                <img class="survey_detail_conversation_list_pic_coach" src="/static/img/young_male.png">
+                                <li class="survey_detail_conversation_list_txt_coach">{{ message.content }}</li>
+                            </div>
+                            {% else %}
+                            <div class="survey_detail_conversation_list_member">
+                                <img class="survey_detail_conversation_list_pic_member" src="/static/img/won.png">
+                                <li class="survey_detail_conversation_list_txt_member">{{ message.content }}</li>
+                            </div>
+                                {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
-            <div class="survey_detail_checklist_wrapper">
-                <h4>체크리스트</h4>
-                <form id="ratingForm" method="POST" action="{% url 'community:survey_detail' survey.id %}">
-                    {% csrf_token %}
-                    {% for item in checklist %}
-                    <div class="survey_detail_checklist_item_wrapper">
-                        <div class="survey_detail_checklist_item">{{ item }}</div>
-                        <input type="radio" name="rating_{{ forloop.counter0 }}" value="1">매우 그렇지 않다
-                        <input type="radio" name="rating_{{ forloop.counter0 }}" value="2">그렇지 않다
-                        <input type="radio" name="rating_{{ forloop.counter0 }}" value="3">그렇다
-                        <input type="radio" name="rating_{{ forloop.counter0 }}" value="4">매우 그렇다
-                    </div>
-                    <hr class="survey_detail_checklist_item_hr">
-                    {% endfor %}
-                    <div class="form-group">
-                        <label for="comment">더 하고 싶은 말이 있다면 자유롭게 적어주세요</label>
-                        <textarea name="comment" id="comment" class="form-control"></textarea>
-                    </div>
-                
-                    <button type="submit">Submit</button>
-                </form>
+            <div class="survey_detail_checklist_contain">
+                <div class="survey_detail_checklist_wrapper">
+                    <h4>체크리스트</h4>
+                    <form id="ratingForm" method="POST" action="{% url 'community:survey_detail' survey.id %}">
+                        {% csrf_token %}
+                        {% for item in checklist %}
+                        <div class="survey_detail_checklist_item_wrapper">
+                            <div class="survey_detail_checklist_item">{{ item }}</div>
+                            <input type="radio" name="rating_{{ forloop.counter0 }}" value="1">매우 그렇지 않다
+                            <input type="radio" name="rating_{{ forloop.counter0 }}" value="2">그렇지 않다
+                            <input type="radio" name="rating_{{ forloop.counter0 }}" value="3">그렇다
+                            <input type="radio" name="rating_{{ forloop.counter0 }}" value="4">매우 그렇다
+                        </div>
+                        <hr class="survey_detail_checklist_item_hr">
+                        {% endfor %}
+                        <div class="form-group">
+                            <label for="comment">더 하고 싶은 말이 있다면 자유롭게 적어주세요</label>
+                            <textarea name="comment" id="comment" class="form-control"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <button class="survey_detail_submit_btn" type="submit">설문완료</button>
             </div>
         </div>
-        <button type="submit">Submit</button>
+        {% comment %} <button type="submit">Submit</button> {% endcomment %}
     </form>
 
-    <a href="{% url 'community:commu_list' %}">목록</a>
+    {% comment %} <a href="{% url 'community:commu_list' %}">목록</a> {% endcomment %}
     </div>
 </div>
 <script>

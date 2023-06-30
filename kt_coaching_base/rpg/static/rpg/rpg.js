@@ -145,7 +145,7 @@ $(document).ready(function() {
                     mediaRecorder.start();
                     isRecording = true;
                     // record.style.background = "#BDF2F6";
-                    record.style.color = "#BDF2F6";
+                    record.style.color = "#B21818";
                 } else {
                     mediaRecorder.stop();
                     isRecording = false;

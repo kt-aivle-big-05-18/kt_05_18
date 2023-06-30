@@ -31,11 +31,6 @@ $.ajaxSetup({
   // }, 5000);
 // });
 
-// 설문팝업
-$(function() {
-	$("#survey_modal").modal("show");
-});
-
 // 차트그리기
 // 라인차트
 $(document).ready(function() {
