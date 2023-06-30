@@ -30,12 +30,14 @@ $(document).ready(function() {
 
 
 // 처음으로 버튼 클릭 이벤트 처리
-document.addEventListener(function () {
+document.addEventListener('DOMContentLoaded', function () {
   const goHomeButton = document.getElementById('goHomeButton');
   goHomeButton.addEventListener('click', function () {
-    window.location.href = `${window.origin}/`;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 });
+
+
 
 $(function() {
 	$("#modal").modal("show");
