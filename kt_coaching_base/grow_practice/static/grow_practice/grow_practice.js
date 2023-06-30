@@ -65,7 +65,7 @@ $(document).ready(function() {
             + "</div>");
             scrollToBottom();
             console.log(userInput);
-            message = '"'+userInput+'"' + ' ""안의 문장이 GROW 모델 중 무엇에 해당하는지 간단하게 알려줘' 
+            message = '"'+userInput+'"' + '라는 문장이 GROW 코칭 대화 모델 G,R,O,W중 무엇에 해당하는지 알려줘' 
             $.ajax({
                 url: "/grow_practice/grow_start/",
                 type: "POST",

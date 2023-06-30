@@ -17,7 +17,7 @@
           <div class="login_content_detail_input_wrapper"> <!-- 로그인 박스 ~ 수평선 묶는 div -->
             <input class="login_content_detail_input" placeholder="아이디를 입력해 주세요." type="text" id="userid" name="userid" required/>
             <input class="login_content_detail_input" placeholder="비밀번호를 입력해 주세요." type="password" id="password" name="password" required/>
-            <label><input class="login_content_detail_idsave" type="checkbox" name="id" value="id_save"> 아이디 저장</label>
+            {% comment %} <label><input class="login_content_detail_idsave" type="checkbox" name="id" value="id_save"> 아이디 저장</label> {% endcomment %}
             
             {% if show_captcha %}
             <div class="captcha_wrapper">

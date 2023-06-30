@@ -46,11 +46,6 @@ for(i=0;i<linkCollapse.length;i++) {
 $(document).ready(function() {
     var chatContainer = $("#chat-container");
 
-
-    $("#remind-btn").click(function() {
-        PersonaRemind();
-    });
-
     $("#send-btn").click(function() {
         sendMessage();
     });
@@ -153,7 +148,7 @@ $(document).ready(function() {
                     mediaRecorder.start();
                     isRecording = true;
                     // record.style.background = "#BDF2F6";
-                    record.style.color = "#BDF2F6";
+                    record.style.color = "#B21818";
                 } else {
                     mediaRecorder.stop();
                     isRecording = false;
