@@ -14,6 +14,7 @@
                         <a href="{% url 'rpg:persona' %}" class="menu-header{% if request.resolver_match.url_name == 'persona' %} active-menu{% endif %}">대화 실습</a>
                         {% comment %} <a href="{% url 'analysis:intro' %}" class="menu-header{% if request.path == 'home_view' %} active-menu{% endif %}">Analyze</a> {% endcomment %}
                         <a href="{% url 'community:commu_list' %}" class="menu-header{% if request.resolver_match.url_name == 'commu_list' %} active-menu{% endif %}">커뮤니티</a>
+                        <a href="{% url 'grow_practice:grow_practice' %}" class="menu-header{% if request.resolver_match.url_name == 'grow_practice' %} active-menu{% endif %}">GROW 연습</a>
                     </div>
                 </div>
                 <div id="nav" class="nav-right">
