@@ -14,6 +14,9 @@ const showMenu = (toggleId, navbarId, bodyId) => {
     }
 }
 
+// grow 예시 질문 팝업창
+  
+
 showMenu('nav-toggle', 'navbar', 'body-pd')
 
 /* LINK ACTIVE */
@@ -56,6 +59,47 @@ function updateChatUserProfileImage() {
 
 $(document).ready(function() {
     var chatContainer = $("#chat-container");
+
+    // Persona 리마인드 버튼 (충영)
+    $("#remind-btn").click(function() {
+        PersonaRemind();
+    });
+
+    function PersonaRemind() {
+        var remind = "역할 리마인드"
+        chatContainer.append("<div class='user_message'>" 
+        + remind
+        + "<img class='user_profile' src='/static/img/won.png' alt='사용자이미지'>"
+        + "</div>");
+        scrollToBottom();
+
+        $.ajax({
+            url: "/rpg/rpg_start/",
+            type: "POST",
+            data: {
+                message: remind
+            },
+            success: function(response) {
+                chatContainer.append("<div class='assistant_message'>"
+                + "<div class='assistant_message_left'>"
+                + "<img class='assistant_profile' src='/static/img/young_male.png' alt='페르소나이미지'>"
+                + response.message
+                + "</div>"
+                + "<ion-icon class='assistant_message_icon' name='volume-medium-outline'></ion-icon>"
+                + "</div>");
+            
+                chatContainer.append(audioElement);
+                scrollToBottom();
+            },
+            error: function(xhr, errmsg, err) {
+                console.log(errmsg);
+                chatContainer.append(errmsg);
+            }
+        });
+
+        $("#user-input").val("");
+    }
+
 
     $("#send-btn").click(function() {
         sendMessage();
@@ -231,3 +275,36 @@ $(document).ready(function() {
         soundClips.textContent = '재생';
     });
 });
+
+// 모달창 //
+document.addEventListener("DOMContentLoaded", function() {
+    // 토글 버튼 클릭 이벤트
+    document.getElementById("nav-toggle").addEventListener("click", function() {
+      showModal();
+    });
+  
+    // 모달 표시 함수
+    function showModal() {
+      var modalContent = document.getElementById("modalContent");
+      var modalImage = document.getElementById("modalImage");
+      modalImage.src = "/static/img/grow_ex.png";
+      modalImage.alt = "Grow Example";
+  
+      document.getElementById("modalWrap").style.display = "block";
+    }
+  
+    // 모달 숨기는 함수
+    function hideModal() {
+      document.getElementById("modalWrap").style.display = "none";
+    }
+  
+    // 모달 닫기 버튼 클릭 이벤트
+    document.getElementById("closeBtn").addEventListener("click", hideModal);
+  
+    // 모달 영역 외부 클릭 이벤트
+    document.getElementById("modalWrap").addEventListener("click", function(e) {
+      if (e.target.id === "modalWrap") {
+        hideModal();
+      }
+    });
+  });
