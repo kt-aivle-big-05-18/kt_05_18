@@ -137,14 +137,3 @@ def rating_list(request, persona_id):
 def popup(request):
     message = request.GET.get('message', None)
     return render(request, 'mypage/myp_popup.html', {'message': message})
-
-# 마이페이지 접속 시 비밀번호 한 번 더 
-# def password_check(request):
-#     if request.is_ajax() and request.method == 'POST':
-#         password = request.POST.get("password", None)
-#         if password and check_password(password, request.user.password):
-#             return JsonResponse({"result": True})
-#         else:
-#             return JsonResponse({"result": False})
-
-#     return JsonResponse({"result": False})
