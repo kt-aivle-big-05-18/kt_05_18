@@ -12,11 +12,13 @@
     max-width: 1500px;
     margin: 0 30px;
     padding: 0 30px;
+    height: 92px;
+    /* background-color: #2FC4CE; */
   }
   
   .menu-head {
     font-size: 33px;
-    height: 92px; /* 헤더 높이와 일치하게 변경 */
+    /* height: 92px; 헤더 높이와 일치하게 변경 */
     color: #2FC4CE;
     font-weight: 700;
     /*line-height: 90px; /* 텍스트가 헤더 높이와 일치하게 세로 가운데 정렬 */
@@ -25,7 +27,11 @@
   .logo-link{
     text-decoration: none;
     color: #2FC4CE;
-    line-height: 92px;
+    /* line-height: 92px; */
+  }
+
+  .logo-link:hover{
+    text-decoration: none;
   }
 
   .login-link,
@@ -33,15 +39,15 @@
     text-decoration: none;
     color: #2FC4CE;
     height: 92px; /*헤더 높이와 일치하게 변경 */
-    line-height: 92px; /*텍스트가 헤더 높이와 일치하게 세로 가운데 정렬 */
+    /* line-height: 92px; 텍스트가 헤더 높이와 일치하게 세로 가운데 정렬 */
     margin-left: auto;
     font-weight: 500;
 }
-  
-  .nav-links {
-    display: flex;
-    align-items: center;
-  }
+
+.login-link:hover,
+.signup-link:hover {
+  text-decoration: none;
+}
   
   .menu-header {
     font-size: 18px;
@@ -54,20 +60,16 @@
     line-height: 92px; /* 텍스트가 헤더 높이와 일치하게 세로 가운데 정렬 */
   }
   
-  .nav-right {
-    display: flex;
-    align-items: center;
-    margin-left: auto; /* Log In과 Sign Up을 오른쪽 끝으로 이동 */
-    }
+
   
   .divider {
     color: #2FC4CE;
     margin: 0 0;
-    line-height: 92px;
+    /* line-height: 92px; */
   }
   
   .menu-group {
-    display: flex;
+    /* display: flex; */
     margin-left : 30px;
     margin-right: 0px;
   }

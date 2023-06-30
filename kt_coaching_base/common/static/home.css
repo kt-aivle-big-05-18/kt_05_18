@@ -131,6 +131,7 @@ html {
     color: white;
     font-weight: 600;
     font-size: 20px;
+    height: 90px;
 }
 
 .intro_title_text{
@@ -312,55 +313,36 @@ html {
     height: 40px;
 }
 
-
-
-/* ------------------footer------------------- */
-.footer {
-    position: relative;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 10%;
-    background-color: #002c4d;
-    color: white;
-    padding: 40px;
-    text-align: center; 
-}
-
-.footer_text{
-    text-decoration: none;
-    margin: 100px;
-    font-size: 14px;
-    color: white;
-}
-
-.footer_text:hover {
-    text-decoration: none;
-    color: rgba(255, 255, 255, 0.7);
-}
-
-/* 꺽쇠 기호 */
-.arrow {
-    font-size: 5rem;
-    height: 240px;
-    font-weight: 700;
-    color: rgb(51, 48, 48);
-    margin: 40px 20px;
-    margin-bottom: 70px;
-}
-
 /* ----------------------- about us --------------------- */
+
+.about_container{
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    height: 100vh;
+    background-color: #E9F2FF;
+}
 
 .profile_container {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    margin-top: 20px;
+    width: 100%;
+    height: calc(100% - 90px);
+    background-color: yellow;
+}
+
+.profile_lay{
+    width: 100%;
+    height: 100%;
+    background-color: orange;
 }
 
 .profile_box_row {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-bottom: 20px;
 }
 
@@ -409,3 +391,38 @@ html {
     background-color: #11456c;
   }
   
+
+  /* ------------------- footer ------------------- */
+.footer {
+    position: relative;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 10%;
+    background-color: #002c4d;
+    color: white;
+    padding: 40px;
+    text-align: center; 
+}
+
+.footer_text{
+    text-decoration: none;
+    margin: 100px;
+    font-size: 14px;
+    color: white;
+}
+
+.footer_text:hover {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* 꺽쇠 기호 */
+.arrow {
+    font-size: 5rem;
+    height: 240px;
+    font-weight: 700;
+    color: rgb(51, 48, 48);
+    margin: 40px 20px;
+    margin-bottom: 70px;
+}

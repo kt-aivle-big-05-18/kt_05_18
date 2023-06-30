@@ -1,6 +1,6 @@
 .ana_int_wrapper{
-    width: 100vw;
-    height: 87.5vh;
+    width: 98.9vw;
+    height: 120vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -13,8 +13,8 @@
 }
 
 .ana_int_title{
-    font-weight: 700;
-    font-size: 20px;
+    font-weight:900;
+    font-size: 22px;
     margin-left: 20px;
 }
 
@@ -29,14 +29,33 @@
 }
 
 .ana_int_content_left{
-    font-weight: 500;
-    font-size: 14px;
-    line-height : 2.3;
+    font-weight: 600;
+    font-size: 16px;
+    line-height : 2.0;
     background-color: #F7F7F7;
     border-radius: 20px;
-    padding: 10px;
-    width: 500px;
+    padding: 30px;
+    width: 700px;
     margin-right: 20px;
+}
+
+.result_intro_table{
+    border: 2px solid #828282;
+    border-collapse: collapse;
+    background-color: white;
+    margin: 20px 0px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.ana_int_content_left th{
+    font-weight: 600;
+    text-align: center;
+    background-color: #E5E5E5;
+}
+
+.ana_int_content_left td{
+    padding: 6px;
 }
 
 .ana_int_content_right{
@@ -44,7 +63,7 @@
     flex-direction: column;
     justify-content: space-between;
     /* align-items: flex-start; */
-    width: 60%;
+    width: 50%;
     margin-left: 20px;
 }
 
@@ -52,6 +71,10 @@
     font-weight: 700;
     font-size: 20px;
     margin: 10px 0px;
+}
+
+.ana_int_content_right_graph{
+    margin-bottom: 30px;
 }
 
 .ana_int_content_right_graph_title{
@@ -77,6 +100,7 @@
 }
 
 #myChart {
-    width: 150px;
-    height: 150px;
+    margin-top: 30px;
+    width: 200px;
+    height: 200px;
 }
