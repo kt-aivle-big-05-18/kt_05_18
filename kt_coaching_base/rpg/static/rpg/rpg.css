@@ -110,6 +110,11 @@ a {
     width: 140px;
 }
 
+.new_chat_btn_link{
+    text-decoration: none;
+    color: white;
+}
+
 .new_chat_btn:hover, .submit_btn:hover{
     color: #0097FE;
     background-color: white;
@@ -203,11 +208,16 @@ a {
 
 /* ======================================================================= */
 /* 시뮬레이션 메인 */
+body{
+    margin: 0;
+}
+
 .rpg_wrapper{
     position: absolute;
     Top:90px;
-    left: 10vw;
-	width: 90vw;
+    /* left: 10vw; */
+    /* width: 90vw; */
+	width: 100vw;
     height: calc(100vh - 202px);
 	/* background-color: #f6f6f6; */
 	padding-top: 30px;
@@ -233,6 +243,13 @@ a {
 	/* background-color: aqua; */
 }
 
+.rpg_content_head{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
 .real_time_score_wrapper{
 	display: flex;
 	flex-direction: row;
@@ -245,17 +262,47 @@ a {
 	font-weight: 600;
 }
 
+.rpg_submit_btn{
+    border-radius: 12px;
+    background-color: #BDF2F6;
+    padding: 10px 25px;
+    color: black;
+    font-weight: 700;
+    font-size: 14px;
+    border: none;
+}
+
+.rpg_submit_btn:hover{
+    background-color: #77cdd3;
+    color: white;
+}
+
 .real_time_score{
 	background-color: #E2FDFF;
-	border-radius: 12px;
-	padding: 3px;
+	border-radius: 8px;
+	padding: 3px 5px;
 }
 
 .chat_container {
 	width: 100%;
     overflow: auto;
-    margin-top: 10px;
+    margin-top: 30px;
     padding: 15px;
+}
+
+.chat_container::-webkit-scrollbar {
+    width: 10px;
+}
+.chat_container::-webkit-scrollbar-thumb {
+    background-color: #cacaca;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+}
+.chat_container::-webkit-scrollbar-track {
+    background-color: grey;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
 }
 
 .user_message {
@@ -317,16 +364,20 @@ a {
 
 /* 입력창 부분 */
 .rpg_bottom{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 	position: fixed;
 	bottom: 0;
-	left: 8vw;
-	width: 90%;
+	/* left: 8vw; */
+	width: 100%;
 	background-color: white;
-	padding-top: 10px;
+	padding: 20px 10px;
 }
 
 .rpg_input_section{
-	margin: 10px;
+    width: 95%;
+	/* margin: 10px; */
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -336,9 +387,15 @@ a {
 }
 
 /* 스탑 아이콘은 이제 필요 없소 */
+<<<<<<< HEAD
+.rpg_record_icon, .rpg_stop_icon, .rpg_send_icon{
+	width: 30px;
+	height: 30px;
+=======
 .rpg_record_icon, .rpg_stop_icon, .rpg_send_icon, .persona_remind_icon{
 	width: 20px;
 	height: 20px;
+>>>>>>> 1d752646ff7fccffcbba49a2341d61dedeedcc18
 	margin: 0px 10px;
 }
 

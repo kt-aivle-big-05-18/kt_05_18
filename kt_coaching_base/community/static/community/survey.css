@@ -71,7 +71,7 @@ body{
     height: 100vh;
     display: flex;
     justify-content: center;
-    margin-top: 10px;
+    margin: 20px 0px;
     /* background-color: #741717; */
 }
 
@@ -88,24 +88,80 @@ body{
     color: #002C4D;
 }
 
+.survey_detail_head_content{
+    margin-top: 10px;
+    color: #787878;
+}
+
 .survey_detail_content_wrapper{
     display: flex;
     flex-direction: row;
     margin-top: 20px;
+
+}
+
+.survey_detail_conversation_contain{
+    width: 45%;
+    /* height: 100%; */
+}
+
+.survey_detail_conversation_title{
+    font-weight: 600;
+    font-size: 15px;
 }
 
 .survey_detail_conversation_wrapper{
-    width: 45%;
     margin-right: 10px;
     border: 1px solid #D2D2D2;
+    margin-top: 10px;
+    box-shadow: 2px 2px lightgrey;
+}
+
+.survey_detail_conversation_list_coach{
+    display: flex;
+    flex-direction: column;
+    /* align-items: end; */
+    background-color: #F1F1F1;
+    border: solid 1px #CCCCCC;
+    font-weight: 500;
+    padding: 15px;
+}
+
+.survey_detail_conversation_list_pic_coach{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.survey_detail_conversation_list_member{
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    font-weight: 500;
+    padding: 15px;
+}
+
+.survey_detail_conversation_list_pic_member{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.survey_detail_checklist_contain{
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
 }
 
 .survey_detail_checklist_wrapper{
-    width: 45%;
     margin-left: 10px;
     border: 1px solid #D2D2D2;
     padding: 10px;
     border-radius: 20px;
+    box-shadow: 2px 2px lightgrey;
 }
 
 .survey_detail_checklist_item_wrapper{
@@ -118,4 +174,20 @@ body{
 
 .survey_detail_checklist_item_hr{
     border: 1px solid #D2D2D2;
+}
+
+.survey_detail_submit_btn{
+    color: white;
+    background-color: #01A1FF;
+    padding: 5px;
+    border-radius: 10px;
+    border: 2px solid #01A1FF;
+    font-weight: 600;
+    font-size: 15px;
+    margin-top: 10px;
+}
+
+.survey_detail_submit_btn:hover{
+    color: #01A1FF;
+    background-color: white;
 }
