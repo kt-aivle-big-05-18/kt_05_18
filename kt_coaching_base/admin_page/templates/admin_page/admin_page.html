@@ -7,12 +7,12 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
   <script src="{% static '/admin_page/admin_user.js' %}" defer></script>
-  <link rel="stylesheet" href="{% static 'admin_page/admin_persona.css' %}">
+  <link rel="stylesheet" href="{% static 'admin_page/admin_user.css' %}">
 </head>
 
 <body>
     <div class="sidebar">
-        <a href="{% url 'admin_page:admin_user' %}" class="kt-coaching">KT coaching</a>
+        <a href="{% url 'common:home' %}" class="kt-coaching">KT coaching</a>
         <div class="separator"></div>
         <div class="statistics">통계<span class="arrow">▼</span></div>
         <div class= "inside-info">
@@ -27,45 +27,24 @@
             </div>
         </div>   
         <div class="main-content">
-            <div class = "main-graph-box">
-                <div class="main-graph-box1">
-                    <div class="graph1-title">AI 분석결과 비율</div>
-                    <div class="graph1">
-                        {% comment %} <canvas id="age_Chart"style="height: 100%; width: 100%;"></canvas> {% endcomment %}
-                    </div>
-                    {% comment %} <script id="age_counts" type="application/json">
-                        {{ age_counts | safe }}
-                    </script> {% endcomment %}
+           <div class="main-graph-box1">
+                <div class="graph1-title">요일별 이용 현황</div>
+                <div class="graph1">
+                    <canvas id="weekday_Chart" style="height: 100%; width: 100%;"></canvas>
                 </div>
-                <div class="main-graph-box2">
-                    <div class="graph1-title">유저 점수 통계</div>
-                    <div class="graph2">
-                        {% comment %} <canvas id="age_Chart"style="height: 100%; width: 100%;"></canvas> {% endcomment %}
-                    </div>
-                    {% comment %} <script id="age_counts" type="application/json">
-                        {{ age_counts | safe }}
-                    </script> {% endcomment %}
-                </div>
+                <script id="weekday_chart_data" type="application/json">
+                    {{ weekday_counts | safe }}
+                </script>
             </div>
-            <div class="sub-graph-box">
-                <div class="main-sub-graph-box1">
-                    <div class="graph2-title">요일 별 서비스 이용 횟수</div>
-                    <div class="graph2">
-                        <canvas id="weekday_Chart" style="height: 100%; width: 100%;"></canvas>
-                    </div>
-                    <script id="weekday_chart_data" type="application/json">
-                        {{ weekday_counts | safe }}
-                    </script>
+            <br><br>
+            <div class="main-graph-box2">
+                <div class="graph1-title">시간대 별 이용 현황</div>
+                <div class="graph2">
+                    <canvas id="hour_Chart" style="height: 100%; width: 100%;"></canvas>
                 </div>
-                <div class="main-sub-graph-box2">
-                    <div class="graph3-title">시간대 별 서비스 이용 횟수</div>
-                    <div class="graph3">
-                        <canvas id="hour_Chart" style="height: 100%; width: 100%;"></canvas>
-                    </div>
-                    <script id="hour_chart_data" type="application/json">
-                        {{ hour_counts | safe }}
-                    </script>
-                </div>
+                <script id="hour_chart_data" type="application/json">
+                    {{ hour_counts | safe }}
+                </script>
             </div>
         </div>
     </div>  
