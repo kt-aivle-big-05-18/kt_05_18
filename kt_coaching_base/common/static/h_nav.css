@@ -16,15 +16,11 @@
     /* background-color: #2FC4CE; */
   }
   
-  .menu-head {
-    font-size: 33px;
-    /* height: 92px; 헤더 높이와 일치하게 변경 */
+  .logo-link{
+    font-family: sans-serif;
     color: #2FC4CE;
     font-weight: 700;
-    /*line-height: 90px; /* 텍스트가 헤더 높이와 일치하게 세로 가운데 정렬 */
-  }
-  
-  .logo-link{
+    font-size: 33px;
     text-decoration: none;
     color: #2FC4CE;
     /* line-height: 92px; */
@@ -48,40 +44,47 @@
 .signup-link:hover {
   text-decoration: none;
 }
-  
-  .menu-header {
-    font-size: 18px;
-    font-weight: 500px;
-    margin-left: 80px;
-    text-decoration: none;
-    font-weight: 600;
-    color: #2FC4CE;
-    height: 92px; /* 헤더 높이와 일치하게 변경 */
-    line-height: 92px; /* 텍스트가 헤더 높이와 일치하게 세로 가운데 정렬 */
-  }
-  
 
+  
+.nav-links{
+  position: absolute;
+  top: 5px;
+  left: 320px;
+  width: 750px;
+  height: 92px;
+  /* background-color: antiquewhite; */
+}
   
   .divider {
     color: #2FC4CE;
     margin: 0 0;
     /* line-height: 92px; */
   }
-  
-  .menu-group {
-    /* display: flex; */
-    margin-left : 30px;
-    margin-right: 0px;
-  }
 
   .menu-group > *:not(:last-child) {
     margin-right: 10px;
   }
 
+  .menu-header {
+    font-size: 18px;
+    font-weight: 500px;
+    /* margin-left: 80px; */
+    text-decoration: none;
+    font-weight: 600;
+    color: #2FC4CE;
+    height: 92px; /* 헤더 높이와 일치하게 변경 */
+    line-height: 92px; /* 텍스트가 헤더 높이와 일치하게 세로 가운데 정렬 */
+    padding: 15px 20px;
+    border-radius: 12px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
   .menu-header:hover {
     cursor: pointer;
-    color: #00365f;
+    /* color: #00365f; */
+    background-color: rgba(47, 196, 206, 0.5);
     text-decoration: none;
+    color: white;
   }
   
   .active-menu {
