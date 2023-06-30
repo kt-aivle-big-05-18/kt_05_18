@@ -62,47 +62,6 @@ for(i=0;i<linkCollapse.length;i++) {
 $(document).ready(function() {
     var chatContainer = $("#chat-container");
 
-    // Persona 리마인드 버튼 (충영)
-    $("#remind-btn").click(function() {
-        PersonaRemind();
-    });
-
-    function PersonaRemind() {
-        var remind = "역할 리마인드"
-        chatContainer.append("<div class='user_message'>" 
-        + remind
-        + "<img class='user_profile' src='/static/img/won.png' alt='사용자이미지'>"
-        + "</div>");
-        scrollToBottom();
-
-        $.ajax({
-            url: "/rpg/rpg_start/",
-            type: "POST",
-            data: {
-                message: remind
-            },
-            success: function(response) {
-                chatContainer.append("<div class='assistant_message'>"
-                + "<div class='assistant_message_left'>"
-                // + "<img class='assistant_profile' src='/static/img/young_male.png' alt='페르소나이미지'>"
-                + response.message
-                + "</div>"
-                + "<ion-icon class='assistant_message_icon' name='volume-medium-outline'></ion-icon>"
-                + "</div>");
-            
-                chatContainer.append(audioElement);
-                scrollToBottom();
-            },
-            error: function(xhr, errmsg, err) {
-                console.log(errmsg);
-                chatContainer.append(errmsg);
-            }
-        });
-
-        $("#user-input").val("");
-    }
-
-
     $("#send-btn").click(function() {
         sendMessage();
     });
@@ -120,14 +79,20 @@ $(document).ready(function() {
 
     function sendMessage() {
         var userInput = $("#user-input").val();
-        
         if (userInput !== "") {
-            let userImageSrc = document.getElementById("myp_info_image").src;
-            chatContainer.append("<div class='user_message'>" 
+            chatContainer.append("<div class='user_message'>"
             + userInput
-            + "<img class='user_profile' src='" + userImageSrc + "' alt='사용자이미지'>"
+            + "<img class='user_profile' src='/static/img/won.png' alt='사용자이미지'>"
             + "</div>");
             scrollToBottom();
+        
+        // if (userInput !== "") {
+        //     let userImageSrc = document.getElementById("myp_info_image").src;
+        //     chatContainer.append("<div class='user_message'>" 
+        //     + userInput
+        //     + "<img class='user_profile' src='" + userImageSrc + "' alt='사용자이미지'>"
+        //     + "</div>");
+        //     scrollToBottom();
 
             $.ajax({
                 url: "/rpg/rpg_start/",
@@ -208,7 +173,7 @@ $(document).ready(function() {
                     mediaRecorder.start();
                     isRecording = true;
                     // record.style.background = "#BDF2F6";
-                    record.style.color = "#BDF2F6";
+                    record.style.color = "#B21818";
                 } else {
                     mediaRecorder.stop();
                     isRecording = false;
