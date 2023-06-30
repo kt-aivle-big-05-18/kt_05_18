@@ -80,7 +80,6 @@ body, html {
   .main-content {
       margin-top: 85px;
       margin-left: 270px;
-      margin-right: 270px;
       padding: 10px;
       width: calc(100% - 260px - 17px); 
       height: 664px;
