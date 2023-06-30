@@ -102,7 +102,8 @@ $(document).ready(function() {
                 },
                 success: function(response) {
                     var audioID = "myAudio" + Date.now();  // 고유한 id를 생성합니다.
-                
+                    document.getElementById('grow_count').innerHTML = response.grow;
+                    chatContainer.append("<div class = 'grow_info'>" + response.grow_info + "</div>")
                     chatContainer.append("<div class='assistant_message'>"
                     + "<div class='assistant_message_left'>"
                     + "<img class='assistant_profile' src='/static/img/young_male.png' alt='페르소나이미지'>"
