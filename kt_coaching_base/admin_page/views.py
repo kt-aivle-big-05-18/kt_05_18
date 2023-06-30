@@ -78,7 +78,7 @@ def admin_persona(request):
 
 
 def admin_user(request):
-    
+    #--------------------이용량 통계------------------------------#
     weekday_mapping = {
         0: '토요일',
         1: '일요일',
@@ -113,7 +113,11 @@ def admin_user(request):
         hour_counts[entry['hour']] = entry['count']
     for i in range(len(hour_counts)):
         hour_counts[i] = { 'time' : i , "vlaue_hour" : hour_counts[i]}
-
+        
+    #--------------------------분석결과 통계--------------------------#
+    
+    
+    
     context = {
         'weekday_counts': json.dumps(list(weekday_counts),ensure_ascii=False),
         'hour_counts': json.dumps(list(hour_counts)),
