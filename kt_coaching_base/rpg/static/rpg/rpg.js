@@ -247,7 +247,7 @@ $(document).ready(function() {
 // 모달창 //
 document.addEventListener("DOMContentLoaded", function() {
     // 토글 버튼 클릭 이벤트
-    document.getElementById("nav-toggle").addEventListener("click", function() {
+    document.getElementById("grow-ex").addEventListener("click", function() {
       showModal();
     });
   
