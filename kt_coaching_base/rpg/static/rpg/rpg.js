@@ -43,17 +43,19 @@ for(i=0;i<linkCollapse.length;i++) {
 
 // =====================================================================
 // 시뮬레이션 메인
-$(document).ready(function() {
-    updateChatUserProfileImage();
-});
 
-function updateChatUserProfileImage() {
-    let images = document.querySelectorAll(".user_profile");
+// ----------------------- 마이페이지 이미지 => 채팅 시 유저 이미지 연결 시도 ----------------------
+// $(document).ready(function() {
+//     updateChatUserProfileImage();
+// });
+
+// function updateChatUserProfileImage() {
+//     let images = document.querySelectorAll(".user_profile");
     
-    for (let img of images) {
-        img.src = document.getElementById("myp_info_image").src;
-    }
-}
+//     for (let img of images) {
+//         img.src = document.getElementById("myp_info_image").src;
+//     }
+// }
 
 
 
@@ -82,7 +84,7 @@ $(document).ready(function() {
             success: function(response) {
                 chatContainer.append("<div class='assistant_message'>"
                 + "<div class='assistant_message_left'>"
-                + "<img class='assistant_profile' src='/static/img/young_male.png' alt='페르소나이미지'>"
+                // + "<img class='assistant_profile' src='/static/img/young_male.png' alt='페르소나이미지'>"
                 + response.message
                 + "</div>"
                 + "<ion-icon class='assistant_message_icon' name='volume-medium-outline'></ion-icon>"
@@ -107,6 +109,7 @@ $(document).ready(function() {
 
     $("#user-input").keypress(function(event) {
         if (event.which === 13) {
+            event.preventDefault();
             sendMessage();
         }
     });
