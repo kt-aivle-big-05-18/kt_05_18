@@ -18,6 +18,7 @@ body, html {
     margin: 0;
     top: 0;
   }
+  
   .sidebar a {
     display: block;
     color: white;
@@ -79,9 +80,10 @@ body, html {
   .main-content {
       margin-top: 85px;
       margin-left: 270px;
+      margin-right: 270px;
       padding: 10px;
       width: calc(100% - 260px - 17px); 
-      height: 635px;
+      height: 664px;
       box-sizing: border-box;
       background-color: lightgray; 
   }
@@ -90,7 +92,7 @@ body, html {
       display: flex;
       flex-direction: column;
       justify-content: flex-start; /* 변경된 부분 */
-      width: 50%; /* 변경된 부분 */
+      width: 100%; /* 변경된 부분 */
       height: 290px
   }
 
@@ -98,19 +100,9 @@ body, html {
       display: flex;
       flex-direction: column;
       justify-content: flex-start; /* 변경된 부분 */
-      width: 50%; /* 변경된 부분 */
+      width: 100%; /* 변경된 부분 */
       height: 290px
   }
-
-  .sub-graph-box {
-      margin-top: 10px;
-      margin-bottom: 15px;
-      height: 300px;
-      display: flex;
-      flex-direction: row;
-      justify-content: center; /* 변경된 부분 */
-  }
-
   
   .main-graph-box {
       margin-top: 10px;
@@ -121,8 +113,8 @@ body, html {
       justify-content: center; /* 변경된 부분 */
   }
 
-  .graph1-title, .graph2-title, .graph3-title {
-      margin-left: 12px;
+  .graph1-title, .graph2-title{
+      margin-left: 0px;
       background-color: lightgray;
   }
 
@@ -131,7 +123,7 @@ body, html {
       left: 13px;
       font-size: 20px;
       font-weight: bold;
-      width: 30%;
+      width: 50%;
       height: 25px;
   }
 
@@ -143,41 +135,17 @@ body, html {
       height: 25px;
   }
 
-  .graph3-title{
-      padding: 5px;
-      font-size: 20px;
-      font-weight: bold;
-      width: 50%;
-      height: 25px;
-  }
 
-  .graph1, .graph2, .graph3, .graph4{
+  .graph1, .graph2{
       background-color: #ffff;
       border-radius: 5px;
-      margin: 10px;
+      margin-right: 50px;
   }
 
-  .graph1, .graph2, .graph3, .graph4 {
+  .graph1, .graph2{
       position: relative;
-      width: 80%;
+      width: 100%;
       height: 235px;
-  }
-
-
-  .main-sub-graph-box1 {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start; /* 변경된 부분 */
-      width: 50%; /* 변경된 부분 */
-      height: 290px
-  }
-
-  .main-sub-graph-box2 {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start; /* 변경된 부분 */
-      width: 50%; /* 변경된 부분 */
-      height: 290px
   }
 
   .arrow {
