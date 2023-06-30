@@ -27,14 +27,12 @@ from google.cloud import speech_v1p1beta1 as speech
 from google.oauth2 import service_account
 
 # 인코딩 관련
-import soundfile as sf
 import scipy.io.wavfile as wav
 from scipy.signal import resample
 from scipy.io.wavfile import write
 import wave
 import base64
 from io import BytesIO
-import sounddevice as sd
 import subprocess
 
 # 전처리 및 AI 분류 관련
@@ -136,7 +134,7 @@ def persona(request):
             request.session['visited_persona'] = True
             request.session["persona_set"].append({
                                     "role" : "user", 
-                                    "content" : translate( "다음 대화부터 당신은 팀장님과 대화하는 {0}세인 {1} {2}{3}이며, 차분한 {4} 팀원의 역할로 팀장인 저와 상담을 시작합니다. 당신은 절대로 역할에서 벗어나지 않습니다. 이 역할을 맡고 있을 때 당신은 3문장 이하로 대답합니다.".format(
+                                    "content" : translate( "다음 대화부터 당신은 팀장님과 대화하는 {0}세인 {1} {2}{3}이며, {4} 팀원의 역할로 팀장인 저와 상담을 시작합니다. 당신은 절대로 역할에서 벗어나지 않습니다. 이 역할을 맡고 있을 때 당신은 3문장 이하로 대답합니다.".format(
                                         form.cleaned_data['age'], # 0 나이 - gpt
                                         form.cleaned_data['gender'], # 1 성별 - gpt
                                         form.cleaned_data['department'], # 2 직군 - gpt
@@ -178,6 +176,7 @@ def convert_webm_to_wav(input_file, output_file): #webm wav로 바꾸는 코드
     command = ['ffmpeg', '-i', input_file, output_file]
     subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
+
 def rpg(request):
     if len(request.session.get("persona_set")) == 0 :
         form = RegisterPersona(request.POST or None)
@@ -200,11 +199,11 @@ def rpg(request):
         convert_webm_to_wav(user_voice_url, wav_voice_url)
         
         print(user_voice_url)
-        # ---------------------- AI 전처리 / AI prediction -----------------------#
+        # ----------------------------------- AI 전처리 / AI prediction ------------------------------------#
         m_df = classification_model(message, wav_voice_url)
         m_df_url = os.path.join(base_dir, 'rpg/static/df_csv/{0}_{1}.csv'.format(p_id, count))
         m_df.to_csv(m_df_url, index=False)
-        # ------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------#
         
         # 유저 메세지내용, 음성녹음 내용을 테이블에 저장
         user_message_obj = Message(
@@ -256,21 +255,21 @@ def rpg(request):
         with open(path_gpt_voice, 'rb') as voice_file:
             encoded_voice = base64.b64encode(voice_file.read()).decode('utf-8')
 
-        data = { # json형식으로 respone 해줄 데이터
-            'message' : trans_,
-            'voice': encoded_voice,
-            'path': "{0}_{1}.wav".format(p_id, count),
-            'score' : "{0}".format(request.session.get('score'))
-        }
-        request.session["count"] += 1 # 음성녹음 이름을 조합을 위한 count + 1
-        return JsonResponse(data)
+            data = { # json형식으로 respone 해줄 데이터
+                'message' : trans_,
+                'voice': encoded_voice,
+                'path': "{0}_{1}.wav".format(p_id, count),
+                'score' : "{0}".format(request.session.get('score'))
+            }
+            request.session["count"] += 1 # 음성녹음 이름을 조합을 위한 count + 1
+            return JsonResponse(data)
     else :
         request.session['messages'] = request.session.get("persona_set") # 초기 패르소나 설정을 메세지에 추가하기
         return render(request, "rpg/rpg.html")
 
-#----------------------------------------------------------------------------#
+#-----------------------------------------------------------------------------------------#
 # 4. tts
-#----------------------------------------------------------------------------#
+#-----------------------------------------------------------------------------------------#
 
 def generate_speech(text, voice, gender, p_id, count):
     # 클라이언트 인스턴스화
@@ -420,10 +419,10 @@ def split_into_sentences(paragraph):
     return sentences
 
 
-#---------------- 모델 불러와서 분류하기 -------------#
+# #---------------- 모델 불러와서 분류하기 -------------#
 
 def classification_model(new_sentence, new_voice):
-  output_dic = {0:'관점변화', 1:'부정', 2:'인정', 3:'존중', 4:'판단'}
+  output_dic = {0:'관점전환', 1:'부정', 2:'인정', 3:'존중', 4:'판단'}
   final_result = pd.DataFrame()
   new_sents = pd.DataFrame(split_into_sentences(new_sentence))
 
@@ -431,6 +430,7 @@ def classification_model(new_sentence, new_voice):
   model_path = os.path.join(settings.BASE_DIR, 'rpg/analysis_model/')
   new_wav = new_voice # wav 파일 경로
   scaler = StandardScaler()
+  
   # 데이터 전처리 함수 불러오기
   with open('voice_scaler.pkl', 'rb') as f:
     v_scaler = pickle.load(f)
@@ -451,7 +451,7 @@ def classification_model(new_sentence, new_voice):
     # voice_df = pd.read_csv(os.path.join(model_path, '230628_voice_df.csv'))
     # v_scaler = scaler.fit(voice_df)
     # with open('voice_scaler.pkl', 'wb') as f:
-    #     pickle.dump(v_scaler, f)
+    # pickle.dump(v_scaler, f)
     
     # 새로운 데이터 전처리
     X_test = txt_embed.transform(new_df) # extract text embedding vector
@@ -500,7 +500,6 @@ def classification_model(new_sentence, new_voice):
     x_test = t_scaler.transform(X_test)
 
     # 긍정 부정 분류 모델 불러옴, 긍부정 예측
-    
     model1 = load_model(os.path.join(model_path, '230628_text_model1.h5'))
     y_pred1 = model1.predict(x_test, verbose=0).round()
 
@@ -526,7 +525,7 @@ def classification_model(new_sentence, new_voice):
   return final_result
 
 
-# ----------------------------------------------------------------
+# # ----------------------------------------------------------------
 
 # 로딩창 불러오기
 def loading(request):

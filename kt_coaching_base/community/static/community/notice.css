@@ -85,6 +85,16 @@ body{
     /* background-color: bisque; */
 }
 
+.notice_detail_title{
+    font-weight: 900;
+    font-size: 25px;
+    color: #002C4D;
+}
+
+.notice_detail_content{
+    margin-top: 20px;
+}
+
 /* =========================  notice_create  ======================== */
 
 .notice_create_wrapper{

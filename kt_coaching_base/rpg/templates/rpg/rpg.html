@@ -15,28 +15,40 @@
     });
 </script>
 <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script> <!-- IONICONS -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+<!-- Modal -->
+<div id="modalWrap">
+  <div id="modalContent">
+    <span id="closeBtn">&times;</span>
+    <img id="modalImage" src="" alt="Grow Example">
+  </div>
+</div>
 
 <!-- 헤더 -->
 <div class="commu_head_wrapper">
   <div class="commu_head_menu_wrapper" style="display: inline;">
       {% comment %} href는 아직 구현 안 됨 {% endcomment %}
+      <a class="commu_head_menu"><ion-icon id="nav-toggle" name="document-text-outline" class="commu_head_menu_icon"></ion-icon></a>
       <a class="commu_head_menu"><ion-icon name="information-circle" class="commu_head_menu_icon"></ion-icon></a>
       <a href="{% url 'rpg:persona' %}" class="commu_head_menu"><ion-icon name="exit-outline" class="commu_head_menu_icon"></ion-icon></a>
     </div>
 </div>
 
 <!-- 사이드 바 -->
+<!--
 <div class="l-navbar" id="navbar">
   <nav class="nav">
     <div>
       <div class="nav__brand">
         <ion-icon name="menu-outline" class="nav__toggle" id="nav-toggle"></ion-icon>
-        <a href="#" class="nav__logo">KT coaching</a>
+        <a href="{% url 'common:home' %}" class="nav__logo">KT coaching</a>
+        
       </div>
       <div class="nav__btn">
         <ion-icon name="add-circle-outline" class="nav__icon"></ion-icon>
         <button class="new_chat_btn">
-          <div>New Chat</div>
+          <div><a href="{% url 'rpg:persona' %}" class="new_chat_btn_link">New Chat</a></div>
         </button>
       </div>
       <div class="nav__list">
@@ -61,17 +73,20 @@
       </div>
   </nav>
 </div>
-
+-->
 <!-- ================================================================ -->
 <!-- 시뮬레이션 메인 -->
 <div class="rpg_wrapper">
     <div class="rpg_wrapper_lay">
         <div class="rpg_content">
+          <div class="rpg_content_head">
             <div class="real_time_score_wrapper">
                 <div>실시간 점수</div>
                 <div id ="score" class="real_time_score">0 점</div>
             </div>
-            <div class="chat_container" id="chat-container"></div>
+            <button class="rpg_submit_btn" id="end_btn">실습 종료</button>
+          </div>
+          <div class="chat_container" id="chat-container"></div>
         </div>
         {% csrf_token %}
         <div class="rpg_bottom">
@@ -83,6 +98,8 @@
                 <input class="rpg_input_container" type="text" id="user-input" placeholder="이곳에 입력하세요.">
                 {% comment %} <img class="rpg_send_icon" id="send-btn" src="/static/img/send.png" alt="전송아이콘"> {% endcomment %}
                 <ion-icon name="send-outline" class="rpg_send_icon" id="send-btn"></ion-icon>
+                {% comment %} 충영
+                <ion-icon name="construct-outline" class="persona_remind_icon" id="remind-btn"></ion-icon> {% endcomment %}
               </div>
             {% comment %} <p>최근 녹음 재생</p>
             <button id="sound-clips">재생</button>
@@ -92,3 +109,4 @@
 </div>
 
 {% endblock %}
+
