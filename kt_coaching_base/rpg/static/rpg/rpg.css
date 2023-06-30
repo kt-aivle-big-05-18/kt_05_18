@@ -387,15 +387,9 @@ body{
 }
 
 /* 스탑 아이콘은 이제 필요 없소 */
-<<<<<<< HEAD
 .rpg_record_icon, .rpg_stop_icon, .rpg_send_icon{
 	width: 30px;
 	height: 30px;
-=======
-.rpg_record_icon, .rpg_stop_icon, .rpg_send_icon, .persona_remind_icon{
-	width: 20px;
-	height: 20px;
->>>>>>> 1d752646ff7fccffcbba49a2341d61dedeedcc18
 	margin: 0px 10px;
 }
 
