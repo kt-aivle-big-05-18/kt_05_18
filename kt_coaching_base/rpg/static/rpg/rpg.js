@@ -14,6 +14,9 @@ const showMenu = (toggleId, navbarId, bodyId) => {
     }
 }
 
+// grow 예시 질문 팝업창
+  
+
 showMenu('nav-toggle', 'navbar', 'body-pd')
 
 /* LINK ACTIVE */
@@ -215,3 +218,36 @@ $(document).ready(function() {
         soundClips.textContent = '재생';
     });
 });
+
+// 모달창 //
+document.addEventListener("DOMContentLoaded", function() {
+    // 토글 버튼 클릭 이벤트
+    document.getElementById("nav-toggle").addEventListener("click", function() {
+      showModal();
+    });
+  
+    // 모달 표시 함수
+    function showModal() {
+      var modalContent = document.getElementById("modalContent");
+      var modalImage = document.getElementById("modalImage");
+      modalImage.src = "/static/img/grow_ex.png";
+      modalImage.alt = "Grow Example";
+  
+      document.getElementById("modalWrap").style.display = "block";
+    }
+  
+    // 모달 숨기는 함수
+    function hideModal() {
+      document.getElementById("modalWrap").style.display = "none";
+    }
+  
+    // 모달 닫기 버튼 클릭 이벤트
+    document.getElementById("closeBtn").addEventListener("click", hideModal);
+  
+    // 모달 영역 외부 클릭 이벤트
+    document.getElementById("modalWrap").addEventListener("click", function(e) {
+      if (e.target.id === "modalWrap") {
+        hideModal();
+      }
+    });
+  });
