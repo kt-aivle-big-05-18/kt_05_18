@@ -1,13 +1,18 @@
 # account/views.py
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout, get_user_model
-from .forms import RegistrationForm, CaptchaForm
-from django.http import JsonResponse
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.template.loader import render_to_string
+from django.core.exceptions import ValidationError
+from .forms import RegistrationForm
+from django.http import JsonResponse, HttpResponseBadRequest
 from django.views.decorators.http import require_POST
 from .models import Account, admin_info
-from captcha.fields import CaptchaField
-from captcha.helpers import captcha_image_url
 from captcha.models import CaptchaStore
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 #----------------------------------------------------------------------------------------------------------------------#
 # 0. 필요 install 목록
 # pip install captcha
@@ -36,9 +41,7 @@ def login_view(request):
         captcha_key = request.POST.get('captcha_0', '')  # 추가: 캡챠 키 가져오기
 
         account = Account.objects.filter(userid=userid).first()
-
-        print("cap:", captcha_word)
-        print("cap_key:", captcha_key)
+        
         if account and account.password_attempt_count >= 5:
             # 로그인 시도 횟수가 5회 이상인 경우에만 캡챠 표시
             show_captcha = True
@@ -54,11 +57,11 @@ def login_view(request):
             if captcha_key and captcha_word:
                 if CaptchaStore.objects.filter(response=captcha_word, hashkey=captcha_key).count() == 0:
                     return render(request, 'account/login.html',
-                                  {'error_message': 'Invalid captcha', 'show_captcha': show_captcha,
+                                  {'error_message': '캡챠가 틀렸습니다.', 'show_captcha': show_captcha,
                                    'captcha_image_url': captcha_image_url, 'captcha_key': captcha_key})
             else:
                 return render(request, 'account/login.html',
-                              {'error_message': 'Invalid captcha', 'show_captcha': show_captcha,
+                              {'error_message': '캡챠가 틀렸습니다.', 'show_captcha': show_captcha,
                                'captcha_image_url': captcha_image_url, 'captcha_key': captcha_key})
 
             # 비밀번호 검증
@@ -72,7 +75,7 @@ def login_view(request):
                 account.password_attempt_count += 1  # 로그인 실패 시, 로그인 시도 횟수 증가
                 account.save()
                 return render(request, 'account/login.html',
-                              {'error_message': 'Invalid login credentials', 'show_captcha': show_captcha,
+                              {'error_message': '아이디 또는 비밀번호를 잘못입력하셨습니다.', 'show_captcha': show_captcha,
                                'captcha_image_url': captcha_image_url, 'captcha_key': captcha_key})
 
         else:
@@ -101,7 +104,7 @@ def login_view(request):
                     account.save()
 
                 return render(request, 'account/login.html',
-                              {'error_message': 'Invalid login credentials', 'show_captcha': show_captcha,
+                              {'error_message': '아이디 또는 비밀번호를 잘못입력하셨습니다.', 'show_captcha': show_captcha,
                                'captcha_image_url': captcha_image_url, 'captcha_key': captcha_key})
     else:
         # 로그인 시도 횟수가 5회 이상인 경우에만 캡챠 표시
@@ -151,3 +154,90 @@ def check_nickname(request):
     }
 
     return JsonResponse(response_data)
+
+def find_userid(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        nickname = request.POST.get('nickname')
+        
+        # 이메일로 아이디를 보내는 로직
+        try:
+            account = Account.objects.get(username=username, nickname=nickname)
+            to_email = account.email
+            mail_subject = '아이디 찾기 결과'
+            message = render_to_string('account/smtp_email.html', {
+                        'nickname': account.nickname,
+                        'userid' : account.userid
+                        })
+        
+            send_email = EmailMessage(mail_subject, message, to=[to_email])
+            send_email.send()
+            
+            return redirect('account:login')
+        except Account.DoesNotExist:
+            return redirect('account:signup')
+    else:
+        return render(request, 'account/find_userid.html')
+    
+def password_reset_request(request):
+    if request.method == 'POST':
+        userid = request.POST['userid']
+        username = request.POST['username']
+        nickname = request.POST['nickname']
+        Account = get_user_model()
+        try:
+            account = Account.objects.get(userid=userid, username=username, nickname=nickname)
+        except Account.DoesNotExist:
+            return render(request, 'account/password_reset_request.html', {'account_not_found': True})
+        
+        # Generate password reset token
+        uidb64 = urlsafe_base64_encode(str(account.pk).encode())
+        token = default_token_generator.make_token(account)
+        
+        # Build password reset URL
+        current_site = get_current_site(request)
+        domain = current_site.domain
+        reset_url = f"http://{domain}/account/password-reset-confirm/{uidb64}/{token}"
+        
+        # Render password reset email template
+        email_subject = '비밀번호 재설정'
+        email_body = render_to_string('account/password_reset_email.html', {
+            "userid": userid,
+            'reset_url': reset_url,
+        })
+        
+        # Send password reset email
+        email = EmailMessage(email_subject, email_body, to=[account.email])
+        email.content_subtype = 'html'  # 이메일 내용이 HTML 형식임을 설정
+        email.send()
+        
+        return render(request, 'account/password_reset_request.html', {'email_sent': True})
+    
+    return render(request, 'account/password_reset_request.html')
+
+def password_reset_confirm(request, uidb64, token):
+    try:
+        # 유저 아이디 디코딩
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = Account.objects.get(pk=uid)
+        
+        # 토큰 유효성 검사
+        if not default_token_generator.check_token(user, token):
+            raise ValidationError('Invalid token')
+        
+        if request.method == 'POST':
+            password = request.POST['password']
+            confirm_password = request.POST['confirm_password']
+            
+            if password != confirm_password:
+                return render(request, 'account/password_reset_confirm.html', {'error': '비밀번호가 일치하지 않습니다.'})
+            
+            user.set_password(password)
+            user.save()
+            
+            return redirect('account:login')
+        
+        return render(request, 'account/password_reset_confirm.html', {'uidb64': uidb64, 'token': token})
+    
+    except (TypeError, ValueError, OverflowError, Account.DoesNotExist, ValidationError):
+        return HttpResponseBadRequest('Bad Token')

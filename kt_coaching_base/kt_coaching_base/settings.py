@@ -90,7 +90,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME':  'kt_coaching', #mySQL DB이름
         'USER': 'root', #계정이름
-        'PASSWORD': 'aivle', #계정 비밀번호 <- 변경 안하신 분은 "aivle"
+        'PASSWORD': '0000', #계정 비밀번호 <- 변경 안하신 분은 "aivle"
         'HOST': 'localhost', #수정X
         'PORT': '3306', #수정X
     }
@@ -149,3 +149,12 @@ CAPTCHA_FONT_SIZE = 30  # 원하는 폰트 크기로 설정
 CAPTCHA_LENGTH = 6  # 원하는 캡챠 길이로 설정
 CAPTCHA_IMAGE = 'captcha.image'
 CAPTCHA_HIDDEN_FIELD = 'captcha.field'
+
+# E-mail 관련
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'tkrwp9916@gmail.com'  # 본인의 Gmail 계정
+EMAIL_HOST_PASSWORD = 'ljhhxostgentnuiw'  # 본인의 Gmail 계정 비밀번호
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
