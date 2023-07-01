@@ -30,4 +30,5 @@ urlpatterns = [
     path("community/", include("community.urls")),
     path("admin_page/", include("admin_page.urls")),
     path('captcha/', include(captcha_urls)),
+    path('grow_practice/', include('grow_practice.urls')),
 ]

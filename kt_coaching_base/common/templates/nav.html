@@ -15,9 +15,11 @@
                 </div>
                 <div id="nav" class="nav-links">
                     <div class="menu-group">
-                        <a href="{% url 'rpg:persona' %}" class="menu-header{% if request.resolver_match.url_name == 'persona' %} active-menu{% endif %}">대화 실습</a>
-                        {% comment %} <a href="{% url 'analysis:intro' %}" class="menu-header{% if request.path == 'home_view' %} active-menu{% endif %}">Analyze</a> {% endcomment %}
+                        <a href="{% url 'rpg:persona' %}" class="menu-header{% if request.resolver_match.url_name == 'persona' %} active-menu{% endif %}">코칭 실습</a>
+                        <a href="{% url 'mypage:myp_survey' %}" class="menu-header{% if request.resolver_match.url_name == 'myp_survey' %} active-menu{% endif %}">대화 내역 보기</a>
+                        <a href="{% url 'analysis:result' %}" class="menu-header{% if request.resolver_match.url_name == 'result' %} active-menu{% endif %}">결과 분석</a>
                         <a href="{% url 'community:commu_list' %}" class="menu-header{% if request.resolver_match.url_name == 'commu_list' %} active-menu{% endif %}">커뮤니티</a>
+                        <a href="{% url 'grow_practice:grow_practice' %}" class="menu-header{% if request.resolver_match.url_name == 'grow_practice' %} active-menu{% endif %}">GROW 연습</a>
                     </div>
                 </div>
                 <div id="nav" class="nav-right">
@@ -26,7 +28,7 @@
                             <a class="login-link"> Hello! {{ user.username }} </a>
                             <a href="{% url 'account:logout' %}" class="login-link"> 로그아웃 </a>
                             <span class="divider">|</span>
-                            <a href="{% url 'mypage:mypage_view' %}" class="login-link{% if request.resolver_match.url_name == 'mypage_view' %} active-menu-myp{% endif %}">마이페이지</a>
+                            <a href="{% url 'mypage:myp_info' %}" class="login-link{% if request.resolver_match.url_name == 'myp_info' %} active-menu-myp{% endif %}">마이페이지</a>
                             {% if user.is_superuser %}
                                 <span class="divider">|</span>
                                 <a href="{% url 'admin_page:admin_user' %}" class="signup-link">관리자 페이지</a>
