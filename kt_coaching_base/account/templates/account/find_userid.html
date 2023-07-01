@@ -1,17 +1,23 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>아이디 찾기</h2>
-  <form method="post">
-    {% csrf_token %}
-    <div>
-      <label for="username">유저 이름:</label>
-      <input type="text" id="username" name="username" required>
-    </div>
-    <div>
-      <label for="nickname">닉네임:</label>
-      <input type="text" id="nickname" name="nickname" required>
-    </div>
-    <input type="submit" value="아이디 찾기">
-  </form>
+  <h2>아이디 찾기 요청</h2>
+  {% if email_sent %}
+    <p>아이디 찾기 요청 메일을 보냈습니다.</p>
+  {% elif account_not_found %}
+    <p>해당 계정이 없습니다.</p>
+  {% else %}
+    <form method="post">
+      {% csrf_token %}
+      <div>
+        <label for="username">유저 이름:</label>
+        <input type="text" id="username" name="username" required>
+      </div>
+      <div>
+        <label for="nickname">닉네임:</label>
+        <input type="text" id="nickname" name="nickname" required>
+      </div>
+      <input type="submit" value="아이디 찾기">
+    </form>
+  {% endif %}
 {% endblock %}

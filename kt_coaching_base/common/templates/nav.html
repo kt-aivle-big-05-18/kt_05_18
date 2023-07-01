@@ -1,40 +1,48 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'h_nav.css' %}">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'nav.css' %}">
 
 <!DOCTYPE html>
 <html lang="en">
     <body>
-        <header class="header">
-            <div class="container_h">
-                <div id="nav" class="menu-head">
-                    <a href="{% url 'common:home' %}" class="logo-link">KT Coaching</a>
-                </div>
-                <div id="nav" class="nav-links">
-                    <div class="menu-group">
-                        <a href="{% url 'rpg:persona' %}" class="menu-header{% if request.resolver_match.url_name == 'persona' %} active-menu{% endif %}">코칭 실습</a>
-                        <a href="{% url 'mypage:myp_survey' %}" class="menu-header{% if request.resolver_match.url_name == 'myp_survey' %} active-menu{% endif %}">대화 내역 보기</a>
-                        <a href="{% url 'analysis:result' %}" class="menu-header{% if request.resolver_match.url_name == 'result' %} active-menu{% endif %}">결과 분석</a>
-                        <a href="{% url 'community:commu_list' %}" class="menu-header{% if request.resolver_match.url_name == 'commu_list' %} active-menu{% endif %}">커뮤니티</a>
-                        <a href="{% url 'grow_practice:grow_practice' %}" class="menu-header{% if request.resolver_match.url_name == 'grow_practice' %} active-menu{% endif %}">GROW 연습</a>
+        <header class="nav_wrapper">
+            <div class="nav_contain">
+                <div class="nav_lay">
+                    <div id="nav" class="nav_logo">
+                        <a href="{% url 'common:home' %}" class="nav_logo_link">KT Coaching</a>
                     </div>
-                </div>
-                <div id="nav" class="nav-right">
-                    <div class="menu-group">
-                        {% if user.is_authenticated %}
-                            <a class="login-link"> Hello! {{ user.username }} </a>
-                            <a href="{% url 'account:logout' %}" class="login-link"> 로그아웃 </a>
-                            <span class="divider">|</span>
-                            <a href="{% url 'mypage:myp_info' %}" class="login-link{% if request.resolver_match.url_name == 'myp_info' %} active-menu-myp{% endif %}">마이페이지</a>
-                            {% if user.is_superuser %}
-                                <span class="divider">|</span>
-                                <a href="{% url 'admin_page:admin_user' %}" class="signup-link">관리자 페이지</a>
+                    <div class="nav_menu_wrapper">
+                        <div id="nav" class="nav_menu_left">
+                            <div class="nav_menu_left_group">
+                                <a href="{% url 'rpg:persona' %}" class="nav_menu_link{% if request.resolver_match.url_name == 'persona' %} nav_menu_link_active{% endif %}">GROW 코칭 실습</a>
+                                <a href="{% url 'grow_practice:grow_practice' %}" class="nav_menu_link{% if request.resolver_match.url_name == 'grow_practice' %} nav_menu_link_active{% endif %}">GROW 연습</a>
+                                <a href="{% url 'mypage:myp_survey' %}" class="nav_menu_link{% if request.resolver_match.url_name == 'myp_survey' %} nav_menu_link_active{% endif %}">대화 내역 보기</a>
+                                {% comment %} <a href="{% url 'analysis:result' %}" class="nav_menu_link{% if request.resolver_match.url_name == 'result' %} nav_menu_link_active{% endif %}">결과 분석</a> {% endcomment %}
+                                <a href="{% url 'community:commu_list' %}" class="nav_menu_link{% if request.resolver_match.url_name == 'commu_list' %} nav_menu_link_active{% endif %}">커뮤니티</a>
+                            </div>
+                        </div>
+                        <div id="nav" class="nav_menu_left">
+                            <div class="nav_menu_left_group">
+                                {% if user.is_authenticated %}
+                                    <a class="nav_menu_left_login"> Hello! {{ user.username }} </a>
+                                    <a href="{% url 'account:logout' %}" class="nav_menu_left_login"> 로그아웃 </a>
+                                    <span class="nav_menu_left_divider">|</span>
+                                    <a href="{% url 'mypage:myp_info' %}" class="nav_menu_left_login{% if request.resolver_match.url_name == 'myp_info' %} nav_menu_left_login_active {% endif %}">마이페이지</a>
+                                    {% if user.is_superuser %}
+                                        <span class="nav_menu_left_divider">|</span>
+                                        <a href="{% url 'admin_page:admin_user' %}" class="nav_menu_left_signup">관리자 페이지</a>
+                                        {% endif %}
+                                {% else %}
+                                    <a href="{% url 'account:login' %}" class="nav_menu_left_login">로그인</a>
+                                    <span class="nav_menu_left_divider">|</span>
+                                    <a href="{% url 'account:signup' %}" class="nav_menu_left_signup">회원가입</a>
                                 {% endif %}
-                        {% else %}
-                            <a href="{% url 'account:login' %}" class="login-link">로그인</a>
-                            <span class="divider">|</span>
-                            <a href="{% url 'account:signup' %}" class="signup-link">회원가입</a>
-                        {% endif %}
-                            <a href="{% url 'rpg:persona' %}"></a>
+                                    <a href="{% url 'rpg:persona' %}"></a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
