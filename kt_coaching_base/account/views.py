@@ -173,9 +173,9 @@ def find_userid(request):
             send_email = EmailMessage(mail_subject, message, to=[to_email])
             send_email.send()
             
-            return redirect('account:login')
+            return render(request, 'account/find_userid.html', {'email_sent': True})
         except Account.DoesNotExist:
-            return redirect('account:signup')
+            return render(request, 'account/find_userid.html', {'account_not_found': True})
     else:
         return render(request, 'account/find_userid.html')
     
