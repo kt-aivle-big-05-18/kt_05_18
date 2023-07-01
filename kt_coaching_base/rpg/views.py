@@ -65,7 +65,7 @@ import re
 #----------------------------------------------------------------------------------------------------------------------#
 
 # OpenAI의 api_key 설정
-openai.api_key = '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'
+openai.api_key = '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'
 
 
 def translate(text):
