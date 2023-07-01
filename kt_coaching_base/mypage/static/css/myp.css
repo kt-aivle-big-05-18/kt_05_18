@@ -80,6 +80,7 @@ h1 {
     align-items: flex-start; /* 상단 정렬 적용 */
     justify-content: center;
     margin-top: 30px;
+    margin-bottom: 10px;
     padding-top: 1rem; /* 상단에 패딩 추가 */
 }
 

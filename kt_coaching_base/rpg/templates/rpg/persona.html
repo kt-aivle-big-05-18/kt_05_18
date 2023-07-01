@@ -115,21 +115,40 @@
                   {{ error_message }}
                 </div>
                 {% endif %}
-              <div class="persona_setting_topic">
-                <div class="persona_setting_content_topic">
-                  <label class="persona_setting_content_topic_label" for="topic_label">대화 주제</label>
-                  <select class="persona_select"name="topic_label" id="topic_label" required>
-                    <option value="" select>주제를 선택하세요.</option>
-                    <option value="지금보다 성과를 더 늘리고 싶어하는">성과에 대해 고민인 팀원과의 대화</option>
-                    <option value="직장생활에 적응을 어려워하는">직장생활이 익숙하지 않은 팀원과의 대화</option>
-                    <option value="업무능력이 조금 떨어져 더 성장하고 싶어하는">업무에 대한 자신감이 부족한 팀원과의 대화</option>
-                    <option value="개인적인 발전을 위해 진로를 고민하는">개인적인 진로가 걱정인 팀원과의 대화</option>
-                    <option value="직장 동료와 다툼이 있어 고민하는">동료와 다툼이 있어 걱정인 팀원과의 대화</option>
-                    <option value="개인적 성장이나 발전에 대한 얘기를 할 준비가 되어있는">개인적 발전과 성장에 대한 주제로 팀원과의 대화</option>
-                    <option value="자유로운 주제로 대화하는">자유주제</option>
-                  </select>
+                <div class="persona_setting_topic">
+                  <div class="persona_setting_content_topic">
+                    <label class="persona_setting_content_topic_label" for="topic_label">대화 주제</label>
+                    <select class="persona_select" name="topic_label" id="topic_label_select" required>
+                      <option value="" selected>주제를 선택하세요.</option>
+                      <option value="지금보다 성과를 더 늘리고 싶어하는 상황">성과에 대해 고민인 팀원과의 대화</option>
+                      <option value="직장생활에 적응을 어려워하는 상황">직장생활이 익숙하지 않은 팀원과의 대화</option>
+                      <option value="업무에 대한 자신감이 부족한 상황">업무에 대한 자신감이 부족한 팀원과의 대화</option>
+                      <option value="개인적인 발전을 위해 진로를 고민하는 상황">개인적인 진로가 걱정인 팀원과의 대화</option>
+                      <option value="직장 동료와 다툼이 있어 고민하는 상황">동료와 다툼이 있어 걱정인 팀원과의 대화</option>
+                      <option value="개인적 성장이나 발전에 대한 얘기를 할 준비가 되어있는 상황">개인적 발전과 성장에 대한 주제로 팀원과의 대화</option>
+                      <option value='직접입력'>직접 입력</option>
+                    </select>
+                    <input class="persona_input" type="text" name="topic_label" id="topic_label_input" placeholder='"~인 상황" 이라고 입력해 주세요.' style="display:none;" required>
+                  </div>
                 </div>
-              </div>
+                <script>
+                  // JavaScript 코드
+                  const selectElement = document.getElementById('topic_label_select');
+                  const inputElement = document.getElementById('topic_label_input');
+
+                  // 대화 주제 변경 이벤트를 감지하여 처리
+                  selectElement.addEventListener('change', function() {
+                    if (selectElement.value === '직접입력') {
+                      selectElement.style.display = 'none';  // Hide the select box
+                      inputElement.style.display = 'inline-block';
+                      inputElement.value = ""  // Show the input box
+                    } else {
+                      selectElement.style.display = 'inline-block';  // Show the select box
+                      inputElement.style.display = 'none';
+                      inputElement.value = selectElement.value;// Hide the input box
+                    }
+                  });
+                </script>
               <hr class="persona_topic_line">
 
               <div class="persona_setting_select">

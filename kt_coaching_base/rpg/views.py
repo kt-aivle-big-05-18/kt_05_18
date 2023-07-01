@@ -4,7 +4,7 @@
 import numpy as np
 import pandas as pd
 import os
-import pickle
+import pickle, joblib
 
 # Django
 from django.http import JsonResponse, HttpResponse
@@ -64,7 +64,7 @@ import re
 # 1. 네이버 번역 관련
 #----------------------------------------------------------------------------------------------------------------------#
 
-# OpenAI의 api_key를 설정합니다.
+# OpenAI의 api_key 설정
 openai.api_key = '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'
 
 
@@ -134,7 +134,7 @@ def persona(request):
             request.session['visited_persona'] = True
             request.session["persona_set"].append({
                                     "role" : "user", 
-                                    "content" : translate( "다음 대화부터 당신은 팀장님과 대화하는 {0}세인 {1} {2}{3}이며, {4} 팀원의 역할로 팀장인 저와 상담을 시작합니다. 당신은 절대로 역할에서 벗어나지 않습니다. 이 역할을 맡고 있을 때 당신은 3문장 이하로 대답합니다.".format(
+                                    "content" : translate( "다음 대화부터 당신의 이름은 홍길동입니다. 홍길동씨 당신은 팀장님과 대화하는 {0}세인 {1} {2}{3}이며, {4}인 팀원의 역할로 팀장인 저와 상담을 시작합니다. 당신은 절대로 역할에서 벗어나지 않습니다. 이 역할을 맡고 있을 때 당신은 3문장 이하로 대답합니다.".format(
                                         form.cleaned_data['age'], # 0 나이 - gpt
                                         form.cleaned_data['gender'], # 1 성별 - gpt
                                         form.cleaned_data['department'], # 2 직군 - gpt
@@ -152,6 +152,7 @@ def persona(request):
                                         form.cleaned_data['topic_label'], # 4 상황 - gpt
                                         ))  
                                     })
+            # 프롬프트 연구결과 챗지피티의 첫 답장을 선 입력한 경우 더 제대로 인식한 것으로 판단해 더 오래 제대로 역할을 유지함
             persona_id = Persona.objects.filter(nickname=request.user.nickname).last()
             request.session.get("persona_id").append({
                 "id" : f"{persona_id.id}"
@@ -166,6 +167,7 @@ def persona(request):
         # 페르소나 세션 생성
         request.session["persona_id"] = []
         request.session["persona_set"] = []
+        request.session["gorw"] = [0, 0, 0, 0]
         return render(request, 'rpg/persona.html', {"form": form})
 
 #----------------------------------------------------------------------------------------------------#
@@ -203,7 +205,30 @@ def rpg(request):
         m_df = classification_model(message, wav_voice_url)
         m_df_url = os.path.join(base_dir, 'rpg/static/df_csv/{0}_{1}.csv'.format(p_id, count))
         m_df.to_csv(m_df_url, index=False)
-        # --------------------------------------------------------------------------------------------------#
+        # --------------------------------- GROW_AI 전처리 / AI prediction ---------------------------------#
+        grow_df = grow_model(message)
+        grow_df_url = os.path.join(base_dir, 'rpg/static/df_grow/{0}_{1}.csv'.format(p_id, count))
+        grow_df.to_csv(grow_df_url, index=False)
+        output_dic = {0:'Goal', 1:'Reality', 2:'Options', 3:'Will', 4:'ETC'}
+        grow_info = "ETC"
+        if grow_df["predict"][0] == "Goal":
+            request.session["gorw"][0] += 1
+            grow_info = "Goal"
+        elif grow_df["predict"][0] == "Reality":
+            request.session["gorw"][1] += 1
+            grow_info = "Reality"
+        elif grow_df["predict"][0] == "Options":
+            request.session["gorw"][2] += 1
+            grow_info = "Options"
+        elif grow_df["predict"][0] == "Will":
+            request.session["gorw"][3] += 1
+            grow_info = "Will"
+        
+        grow_text = "G : {0}  |  R : {1}  |  O : {2}  |  W : {3}  ".format(
+            request.session.get("gorw")[0],
+            request.session.get("gorw")[1],
+            request.session.get("gorw")[2],
+            request.session.get("gorw")[3])
         
         # 유저 메세지내용, 음성녹음 내용을 테이블에 저장
         user_message_obj = Message(
@@ -211,7 +236,8 @@ def rpg(request):
             persona = Persona.objects.get(id=int(p_id)),
             content = request.POST.get("message"),
             voice_url = user_voice_url,
-            csv_url = m_df_url
+            csv_url = m_df_url,
+            grow_url = grow_df_url
         )
         user_message_obj.save()
         
@@ -259,7 +285,9 @@ def rpg(request):
                 'message' : trans_,
                 'voice': encoded_voice,
                 'path': "{0}_{1}.wav".format(p_id, count),
-                'score' : "{0}".format(request.session.get('score'))
+                'score' : "{0}".format(request.session.get('score')),
+                'grow' : grow_text,
+                'grow_info' : grow_info
             }
             request.session["count"] += 1 # 음성녹음 이름을 조합을 위한 count + 1
             return JsonResponse(data)
@@ -572,3 +600,33 @@ def score_count(p_id, nickname):
     print(f_score)
     return f_score
     
+
+#---------------------------------------------------------------------------#
+# 8. gorw 분류 모델 적용
+#---------------------------------------------------------------------------#
+
+def grow_model(new_sentence):
+  output_dic = {0:'Goal', 1:'Reality', 2:'Options', 3:'Will', 4:'ETC'}
+  model_path = os.path.join(settings.BASE_DIR, 'rpg/analysis_model/')
+  final_result = pd.DataFrame()
+
+  # 데이터 전처리 함수 불러오기
+  txt_embed = text_embedding(model_name = 'jhgan/ko-sroberta-multitask')
+
+  new_sents = pd.DataFrame([new_sentence])
+  new_sents.columns = ['sentence']
+
+  # 새로운 데이터 전처리
+  g_scaler = joblib.load(os.path.join(settings.BASE_DIR, 'grow_scaler.pkl'))
+  X_test = txt_embed.transform(new_sents) # extract text embedding vector
+  x_test = g_scaler.transform(X_test)
+
+  # 긍정 부정 분류 모델 불러옴, 긍부정 예측
+  model1 = load_model(os.path.join(model_path, '230630_GROW_model.h5'))
+  y_fin = np.argmax(model1.predict(x_test, verbose=0), axis=1)
+
+
+  final_result['sentence'] = new_sents['sentence']
+  final_result['predict'] = np.vectorize(output_dic.get)(y_fin)
+  print(final_result)
+  return final_result

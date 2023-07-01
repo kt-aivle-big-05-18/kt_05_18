@@ -43,6 +43,22 @@ for(i=0;i<linkCollapse.length;i++) {
 
 // =====================================================================
 // 시뮬레이션 메인
+
+// ----------------------- 마이페이지 이미지 => 채팅 시 유저 이미지 연결 시도 ----------------------
+// $(document).ready(function() {
+//     updateChatUserProfileImage();
+// });
+
+// function updateChatUserProfileImage() {
+//     let images = document.querySelectorAll(".user_profile");
+    
+//     for (let img of images) {
+//         img.src = document.getElementById("myp_info_image").src;
+//     }
+// }
+
+
+
 $(document).ready(function() {
     var chatContainer = $("#chat-container");
 
@@ -52,6 +68,7 @@ $(document).ready(function() {
 
     $("#user-input").keypress(function(event) {
         if (event.which === 13) {
+            event.preventDefault();
             sendMessage();
         }
     });
@@ -63,11 +80,19 @@ $(document).ready(function() {
     function sendMessage() {
         var userInput = $("#user-input").val();
         if (userInput !== "") {
-            chatContainer.append("<div class='user_message'>" 
+            chatContainer.append("<div class='user_message'>"
             + userInput
             + "<img class='user_profile' src='/static/img/won.png' alt='사용자이미지'>"
             + "</div>");
             scrollToBottom();
+        
+        // if (userInput !== "") {
+        //     let userImageSrc = document.getElementById("myp_info_image").src;
+        //     chatContainer.append("<div class='user_message'>" 
+        //     + userInput
+        //     + "<img class='user_profile' src='" + userImageSrc + "' alt='사용자이미지'>"
+        //     + "</div>");
+        //     scrollToBottom();
 
             $.ajax({
                 url: "/rpg/rpg_start/",
@@ -77,7 +102,8 @@ $(document).ready(function() {
                 },
                 success: function(response) {
                     var audioID = "myAudio" + Date.now();  // 고유한 id를 생성합니다.
-                
+                    document.getElementById('grow_count').innerHTML = response.grow;
+                    chatContainer.append("<div class = 'grow_info'>" + response.grow_info + "</div>")
                     chatContainer.append("<div class='assistant_message'>"
                     + "<div class='assistant_message_left'>"
                     + "<img class='assistant_profile' src='/static/img/young_male.png' alt='페르소나이미지'>"
@@ -222,7 +248,7 @@ $(document).ready(function() {
 // 모달창 //
 document.addEventListener("DOMContentLoaded", function() {
     // 토글 버튼 클릭 이벤트
-    document.getElementById("nav-toggle").addEventListener("click", function() {
+    document.getElementById("grow-ex").addEventListener("click", function() {
       showModal();
     });
   

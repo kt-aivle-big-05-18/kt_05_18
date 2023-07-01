@@ -194,7 +194,43 @@
     <div class="content-container">
         <div class="box">
             <img class="img_logo" src="/static/img/kt.png" alt="kt 로고 이미지" />
-            <img class="img_profile" src="/static/css/image/won.png" alt="프로필 이미지" />
+            {% if user.age and user.gender %}
+                <img class="img_profile" id="myp_info_image" src="/static/img/won.png" alt="프로필 이미지" />
+                <script>
+                function updateMypInfoImage(age, gender) {
+                    let imageElement = document.getElementById("myp_info_image");
+                    let ageGroup = null;
+                    let imageName = "";
+        
+                    if (age >= 18 && age <= 29) {
+                        ageGroup = "young";
+                    } else if (age >= 30 && age <= 39) {
+                        ageGroup = "middle";
+                    } else if (age >= 40 && age <= 49) {
+                        ageGroup = "senior";
+                    } else if (age >= 50 && age <= 59) {
+                        ageGroup = "elder";
+                    } else if (age >= 60) {
+                        ageGroup = "old";
+                    }
+        
+                    if (gender == "M" && ageGroup !== null) {
+                        imageName = ageGroup + "_male" + ".png";
+                    } else if (gender == "F" && ageGroup !== null) {
+                        imageName = ageGroup + "_female" + ".png";
+                    } else {
+                        imageName = "won";
+                    }
+        
+                    if (imageName.length > 0) {
+                        imageElement.src = "/static/img/" + imageName;
+                    }
+                }
+        
+                updateMypInfoImage({{ user.age }}, "{{ user.gender }}");
+                </script>
+            {% endif %}
+
             <div class="profile_info">
                 <p class="username">{{ user.username }}</p>
                 <p>{{ user.nickname }}</p>
@@ -248,4 +284,4 @@
         </div>
     </div>
     
-    {% endblock %}
+{% endblock %}

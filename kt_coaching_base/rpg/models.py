@@ -19,6 +19,7 @@ class Message(models.Model):
     send_date   = models.DateTimeField(auto_now_add=True)
     voice_url   = models.TextField()
     csv_url     = models.TextField()
+    grow_url    = models.TextField()
     class Meta:
         ordering    =   ("send_date",)
 

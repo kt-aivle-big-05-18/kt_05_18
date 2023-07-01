@@ -346,7 +346,6 @@ html {
     font-weight: 700;
     color: rgb(51, 48, 48);
     margin: 40px 20px;
-    margin-bottom: 70px;
 }
 
 /* ----------------------- about us --------------------- */
@@ -355,13 +354,13 @@ html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 50px;
 }
 
 .profile_box_row {
     display: flex;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 50px;
 }
 
 .profile_box {
