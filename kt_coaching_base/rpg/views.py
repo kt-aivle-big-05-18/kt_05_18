@@ -65,7 +65,7 @@ import re
 #----------------------------------------------------------------------------------------------------------------------#
 
 # OpenAI의 api_key 설정
-openai.api_key = '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'
+openai.api_key = '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'
 
 
 def translate(text):
@@ -134,7 +134,7 @@ def persona(request):
             request.session['visited_persona'] = True
             request.session["persona_set"].append({
                                     "role" : "user", 
-                                    "content" : translate( "다음 대화부터 당신의 이름은 홍길동입니다. 홍길동씨 당신은 팀장님과 대화하는 {0}세인 {1} {2}{3}이며, {4}인 팀원의 역할로 팀장인 저와 상담을 시작합니다. 당신은 절대로 역할에서 벗어나지 않습니다. 이 역할을 맡고 있을 때 당신은 3문장 이하로 대답합니다.".format(
+                                    "content" : translate( "다음 대화부터 당신의 이름은 홍길동입니다. 홍길동씨 당신은 팀장님과 대화하는 {0}세인 {1} {2}{3}이며, {4}인 팀원의 역할을 수행합니다. 당신은 절대로 역할에서 벗어나지 않습니다. 이 역할을 맡고 있을 때 당신은 3문장 이하로 대답합니다.".format(
                                         form.cleaned_data['age'], # 0 나이 - gpt
                                         form.cleaned_data['gender'], # 1 성별 - gpt
                                         form.cleaned_data['department'], # 2 직군 - gpt
@@ -144,7 +144,7 @@ def persona(request):
                                     })
             request.session["persona_set"].append({
                                     "role" : "assistant", 
-                                    "content" : translate( "네! 저는 지금부터 {0}세인 {1} {2}{3}이며, {4} 팀원의 역할을 수행합니다. 안녕하세요! 팀장님.".format(
+                                    "content" : translate( "네! 저는 지금부터 {0}세인 {1} {2}{3}이며, {4}인 팀원의 역할을 수행합니다. 안녕하세요! 팀장님.".format(
                                         form.cleaned_data['age'], # 0 나이 - gpt
                                         form.cleaned_data['gender'], # 1 성별 - gpt
                                         form.cleaned_data['department'], # 2 직군 - gpt
@@ -160,6 +160,14 @@ def persona(request):
             request.session["voice"] = request.POST.get('voice') # 챗봇의 목소리 형태를 저장할 세션 변수
             request.session["count"] = 0 # 대화 주고받는 순서 저장할 세션 변수
             request.session['scores'] = []
+            request.session['topic'] = "{0}의 {1}팀 홍길동 {2}({3}세/{4}년차/{5})".format(
+                                        form.cleaned_data['topic_label'], # 0 상황 - gpt
+                                        form.cleaned_data['department'], # 1 직군 - gpt
+                                        form.cleaned_data['rank'], # 2 직급 - gpt
+                                        form.cleaned_data['age'], # 3 나이 - gpt
+                                        form.cleaned_data['career'], # 4 경력 - gpt
+                                        form.cleaned_data['gender'], # 5 성별 - gpt
+                                        )
             return redirect("rpg:rpg_start")
     else : # GET 방식인 경우
         # 폼 생성
@@ -167,7 +175,6 @@ def persona(request):
         # 페르소나 세션 생성
         request.session["persona_id"] = []
         request.session["persona_set"] = []
-        request.session["gorw"] = [0, 0, 0, 0]
         return render(request, 'rpg/persona.html', {"form": form})
 
 #----------------------------------------------------------------------------------------------------#
@@ -209,26 +216,18 @@ def rpg(request):
         grow_df = grow_model(message)
         grow_df_url = os.path.join(base_dir, 'rpg/static/df_grow/{0}_{1}.csv'.format(p_id, count))
         grow_df.to_csv(grow_df_url, index=False)
-        output_dic = {0:'Goal', 1:'Reality', 2:'Options', 3:'Will', 4:'ETC'}
+
         grow_info = "ETC"
         if grow_df["predict"][0] == "Goal":
-            request.session["gorw"][0] += 1
-            grow_info = "Goal"
+            grow_info = "이 질문은 'Goal'에 해당합니다."
         elif grow_df["predict"][0] == "Reality":
-            request.session["gorw"][1] += 1
-            grow_info = "Reality"
+            grow_info = "이 질문은 'Reality'에 해당합니다."
         elif grow_df["predict"][0] == "Options":
-            request.session["gorw"][2] += 1
-            grow_info = "Options"
+            grow_info = "이 질문은 'Options'에 해당합니다."
         elif grow_df["predict"][0] == "Will":
-            request.session["gorw"][3] += 1
-            grow_info = "Will"
-        
-        grow_text = "G : {0}  |  R : {1}  |  O : {2}  |  W : {3}  ".format(
-            request.session.get("gorw")[0],
-            request.session.get("gorw")[1],
-            request.session.get("gorw")[2],
-            request.session.get("gorw")[3])
+            grow_info = "이 질문은 'Will'에 해당합니다."
+        else :
+            grow_info = "이 질문은 'GROW' 중 어디에도 해당하지 않습니다."
         
         # 유저 메세지내용, 음성녹음 내용을 테이블에 저장
         user_message_obj = Message(
@@ -281,19 +280,20 @@ def rpg(request):
         with open(path_gpt_voice, 'rb') as voice_file:
             encoded_voice = base64.b64encode(voice_file.read()).decode('utf-8')
 
-            data = { # json형식으로 respone 해줄 데이터
-                'message' : trans_,
-                'voice': encoded_voice,
-                'path': "{0}_{1}.wav".format(p_id, count),
-                'score' : "{0}".format(request.session.get('score')),
-                'grow' : grow_text,
-                'grow_info' : grow_info
-            }
-            request.session["count"] += 1 # 음성녹음 이름을 조합을 위한 count + 1
-            return JsonResponse(data)
+        data = { # json형식으로 respone 해줄 데이터
+            'message' : trans_,
+            'voice': encoded_voice,
+            'path': "{0}_{1}.wav".format(p_id, count),
+            'score' : "{0}".format(request.session.get('score')),
+            'grow_info' : grow_info
+        }
+        request.session["count"] += 1 # 음성녹음 이름을 조합을 위한 count + 1
+        print('asdasdasdasdasd', grow_info)
+        return JsonResponse(data)
     else :
+        topic = request.session.get("topic")
         request.session['messages'] = request.session.get("persona_set") # 초기 패르소나 설정을 메세지에 추가하기
-        return render(request, "rpg/rpg.html")
+        return render(request, "rpg/rpg.html", {"topic":topic})
 
 #-----------------------------------------------------------------------------------------#
 # 4. tts

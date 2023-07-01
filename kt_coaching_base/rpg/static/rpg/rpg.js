@@ -101,8 +101,8 @@ $(document).ready(function() {
                     message: userInput
                 },
                 success: function(response) {
+                    console.log("asdasdasdasd")
                     var audioID = "myAudio" + Date.now();  // 고유한 id를 생성합니다.
-                    document.getElementById('grow_count').innerHTML = response.grow;
                     chatContainer.append("<div class = 'grow_info'>" + response.grow_info + "</div>")
                     chatContainer.append("<div class='assistant_message'>"
                     + "<div class='assistant_message_left'>"
@@ -137,7 +137,6 @@ $(document).ready(function() {
                     chatContainer.append(audioElement);
                     scrollToBottom();
                 },
-                
                 error: function(xhr, errmsg, err) {
                     console.log(errmsg);
                     chatContainer.append(errmsg);
