@@ -126,47 +126,44 @@ $(document).ready(function() {
   });
 
   // 비밀번호1
-  $('#password1').on('input', function() {
-    var input = $(this).val();
-    var hasMinLength = input.length >= 8;
-    var hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(input);
-    var hasLetter = /[a-zA-Z]/.test(input);
-    var hasNumber = /[0-9]/.test(input);
-    var errorMessage = '';
+    $('#password1').on('input', function() {
+      var input = $(this).val();
+      var hasMinLength = input.length >= 8;
+      var hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(input);
+      var hasLetter = /[a-zA-Z]/.test(input);
+      var hasNumber = /[0-9]/.test(input);
+      var errorMessage = '';
 
-    if (!hasMinLength) {
-      errorMessage = '비밀번호는 최소 8글자 이상이어야 합니다.';
-    } else if (!(hasSpecialChar && hasLetter && hasNumber)) {
-      errorMessage = '비밀번호는 특수문자, 영어, 숫자를 혼용하여야 합니다.';
-    } else {
-      errorMessage = '사용할 수 있습니다.';
-    }
+      if (!hasMinLength) {
+          errorMessage = '비밀번호는 최소 8글자 이상이어야 합니다.';
+      } else if (!(hasSpecialChar && hasLetter && hasNumber)) {
+          errorMessage = '비밀번호는 특수문자, 영어, 숫자를 혼용하여야 합니다.';
+      } else {
+          errorMessage = '사용할 수 있습니다.';
+      }
 
-    $('#password1-error').text(errorMessage);
-
-    // 비밀번호2 값 검증
-    var password2Value = $('#password2').val();
-    if (password2Value !== '' && input !== password2Value) {
-      $('#password2-error').text('비밀번호가 일치하지 않습니다.');
-    } else {
-      $('#password2-error').text('비밀번호가 같습니다.');
-    }
+      $('#password1-error').text(errorMessage);
+      updatePassword2ErrorMessage();
   });
 
   // 비밀번호2
   $('#password2').on('input', function() {
-    var password1Value = $('#password1').val();
-    var password2Value = $(this).val();
-    var errorMessage = '';
-
-    if (password1Value !== password2Value) {
-      errorMessage = '비밀번호가 일치하지 않습니다.';
-    } else {
-      errorMessage = '비밀번호가 같습니다.';
-    }
-
-    $('#password2-error').text(errorMessage);
+      updatePassword2ErrorMessage();
   });
+
+  function updatePassword2ErrorMessage() {
+      var password1Value = $('#password1').val();
+      var password2Value = $('#password2').val();
+      var errorMessage = '';
+
+      if (password1Value !== password2Value) {
+          errorMessage = '비밀번호가 일치하지 않습니다.';
+      } else if (password1Value !== '' && $('#password1-error').text() === '사용할 수 있습니다.') {
+          errorMessage = '비밀번호가 같습니다.';
+      }
+
+      $('#password2-error').text(errorMessage);
+  }
 
   // 이메일
   $('#email').on('input', function() {
