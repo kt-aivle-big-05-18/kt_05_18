@@ -121,13 +121,15 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
+    width: 100%;
 }
 .signup_content_detail_birth_box{
     margin: 5px 5px;
     border: #D2D2D2 solid 1px;
     color: #797979;
     border-radius: 7px;
-    padding: 10px;
+    padding: 10px 20px;
+    width: 100%;
 }
 
 .signup_content_detail_dp{

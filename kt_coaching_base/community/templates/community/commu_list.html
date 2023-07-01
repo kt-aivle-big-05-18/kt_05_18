@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% comment %} {% extends "base.html" %} {% endcomment %}
 {% comment %} 메인 {% endcomment %}
 
 {% load static %}
@@ -20,7 +20,7 @@
       <a href="{% url 'community:commu_list' %}" class="commu_head_menu"><ion-icon name="information-circle" class="commu_head_menu_icon"></ion-icon></a>
       <a href="{% url 'common:home' %}" class="commu_head_menu"><ion-icon name="exit-outline" class="commu_head_menu_icon"></ion-icon></a>
     </div>
-</div>
+  </div>
 
 <!-- 사이드 바 -->
 <div class="l-navbar" id="navbar">
