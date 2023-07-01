@@ -5,7 +5,8 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0"></script>
 {% comment %} <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script> {% endcomment %}
 <script id="pieChartData" type="application/json">{{ pie_chart.pie_counts|safe }}</script>
-<script id="lineData" type="application/json">{{ pie_chart.socre_mem|safe }}</script>
+{% comment %} <script id="lineData" type="application/json">{{ pie_chart.socre_mem|safe }}</script> {% endcomment %}
+<script id="lineData" type="application/json">{{ pie_chart.grow_counts|safe }}</script>
 <script src="{% static 'analysis/analysis.js' %}" defer></script>
 <link rel="stylesheet" href="{% static 'analysis/analysis.css' %}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,13 +29,13 @@
             </div>
             <div class="analysis_title_btn_wrapper">
                 {% comment %} <button class="analysis_title_btn" id="survey_popup" type="button" id="add_feed" data-toggle="modal" data-target="#exampleModal"> 설문 요청하기 </button> {% endcomment %}
-                <a class="analysis_title_btn" href="{% url 'mypage:myp_survey'%}">결과분석 페이지로 가기</a>
+                <a class="analysis_title_btn" href="{% url 'mypage:myp_survey'%}">설문 요청하기</a>
             </div>
         </div>
         <div class="analysis_content">
             <div class="analysis_content_title">코칭 질문 분석 결과</div>
             <div class="analysis_content_score">
-                <div class="analysis_content_score_title">나의 점수 {{pie_chart.f_score}}점</div>
+                <div class="analysis_content_score_title">나의 점수 <span class = "score">{{pie_chart.f_score}}</span>점</div>
                 <hr>
                 <div class="analysis_content_score_explain">
                     본 점수는 질문 별 관점변화, 존중, 인정, 판단, 분위기의 다섯 가지 척도 기반 결과입니다.<br>
@@ -48,7 +49,7 @@
                 </div>
             </div>
             <div class="analysis_content_result">
-                <div class"analysis_content_result_title">코칭 요인 분석</div>
+                <div class="analysis_content_result_title">코칭 요인 분석</div>
                 <div class="analysis_content_result_graph">
                     <div class="analysis_content_result_graph_pic">
                         <canvas id="pie_chart" style="width: 300px; height: 300px;"></canvas>
@@ -67,7 +68,7 @@
                     </div>
                 </div>
                 <div class="analysis_content_result_explain">
-                    에이블 님의 코칭 분석 결과,<br>
+                    <span class = "user_name">{{ user.username }}</span> 님의 코칭 분석 결과,<br>
                     (인정) 대화상대를 믿고 의지를 다질 수 있도록 하는 유형의 질문을 
                     {% for item in pie_chart.pie_word %}
                         {% if item.name == "인정" %}
