@@ -27,7 +27,6 @@
 
 <!-- 헤더 -->
 <div class="commu_head_wrapper">
-  <div id = "grow_count">G : 0 | R : 0 | O : 0 | W : 0</div>
   <div class="commu_head_menu_wrapper" style="display: inline;">
       {% comment %} href는 아직 구현 안 됨 {% endcomment %}
       <a class="commu_head_menu"><ion-icon id="grow-ex" name="document-text-outline" class="commu_head_menu_icon"></ion-icon></a>
@@ -85,6 +84,7 @@
                 <div>실시간 점수</div>
                 <div id ="score" class="real_time_score">0 점</div>
             </div>
+            <div id = "topic" class = 'topic'>{{topic}}</div>
             <button class="rpg_submit_btn" id="end_btn">실습 종료</button>
           </div>
           <div class="chat_container" id="chat-container"></div>
