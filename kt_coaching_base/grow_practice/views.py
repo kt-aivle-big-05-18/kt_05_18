@@ -22,7 +22,7 @@ def grow_practice(request):
 #----------------------------------------------------------------------------------------------------#
 # GROW 연습 메인
 #----------------------------------------------------------------------------------------------------#
-openai.api_key = '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'
+openai.api_key = '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'
 
 def grow(request):
     # HTTP 요청이 POST 방식일 경우
