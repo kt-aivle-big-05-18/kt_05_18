@@ -310,10 +310,15 @@
 <button class="back_button" onclick="window.history.back();">&lt</button>
 <div class="content-container">
     <div class="box-container">
-        <div class="box_menu">
+        {% comment %} <div class="box_menu">
             <div id="simulation1" class="menu-item" onclick="changePage(1)">코칭 시뮬레이션 1</div>
             <div id="simulation2" class="menu-item" onclick="changePage(2)">코칭 시뮬레이션 2</div>
             <div id="simulation3" class="menu-item no-dashed" onclick="changePage(3)">코칭 시뮬레이션 3</div>
+        </div> {% endcomment %}
+        <div class="box_menu">
+            {% for persona in personas %}
+              <div id="simulation{{ forloop.counter }}" class="menu-item" onclick="changePage({{ forloop.counter }})">코칭 시뮬레이션{{ forloop.counter }}</div>
+            {% endfor %}
         </div>
         <div class="box_result1">
             {% for persona in personas %}
