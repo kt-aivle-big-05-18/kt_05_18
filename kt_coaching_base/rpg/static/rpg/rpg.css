@@ -329,6 +329,7 @@ body{
 }
 
 .assistant_message {
+    clear: both;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -340,7 +341,7 @@ body{
 	background-color: #F1F1F1;
 	border-radius: 20px;
 	padding: 20px;
-	margin-top: 20px;
+	margin-top: 35px;
 }
 
 .assistant_message_left{
@@ -398,6 +399,32 @@ body{
 	font-size: 20px;
 	padding: 5px 0px;
 	width: 80%;
+}
+
+.grow_info	{
+    display: flex;
+    float: right;
+	flex-direction: row;
+	justify-content: space-around;
+	width: auto;
+	background-color: #BDF2F6;
+	border-radius: 8px;
+	padding: 3px 5px;
+    margin-top: 3px;
+}
+
+.topic {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: center;
+    /* text-align: right; */
+    font-weight: 600;
+    font-size: 16px;
+	border: 2px solid #B0DEE1;
+	color: black;
+    border-radius: 20px;
+	padding: 10px 20px;
 }
 
 /* ======================================================================= */
