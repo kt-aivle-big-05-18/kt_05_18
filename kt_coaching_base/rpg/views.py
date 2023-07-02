@@ -197,6 +197,7 @@ def rpg(request):
     
     # HTTP 요청이 POST 방식일 경우
     if request.method == "POST":
+        request.session["analysis_qf"] = 1
         message = request.POST.get("message") # 사용자가 입력한 한국어 메세지
         
         # 번역된 사용자 입력 메세지를 messages에 추가
@@ -269,7 +270,7 @@ def rpg(request):
         
         # gpt 답장 메세지 DB 전송
         gpt_response_obj = Message(
-            name="gpt",
+            name="홍길동",
             persona = Persona.objects.get(id=int(p_id)),
             content = trans_,
             voice_url = path_gpt_voice
@@ -292,6 +293,7 @@ def rpg(request):
         return JsonResponse(data)
     else :
         topic = request.session.get("topic")
+        request.session["analysis_qf"] = 0
         request.session['messages'] = request.session.get("persona_set") # 초기 패르소나 설정을 메세지에 추가하기
         return render(request, "rpg/rpg.html", {"topic":topic})
 
