@@ -1,4 +1,4 @@
-{% comment %} {% extends "base.html" %} {% endcomment %}
+{% extends "base.html" %}
 {% comment %} 메인 {% endcomment %}
 
 {% load static %}
@@ -14,16 +14,16 @@
 <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script> <!-- IONICONS -->
 
 <!-- 헤더 -->
-<div class="commu_head_wrapper">
+<!--<div class="commu_head_wrapper">
   <div class="commu_head_menu_wrapper" style="display: inline;">
       {% comment %} href는 아직 구현 안 됨 {% endcomment %}
       <a href="{% url 'community:commu_list' %}" class="commu_head_menu"><ion-icon name="information-circle" class="commu_head_menu_icon"></ion-icon></a>
       <a href="{% url 'common:home' %}" class="commu_head_menu"><ion-icon name="exit-outline" class="commu_head_menu_icon"></ion-icon></a>
-    </div>
   </div>
+</div>-->
 
 <!-- 사이드 바 -->
-<div class="l-navbar" id="navbar">
+{% comment %} <div class="l-navbar" id="navbar">
   <nav class="nav">
     <div>
       <div class="nav__brand">
@@ -41,7 +41,11 @@
         </a>
       </div>
   </nav>
-</div>
+</div> {% endcomment %}
+
+<!-- 고정 사이드 바 -->
+<div>
+
 
 <!-- 메인 페이지 -->
 <div class="row">
