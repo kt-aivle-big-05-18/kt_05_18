@@ -21,30 +21,30 @@
             {% if show_captcha %}
             <div class="captcha_wrapper">
               <img class="captcha_image" src="{{ captcha_image_url }}" alt="Captcha Image">
-              <input class="captcha_input" type="text" id="captcha" name="captcha" required placeholder="보안문구 입력">
-              <input type="hidden" name="captcha_0" value="{{ captcha_key }}">
+              <div class="captcha_input_wrapper">
+                <input class="captcha_input" type="text" id="captcha" name="captcha" required placeholder="캡챠 입력">
+                <input type="hidden" name="captcha_0" value="{{ captcha_key }}">
+                <div class="alert alert-danger">{{ error_message }}</div>
+              </div>
             </div>
-            {% endif %}
+            
+            {% elif error_message %}
+            <div class="alert alert-danger">{{ error_message }}</div>
 
-            {% if error_message %}
-            <div class="alert alert-danger">
-              <p>{{ error_message }}</p>
-            </div>
             {% endif %}
-            <label><input class="login_content_detail_idsave" type="checkbox" id="id-save-checkbox" name="id-save-checkbox" {% if saved_id %}checked{% endif %}> 아이디 저장</label>
+            <label><input class="login_content_detail_idsave" type="checkbox" id="id-save-checkbox" onchange="saveId()"> 아이디 저장</label>
             <button class="login_content_detail_button" type="submit">로그인하기</button>
 
 
             <hr class="login_line">
-          </div>
-          <div class="login_content_detail_sub"> <!-- 계정이 없으신가요 ~ 회원가입 묶는 div -->
-            <div class="login_content_account_q">계정이 없으신가요</div>
+          <div class="login_content_detail_sub">
+            <a href="{% url 'account:find_userid' %}" class="login_content_signup_go">아이디 찾기</a>
+            <div class="search_content_detail_bar"> | </div>
+            <a href="{% url 'account:password_reset_request' %}" class="login_content_signup_go">비밀번호 찾기</a>
+            <div class="search_content_detail_bar"> | </div>
             <a href="{% url 'account:signup' %}" class="login_content_signup_go">회원가입하기</a>
           </div>
-          <a href="{% url 'account:find_userid' %}">아이디 찾기</a>
-          <a href="{% url 'account:password_reset_request' %}">비밀번호 찾기</a>
         </div>
-        
       </div>
     </div>
   </div>

@@ -1,3 +1,27 @@
+/* 모달창 */
+
+.modal-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .modal-dialog.modal-lg {
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    margin: 0;
+  }
+  
+  .modal-body {
+    text-align: center;
+  }
+  
+  .modal-body .person_info {
+    max-width: 100%;
+    height: auto;
+  }
+
 html {
     scroll-behavior: smooth;
     font-family: 'Montserrat', sans-serif;
@@ -381,42 +405,6 @@ html {
   .go-home-button:hover {
     background-color: #11456c;
   }
-  
-
-  /* ------------------- footer ------------------- */
-.footer {
-    position: relative;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 10%;
-    background-color: #002c4d;
-    color: white;
-    padding: 40px;
-    text-align: center; 
-}
-
-.footer_text{
-    text-decoration: none;
-    margin: 100px;
-    font-size: 14px;
-    color: white;
-}
-
-.footer_text:hover {
-    text-decoration: none;
-    color: rgba(255, 255, 255, 0.7);
-}
-
-/* 꺽쇠 기호 */
-.arrow {
-    font-size: 5rem;
-    height: 240px;
-    font-weight: 700;
-    color: rgb(51, 48, 48);
-    margin: 40px 20px;
-    margin-bottom: 70px;
-}
 
 /* ----------------------- about us --------------------- */
 
@@ -456,6 +444,41 @@ html {
     }
 }
 
+
+  /* ------------------- footer ------------------- */
+  .footer {
+    position: relative;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 10%;
+    background-color: #002c4d;
+    color: white;
+    padding: 40px;
+    text-align: center; 
+}
+
+.footer_text{
+    text-decoration: none;
+    margin: 100px;
+    font-size: 14px;
+    color: white;
+}
+
+.footer_text:hover {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* 꺽쇠 기호 */
+.arrow {
+    font-size: 5rem;
+    height: 240px;
+    font-weight: 700;
+    color: rgb(51, 48, 48);
+    margin: 40px 20px;
+    margin-bottom: 70px;
+}
 
 /* 처음으로 버튼 추가 */
 .go-home-button {

@@ -40,6 +40,8 @@
   text-align: center;
 } */
 
+/* 모달창 */
+
 .modal-header{
   display: flex;
   justify-content: space-between;
@@ -63,6 +65,7 @@
 }
 
 
+/* 메인창 */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -145,19 +148,23 @@
     flex-direction: row;
     justify-content: center;
     width: 100%;
+    margin-top: 10px;
 }
 .signup_content_detail_birth_box{
-    margin: 5px 5px;
+    margin: 5px 0px;
+    width: 200px;
     border: #D2D2D2 solid 1px;
     color: #797979;
     border-radius: 7px;
     padding: 10px 20px;
-    width: 100%;
 }
 
 .signup_content_detail_dp{
   display: flex;
   justify-content: center;
+}
+.signup_content_detail_job{
+  width: 200px;
 }
 
 .signup_content_detail_gender{

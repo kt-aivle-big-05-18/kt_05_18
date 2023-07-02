@@ -85,6 +85,7 @@ $(document).ready(function() {
             + "<img class='user_profile' src='/static/img/won.png' alt='사용자이미지'>"
             + "</div>");
             scrollToBottom();
+            showLoading();
         
         // if (userInput !== "") {
         //     let userImageSrc = document.getElementById("myp_info_image").src;
@@ -111,12 +112,14 @@ $(document).ready(function() {
                     + "</div>"
                     + "<ion-icon class='assistant_message_icon' name='volume-medium-outline' data-audio-id='" + audioID + "'></ion-icon>"
                     + "</div>");
+                    // simulateResponse(message);
+                    hideLoading();
                     document.getElementById('score').innerHTML = response.score + '점';
                 
                     var audioElement = document.createElement("audio");
                     audioElement.src = "data:audio/wav;base64," + response.voice;
                     audioElement.id = audioID;
-                
+                    
                     audioElement.play(); // 메시지 받으면 자동으로 음성 출력
 
                     var volumeIcons = document.getElementsByClassName('assistant_message_icon');
@@ -280,3 +283,26 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     });
   });
+
+  // 로딩 완료 후 로딩 창 숨김
+  window.addEventListener('load', function () {
+    var loadingOverlay = document.querySelector('.loading-overlay');
+    loadingOverlay.style.display = 'none';
+});
+
+
+function simulateResponse(message) {
+    setTimeout(function() {
+      var response = "답변: " + message;
+      alert(response);
+      hideLoading();
+    }, 2000);
+  }
+
+  function showLoading() {
+    $("#loadingModal").show();
+  }
+
+  function hideLoading() {
+    $("#loadingModal").hide();
+  }
