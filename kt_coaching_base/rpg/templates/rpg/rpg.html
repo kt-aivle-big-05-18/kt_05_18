@@ -93,7 +93,10 @@
         <div class="rpg_bottom">
             <div class="rpg_input_section">
                 {% comment %} <img class="rpg_record_icon" id="record" src="/static/img/mice.png" alt="녹음아이콘"> {% endcomment %}
-                <ion-icon name="mic-circle-outline" class="rpg_record_icon" id="record"></ion-icon>
+                <div class="speech_bubble">
+                  <ion-icon name="mic-circle-outline" class="rpg_record_icon" id="record"></ion-icon>
+                  <span class="tooltip">말을 다 하셨다면 한번 더 클릭해주세요! </span>
+                </div>
                 {% comment %} <ion-icon name="mic-off-outline"></ion-icon> {% endcomment %}
                 {% comment %} <img class="rpg_stop_icon" id="stop" src="/static/img/check.png" alt="중지아이콘"> {% endcomment %}
                 <input class="rpg_input_container" type="text" id="user-input" placeholder="이곳에 입력하세요.">
