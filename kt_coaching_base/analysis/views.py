@@ -7,6 +7,9 @@ import pandas as pd
 import os, json
 
 def result (request):
+    qf = request.session.get("analysis_qf")
+    if qf == 0 :
+        return redirect("rpg:rpg_start")
     grow_df = pd.DataFrame()
     p_id = request.session.get("persona_id")[0]["id"]
     pie_counts_new = request.session["pie_counts"]
@@ -55,13 +58,6 @@ def result (request):
         {"name": "Will", "value": request.session.get("Will")},
         {"name": "기타", "value": request.session.get("ETC")},
     ]
-    # for question in questions_list:
-    #     csv_url = question['csv_url']
-
-    # csv_url에서 CSV 파일을 읽어옴
-    # df_temp = pd.read_csv(csv_url)
-    # # 읽어온 DataFrame을 df 아래에 붙임
-    # df = pd.concat([df, df_temp], ignore_index=True)
     
     pie_chart_new = {
         "socre_mem" : json.dumps(list(d_scores)),
@@ -71,7 +67,12 @@ def result (request):
         "pie_word": pie_counts_new,
     }
     return render(request, "analysis/result.html", {'pie_chart': pie_chart_new})
-# Create your views here.
+
+
+
+
+
+
 
 def intro (request):
     qf = request.session.get("analysis_qf")
@@ -84,7 +85,7 @@ def intro (request):
         {
             'id': msg.id, 
             'name': msg.name, 
-            'persona': msg.persona.id,  # assuming persona object has an id
+            'persona': msg.persona.id, 
             'content': msg.content, 
             'send_date': msg.send_date.isoformat(), 
             'voice_url': msg.voice_url,

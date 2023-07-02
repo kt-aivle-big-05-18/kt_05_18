@@ -11,6 +11,7 @@ urlpatterns = [
     path('share_persona/<int:persona_id>/', views.share_persona, name='share_persona'),
     path('stop_sharing/<int:persona_id>/', views.stop_sharing, name='stop_sharing'),
     path('rating_list/<int:persona_id>/', views.rating_list, name='rating_list'),
+    path('graph_draw/', views.graph_draw, name='graph_draw'),
     path('popup/', views.popup, name='popup'),
-    # path('password_check/', views.password_check, name='password_check'),
+    # path('password_check/', views.password_check, name='password_check')
 ]
