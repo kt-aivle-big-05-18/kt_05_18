@@ -1,6 +1,7 @@
 {% extends "base.html" %}
-
 {% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0"></script>
 <style>
     body {
         background-color: #E9F2FF;
@@ -52,6 +53,7 @@
         border-radius: 20px;
         background-color: white;
         box-shadow: 2px 5.5px 10px rgba(0, 0, 0, 0.3);
+        overflow: auto;
     }
 
     .box_result1 {
@@ -280,6 +282,7 @@
         display: flex; /* 추가된 값 */
         justify-content: center; /* 추가된 값 */
         align-items: center; /* 추가된 값 */
+        overflow: hidden; /* 수정된 부분 */
     }
 
     .coaching-info{
@@ -307,6 +310,16 @@
         justify-content: center; /* 추가된 값 */
         align-items: center; /* 추가된 값 */
     }
+
+    .g_b_c{
+    }
+
+    .coaching-info-text {
+        display: inline-block;
+        font-size: 15px;
+        overflow: auto;
+        background-color: #F4F4F4; /* 원하는 배경색을 지정합니다 */
+    }
 </style>
 
 <h1>대화 내역 및 분석결과</h1>
@@ -315,7 +328,7 @@
     <div class="box-container">
         <div class="box_menu">
              {% for persona in personas %}
-                <div id="simulation{{ forloop.counter }}" class="menu-item" onclick="changePage({{ forloop.counter }})">코칭 시뮬레이션 {{ forloop.counter }}</div>
+                <div id="simulation{{ forloop.counter }}" class="menu-item" onclick="changePage({{ forloop.counter }}, {{persona.id }})">코칭 시뮬레이션 {{ forloop.counter }}</div>
              {% endfor %}
         </div>
         
@@ -345,14 +358,15 @@
             <h2 class="analysis-header">대화 분석 결과</h2>
             <h3 class="analysis-info-header">GROW 결과</h3>
             <div class="grow-info">
-                grow 이 분석이 들어올 자리
+                <div class = "g_b_c">
+                    <canvas id = "grow_bar_chart" class = "grow_bar_chart"></canvas>
+                </div>
             </div>
             <h3 class="analysis-info-header">코칭 요인 분석</h3>
             <div class="coaching-info">
-                코칭 요인 분석이 들어올 자리
+                <canvas id = "coaching_chart_analysis" class = "coaching_chart_analysis"></canvas>
             </div>
-            <div class="coaching-info-text">
-                "" 님의 코칭 분석 결과.
+            <div id = "analysis_chat"class="coaching-info-text">
             </div>
         </div>
     </div>
@@ -361,7 +375,12 @@
 
 
 <script>
-    function changePage(page) {
+    $.ajaxSetup({
+        headers: { "X-CSRFToken": '{{csrf_token}}' }
+    });
+    
+    function changePage(page, p_id) {
+
         const pages = document.querySelectorAll('.box_result1 > div');
         const menus = document.querySelectorAll('.box_menu > div');
 
@@ -376,11 +395,162 @@
         const currentMenu = document.querySelector(`.box_menu > div[onclick="changePage(${page})"]`);
 
         currentPage.style.display = 'block';
-        currentMenu.classList.add('selected');
+        //currentMenu.classList.add('selected');
+
+        console.log(p_id + "     ////123123123123123123")
+         $.ajax({
+                url: "/mypage/graph_draw/",
+                type: "POST",
+                data: {
+                    message: p_id
+                },
+                success: function(response) {
+
+                    var previousChart = Chart.getChart('grow_bar_chart');
+                    if (previousChart) {
+                        previousChart.destroy();
+                    }
+                    var context = document.getElementById('grow_bar_chart').getContext('2d');
+                    // Parse the JSON data
+                    console.log(p_id + "     ////123123123123123123     //   " + response)
+                    var lineChartDataElement = JSON.parse(response.grow);
+                    var growdayLabels = lineChartDataElement.map(item => item.name);
+                    var growdayData = lineChartDataElement.map(item => item.value);
+                  
+                    var myChart = new Chart(context, {
+                      type: 'bar',
+                      data: {
+                        labels: growdayLabels,  // Use the extracted labels
+                        datasets: [{
+                          fill: false,
+                          data: growdayData,  // Use the extracted values
+                          backgroundColor: [
+                            'rgba(145, 211, 139, 1)',
+                            'rgba(255, 227, 155, 1)',
+                            'rgba(180, 232, 255, 1)',
+                            'rgba(220, 170, 237, 1)',
+                            'rgba(217, 217, 217, 1)',
+                          ],
+                          borderWidth: 1
+                        }]
+                      },
+                      options: {
+                        indexAxis: 'x',  // Change this to 'x'
+                        scales: {
+                          y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0, // 소수점 이하 자릿수를 0으로 설정하여 정수로 표시
+                                callback: function(value, index, values) {
+                                    if (Math.floor(value) === value) {
+                                        return value;
+                                    }
+                                }
+                            },
+                            autoSkip: true, // 데이터에 맞게 눈금 간격 자동 조정
+                            maxTicksLimit: 10 // 최대 눈금 개수 제한 (원하는 값으로 조정)
+                        }
+                        },
+                        plugins: {
+                          legend: {
+                              display: false
+                          },
+                          title: {
+                              display: false,
+                              text: 'GROW 코칭 결과'
+                          }
+                        }
+                      }
+                    });
+
+                    var previousChart2 = Chart.getChart('coaching_chart_analysis');
+                    if (previousChart2) {
+                        previousChart2.destroy();
+                    }
+                    var ctx = document.getElementById('coaching_chart_analysis').getContext('2d');
+                    console.log("123123123")
+                    var pieChartDataElement = JSON.parse(response.class);
+                    console.log("123123123444444")
+                    var labels = pieChartDataElement.map(item => item.name);
+                    var data = pieChartDataElement.map(item => item.value);
+                    
+                
+                    var myPieChart = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                data: data,
+                                backgroundColor: [
+                                    'rgba(143, 170, 220, 1)',
+                                    'rgba(244, 177, 131, 1)',
+                                    'rgba(169, 209, 142, 1)',
+                                    'rgba(255, 217, 102, 1)',
+                                    'rgba(250, 166, 178, 1)',
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: true,
+                                    position: 'top',
+                                    labels: {
+                                        boxWidth: 10, // 원하는 크기로 조절
+                                        font: {
+                                            size: 12, // 원하는 폰트 크기로 조절
+                                        },
+                                    },
+                                },
+                                datalabels: {
+                                    formatter: (value, ctx) => {
+                                        let sum = 0;
+                                        let dataArr = ctx.chart.data.datasets[0].data;
+                                        dataArr.map(data => {
+                                            sum += data;
+                                        });
+                                        let percentage = (value*100 / sum).toFixed(2)+"%";
+                                        return percentage;
+                                    },
+                                    color: '#fff',
+                                }
+                            }
+                        }
+                    });
+                    var chatContainer = $('#analysis_chat');
+                    chatContainer.empty();
+                    chatContainer.append(
+                        '<span class = "abc">{{ user.username }} 님의 코칭 분석 결과.</span><br><br>'
+                        + '<span class = "abc">(인정) 대화상대를 믿고 의지를 다질 수 있도록 하는 유형의 질문을 </span>'
+                        + response.recognition
+                        + "<span class = 'abc'> 하신 것으로 나타납니다. 대화상대가 스스로 해결할 능력을 가지고 있다고 믿을 수 있도록 질문을 유도하는 것은 코칭 대화에서 중요한 요소입니다.<br><br></span>"
+                        + '<span class = "abc">(존중) 대화상대를 존중하는 유형의 질문을 </span>'
+                        + response.respect
+                        + "<span class = 'abc'> 하신 것으로 나타납니다. 대화상대의 동의를 구하며 심리적으로 지지하고 도움을 주는 것은 코칭 대화에서 중요한 요소입니다.<br><br></span>"
+                        + "<span class = 'abc'>(관점전환) 대화상대가 기존과 다른 관점에서 해결책을 찾도록 돕는 유형의 질문을 </span>"
+                        + response.perspective
+                        + "<span class = 'abc'>  하신 것으로 나타납니다. 대화상대가 스스로 해결책을 찾을 수 있도록 질문을 유도하는 것은 코칭 대화에서 중요한 요소입니다.<br><br></span>"
+                        + "<span class = 'abc'>(판단) 대화상대를 판단하는 유형의 질문을 </span>"
+                        + response.judgment
+                        + "<span class = 'abc'> 하신 것으로 나타납니다. 대화상대가 자율성을 가질 수 있도록 개인의 의견이 들어간 질문보다 개방적인 질문을 통해 대화상대가 스스로 해결 방안을 찾을 수 있도록 유도하는 것은 중요한 요소입니다.<br><br></span>"
+                        + "<span class = 'abc'>(부정) 대화상대를 부정하는 유형의 질문을 </span>"
+                        + response.negation
+                        + "<span class = 'abc'> 하신 것으로 나타납니다. 대화상대가 부정적으로 느껴지지 않도록 부정적인 질문보다 긍정적인 질문을 통해 대화의 분위기를 긍정적으로 유도하는 것은 중요한 요소입니다.<br></span>"
+                        );
+
+                },
+                error: function(xhr, errmsg, err) {
+                    console.log(errmsg);
+                }
+         });
     }
 
     window.onload = function() {
-        changePage(1); // 페이지 1부터 표시하도록 변경
+        changePage(1,1); // 페이지 1부터 표시하도록 변경
     }
+
 </script>
 {% endblock %}
