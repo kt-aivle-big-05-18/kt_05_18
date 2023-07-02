@@ -16,6 +16,10 @@ class RegistrationForm(UserCreationForm):
         model = Account
         fields = ['hidden_userid', 'hidden_email', 'username', 'hidden_nickname', 'department', 'rank', 'age', 'gender']
 
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        return username
+
     def save(self, commit=True):
         instance = super().save(commit=False)
         instance.userid = self.cleaned_data['hidden_userid']
