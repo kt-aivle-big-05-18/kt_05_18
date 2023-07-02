@@ -21,7 +21,6 @@
             {% if show_captcha %}
             <div class="captcha_wrapper">
               <img class="captcha_image" src="{{ captcha_image_url }}" alt="Captcha Image">
-<<<<<<< HEAD
               <div class="captcha_input_wrapper">
                 <input class="captcha_input" type="text" id="captcha" name="captcha" required placeholder="캡챠 입력">
                 <input type="hidden" name="captcha_0" value="{{ captcha_key }}">
@@ -34,19 +33,6 @@
 
             {% endif %}
             <label><input class="login_content_detail_idsave" type="checkbox" id="id-save-checkbox" onchange="saveId()"> 아이디 저장</label>
-=======
-              <input class="captcha_input" type="text" id="captcha" name="captcha" required placeholder="보안문구 입력">
-              <input type="hidden" name="captcha_0" value="{{ captcha_key }}">
-            </div>
-            {% endif %}
-
-            {% if error_message %}
-            <div class="alert alert-danger">
-              <p>{{ error_message }}</p>
-            </div>
-            {% endif %}
-            <label><input class="login_content_detail_idsave" type="checkbox" id="id-save-checkbox" name="id-save-checkbox" {% if saved_id %}checked{% endif %}> 아이디 저장</label>
->>>>>>> 217348d67ad7159efe86cf15b5583b91ec69bcfb
             <button class="login_content_detail_button" type="submit">로그인하기</button>
 
 
@@ -59,10 +45,6 @@
             <a href="{% url 'account:signup' %}" class="login_content_signup_go">회원가입하기</a>
           </div>
         </div>
-<<<<<<< HEAD
-=======
-        
->>>>>>> 217348d67ad7159efe86cf15b5583b91ec69bcfb
       </div>
     </div>
   </div>
