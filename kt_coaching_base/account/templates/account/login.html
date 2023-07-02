@@ -6,6 +6,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'account/login.css' %}">
+<script src="{% static 'account/login.js' %}"></script> <!-- JavaScript 파일 추가 -->
 
 <form method="post">
   {% csrf_token %}
@@ -43,6 +44,7 @@
           <a href="{% url 'account:find_userid' %}">아이디 찾기</a>
           <a href="{% url 'account:password_reset_request' %}">비밀번호 찾기</a>
         </div>
+        <label><input class="login_content_detail_idsave" type="checkbox" id="id-save-checkbox" onchange="saveId()"> 아이디 저장</label>
       </div>
     </div>
   </div>
