@@ -1,0 +1,511 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #E9F2FF;
+        font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    h1 {
+        text-align: left;
+        width: 80%;
+        padding-top: 20px;
+        padding-left: 70px;
+        font-size: 30px;
+    }
+
+    h3 {
+        text-align: left;
+        width: 80%;
+        padding-left: 21px;
+        font-size: 22px;
+    }
+
+    .content-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 80vh;
+    }
+
+    .box-container {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start; /* 변경된 값 */
+        width: 90%;
+        height: 800px;
+        background-color: #E9F2FF;
+        border-radius: 10px;
+        padding: 20px;
+    }
+
+    .box_menu {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        font-size: 23px;
+        font-weight: 520;
+        width: 400px;
+        height: 650px;
+        border-radius: 20px;
+        background-color: white;
+        box-shadow: 2px 5.5px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .box_result1 {
+        display: flex;
+        justify-content: center;
+        /* align-items: top; 삭제 */
+        font-size: 23px;
+        font-weight: 520;
+        width: 1400px;
+        height: 650px;
+        padding-right: 7px;
+        padding-left: 7px;
+        margin-left: 15px;
+        border-radius: 20px;
+        background-color: white;
+        box-shadow: 2px 5.5px 10px rgba(0, 0, 0, 0.3);
+        overflow: auto;
+    }
+
+    .box_result2 {
+        display: block;
+        justify-content: center;
+        /* align-items: top; 삭제 */
+        font-size: 23px;
+        font-weight: 520;
+        width: 1000px;
+        height: 650px;
+        padding-right: 7px;
+        padding-left: 7px;
+        margin-left: 15px;
+        border-radius: 20px;
+        background-color: white;
+        box-shadow: 2px 5.5px 10px rgba(0, 0, 0, 0.3);
+        overflow: auto;
+    }
+
+    .menu-item {    
+        cursor: pointer;
+        padding: 5px 10px;
+        margin-top: 30px;
+        font-size: 18px;
+        font-weight: 600;
+        border-bottom: 1px dashed;
+        transition: background-color 0.3s;
+    }
+    
+    .menu-item:last-child {
+        border-bottom: 1px dashed;
+    }
+    
+    .menu-item:hover {
+        background-color: #D9D9D9;
+    }
+
+    .selected {
+        background-color: #CADDF9;
+    }
+
+    .back_button {
+        position: absolute;
+        top: 15%;
+        right: 30px;
+        font-size: 18px;
+        padding: 6px 12px;
+        background-color: #99b4da;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    
+  
+    .back_button:hover {
+        background-color: #134971;
+    }
+
+    .box_result_graph {
+        background-color: #F1F1F1;
+        width: calc(1050px - 40px);
+        height: 180px;
+        border-radius: 15px;
+        margin-top: 20px;
+        margin-left: 30px;
+        padding: 20px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+
+    .box_result_grow {
+        font-size: 22px;
+        font-weight: 600;
+        font-family: 'Noto Sans KR', sans-serif;
+        margin-top: 1px;
+    }   
+    
+    .box_result_grow_info {
+        font-size: 14px;
+        font-weight: 400;
+        font-family: 'Noto Sans KR', sans-serif;
+        margin: 3px 2px;
+        margin-bottom: 2px;
+    }
+
+    .text-container {
+        text-align: left;
+        max-width: 80%;
+    }    
+
+    .box_result_graph_section {
+        background-color: #FFFFF;
+        width: calc(1147px - 47px);
+        height: 180px;
+        border-radius: 15px;
+        margin-top: 20px;
+        margin-left: 20px;
+        padding-top: 20px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+    }
+
+    .box_result_graph_sections {
+        background-color: #F1F1F1;
+        width: 240px;
+        height: 230px;
+        border-radius: 15px;
+        margin-top: 5px;
+        margin-right: 30px;
+
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+
+    .container {
+        display: flex;
+        flex-direction: column;
+      }
+      
+    .coaching {
+        padding: 10px;
+        border-bottom: 1px dashed;
+    }
+      
+    .no-dashed {
+        border-bottom: none;
+    }
+
+    .talk-info {
+        background-color: #FFFFF;
+        border: 1px solid #000000;
+        width: 600px;
+        height: 450px;
+        border-radius: 5px;
+        padding: 10px;
+        margin-top: 20px;
+        box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .talk-info-header {
+        font-weight: bold; 
+        font-size: 21px;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 70px;
+        margin-top: 10px;
+    }
+
+    .talk-info-button {
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 65px;
+        background-color: #134971;
+        border: 1px solid #E9F2FF;
+        border-radius: 5px;
+        font-size: 20px;
+        font-weight: 500;
+        color: #FFFFFF;
+    }   
+
+    .talk-info-button:hover{
+        background-color: #01A1FF;
+    }
+
+    .analysis-header{
+        text-align: center;
+        font-weight: bold; 
+        font-size: 21px;
+        margin-left: 13px;
+    }
+
+    .analysis-info-header{
+        text-align: left;
+        font-weight: bold; 
+        font-size: 17px;
+        margin-left: 13px;
+    }
+
+    .grow-info{
+        background-color: #FFFFF;
+        margin-left: 32px;
+        width: 400px;
+        height: 160px;
+        border-radius: 5px;
+        margin-top: 20px;
+        box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
+        display: flex; /* 추가된 값 */
+        justify-content: center; /* 추가된 값 */
+        align-items: center; /* 추가된 값 */
+    }
+
+    .coaching-info{
+        background-color: #FFFFF;
+        margin-left: 32px;
+        width: 400px;
+        height: 160px;
+        border-radius: 5px;
+        margin-top: 20px;
+        box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
+        display: flex; /* 추가된 값 */
+        justify-content: center; /* 추가된 값 */
+        align-items: center; /* 추가된 값 */
+    }
+
+    .coaching-info-text{
+        background-color: #FFFFF;
+        margin-left: 32px;
+        width: 400px;
+        height: 120px;
+        border-radius: 5px;
+        margin-top: 20px;
+        box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
+        display: flex; /* 추가된 값 */
+        justify-content: center; /* 추가된 값 */
+        align-items: center; /* 추가된 값 */
+    }
+</style>
+
+<h1>대화 내역 및 분석결과</h1>
+<button class="back_button" onclick="window.history.back();">&lt</button>
+<div class="content-container">
+    <div class="box-container">
+        <div class="box_menu">
+            <div id="simulation1" class="menu-item" onclick="changePage(1)">코칭 시뮬레이션 1</div>
+            <div id="simulation2" class="menu-item" onclick="changePage(2)">코칭 시뮬레이션 2</div>
+            <div id="simulation3" class="menu-item" onclick="changePage(3)">코칭 시뮬레이션 3</div>
+        </div>
+        <div class="box_result1">
+            {% for persona in personas %}
+                <div id="page{{ persona.id }}" style="display: none;">
+                    <h2 class="talk-info-header">{{ persona.department }} - 경력{{ persona.career }}년차 - {{ persona.rank }}</h2>
+                    {% comment %} <ul>
+                        {% for message in messages %}
+                            {% if message.persona == persona %}
+                                <li>{{ message.name }} - {{ message.content }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                    {% if persona.shared %}
+                        <form action="{% url 'mypage:stop_sharing' persona.id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="persona_id" value="{{ persona.id }}">
+                            <button type="submit">공유 중지</button>
+                        </form>
+                    {% else %}
+                        <form action="{% url 'mypage:share_persona' persona.id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="persona_id" value="{{ persona.id }}">
+                            <input type="text" name="title" placeholder="제목">
+                            <textarea name="content" placeholder="내용"></textarea>
+                            <button type="submit">공유 시작</button>
+                        </form>
+                    {% endif %}
+                    <a href="{% url 'mypage:rating_list' persona.id %}">체크리스트 점수 보기</a> {% endcomment %}
+                    <div class="talk-info">
+                        {% for message in messages %}
+                            {% if message.persona.id == persona.id %}
+                                <div class="container">
+                                    <div class="coaching {% if forloop.last %}no-dashed{% endif %}">
+                                        {{ message.name }} - {{ message.content }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="button-container">
+                        <button class="talk-info-button">설문 결과 확인하기</button>
+                    </div>
+                </div>
+            {% endfor %}
+            {% comment %}             
+                {% for persona in personas %}
+                    <div class="menu-item" onclick="changePage('{{ persona.id }}')">{{ persona.department }} - {{ persona.rank }}</div>
+                {% endfor %}
+            {% endcomment %}
+
+        </div>
+            {% comment %}             
+            {% for persona in personas %}
+                <div class="menu-item" onclick="changePage('{{ persona.id }}')">{{ persona.department }} - {{ persona.rank }}</div>
+            {% endfor %} {% endcomment %}
+        <div class="box_result2">
+            <h2 class="analysis-header">대화 분석 결과</h2>
+            <h3 class="analysis-info-header">GROW 결과</h3>
+            <div class="grow-info">
+                grow 이 분석이 들어올 자리
+            </div>
+            <h3 class="analysis-info-header">코칭 요인 분석</h3>
+            <div class="coaching-info">
+                코칭 요인 분석이 들어올 자리
+            </div>
+            <div class="coaching-info-text">
+                "" 님의 코칭 분석 결과.
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    function changePage(page) {
+        const pages = document.querySelectorAll('.box_result1 > div');
+        const menus = document.querySelectorAll('.box_menu > div');
+
+        pages.forEach(page => {
+            page.style.display = 'none';
+        });
+        menus.forEach(menu => {
+            menu.classList.remove('selected');
+        });
+
+        const currentPage = document.getElementById(`page${page}`);
+        const currentMenu = document.querySelector(`.box_menu > div[onclick="changePage(${page})"]`);
+
+        currentPage.style.display = 'block';
+        currentMenu.classList.add('selected');
+    }
+
+    window.onload = function() {
+        changePage(1); // 페이지 1부터 표시하도록 변경
+    }
+</script>
+{% endblock %}
+
+
+
+
+
+{% comment %} <div id="page0">
+                <div class="box_result_graph">
+                        <p class="box_result_grow">GROW 코칭 모델기반 설문결과</p>
+                        <p class="box_result_grow_info">코칭이란 과거의 실수 보다는 미래의 가능성에 초점을 맞추는 것입니다.</p>
+                        <p class="box_result_grow_info">GROW 모델은 Goal, Reality, Options, Will의 약자입니다.</p>
+                    <div class="text-container">
+                        <p class="box_result_grow_info">- Goal : 목표 - 단기 및 장기 목표 정의</p>
+                        <p class="box_result_grow_info">- Reality : 현실 - 현재 상황 및 문제 탐색</p>
+                        <p class="box_result_grow_info">- Options : 옵션 - 해결 가능한 옵션 및 평가</p>
+                        <p class="box_result_grow_info">- Will : 의지 - 실행할 업무와 시기 설정</p>
+                    </div>
+                </div> 
+                <div class="box_result_graph_section">
+                    <div class="box_result_graph_sections">
+                    </div>
+                    <div class="box_result_graph_sections">
+                    </div>
+                    <div class="box_result_graph_sections">
+                    </div>
+                    <div class="box_result_graph_sections">
+                    </div> 
+                </div>                                           
+            </div>
+            <div id="page1">
+                <div class="box_result_graph">
+                    <p class="box_result_grow">GROW 코칭 모델기반 설문결과</p>
+                    <p class="box_result_grow_info">코칭이란 과거의 실수 보다는 미래의 가능성에 초점을 맞추는 것입니다.</p>
+                    <p class="box_result_grow_info">GROW 모델은 Goal, Reality, Options, Will의 약자입니다.</p>
+                <div class="text-container">
+                    <p class="box_result_grow_info">- Goal : 목표 - 단기 및 장기 목표 정의</p>
+                    <p class="box_result_grow_info">- Reality : 현실 - 현재 상황 및 문제 탐색</p>
+                    <p class="box_result_grow_info">- Options : 옵션 - 해결 가능한 옵션 및 평가</p>
+                    <p class="box_result_grow_info">- Will : 의지 - 실행할 업무와 시기 설정</p>
+                </div>
+            </div> 
+            <div class="box_result_graph_section">
+                <div class="box_result_graph_sections">
+                </div>
+                <div class="box_result_graph_sections">
+                </div>
+                <div class="box_result_graph_sections">
+                </div>
+                <div class="box_result_graph_sections">
+                </div> 
+            </div>
+            </div>
+            <div id="page2">
+                <div class="box_result_graph">
+                    <p class="box_result_grow">GROW 코칭 모델기반 설문결과</p>
+                    <p class="box_result_grow_info">코칭이란 과거의 실수 보다는 미래의 가능성에 초점을 맞추는 것입니다.</p>
+                    <p class="box_result_grow_info">GROW 모델은 Goal, Reality, Options, Will의 약자입니다.</p>
+                <div class="text-container">
+                    <p class="box_result_grow_info">- Goal : 목표 - 단기 및 장기 목표 정의</p>
+                    <p class="box_result_grow_info">- Reality : 현실 - 현재 상황 및 문제 탐색</p>
+                    <p class="box_result_grow_info">- Options : 옵션 - 해결 가능한 옵션 및 평가</p>
+                    <p class="box_result_grow_info">- Will : 의지 - 실행할 업무와 시기 설정</p>
+                </div>
+            </div> 
+            <div class="box_result_graph_section">
+                <div class="box_result_graph_sections">
+                </div>
+                <div class="box_result_graph_sections">
+                </div>
+                <div class="box_result_graph_sections">
+                </div>
+                <div class="box_result_graph_sections">
+                </div> 
+            </div>
+            </div>
+            <div id="page3">
+                <div class="box_result_graph">
+                    <p class="box_result_grow">GROW 코칭 모델기반 설문결과</p>
+                    <p class="box_result_grow_info">코칭이란 과거의 실수 보다는 미래의 가능성에 초점을 맞추는 것입니다.</p>
+                    <p class="box_result_grow_info">GROW 모델은 Goal, Reality, Options, Will의 약자입니다.</p>
+                <div class="text-container">
+                    <p class="box_result_grow_info">- Goal : 목표 - 단기 및 장기 목표 정의</p>
+                    <p class="box_result_grow_info">- Reality : 현실 - 현재 상황 및 문제 탐색</p>
+                    <p class="box_result_grow_info">- Options : 옵션 - 해결 가능한 옵션 및 평가</p>
+                    <p class="box_result_grow_info">- Will : 의지 - 실행할 업무와 시기 설정</p>
+                </div>
+            </div> 
+            <div class="box_result_graph_section">
+                <div class="box_result_graph_sections">
+                </div>
+                <div class="box_result_graph_sections">
+                </div>
+                <div class="box_result_graph_sections">
+                </div>
+                <div class="box_result_graph_sections">
+                </div> 
+            </div>
+            </div> {% endcomment %}

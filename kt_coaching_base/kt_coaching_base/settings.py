@@ -59,6 +59,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'kt_coaching_base.middleware.DisableClientSideCachingMiddleware',
 ]
 
 ROOT_URLCONF = "kt_coaching_base.urls"

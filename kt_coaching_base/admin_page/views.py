@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
 from django.db.models import Count, Case, When, Value, CharField
 from rpg.models import Persona
@@ -10,6 +10,8 @@ import json
 from django.db.models.functions import ExtractWeekDay, ExtractHour
 
 def admin_persona(request):
+    if not request.user.is_superuser:
+        return redirect("common:home")
     # Rank 종류별 갯수
     rank_counts = list(Persona.objects.values('rank').annotate(rank_count=Count('rank')))
 
@@ -78,6 +80,9 @@ def admin_persona(request):
 
 
 def admin_user(request):
+    if not request.user.is_superuser:
+        return redirect("common:home")
+    
     #--------------------이용량 통계------------------------------#
     weekday_mapping = {
         0: '토요일',
@@ -100,10 +105,10 @@ def admin_user(request):
     # 시간대별 로그인 횟수를 저장할 리스트 변수
     hour_counts = [0] * 24  # 0부터 23까지의 인덱스를 가진 리스트
 
-    # 요일별 로그인 횟수 추출 결과를 리스트 변수에 저장
-    for entry in login_counts_by_weekday:
-        weekday_counts[entry['weekday']] = entry['count']
-        print(entry['weekday'])
+   # 요일별 로그인 횟수 추출 결과가 비어있지 않은 경우 처리
+    if login_counts_by_weekday.exists():
+        for entry in login_counts_by_weekday:
+            weekday_counts[entry['weekday']] = entry['count']
     for i in range(len(weekday_counts)):
         weekday_counts[i] = { "weekday" : weekday_mapping[i], 'value' : weekday_counts[i]}
     print(weekday_counts)

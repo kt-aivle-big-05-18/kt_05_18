@@ -217,6 +217,9 @@
         padding: 10px;
         margin-top: 20px;
         box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
+        overflow: auto;
+        font-size: 18px;
+        font-weight: 400;
     }
 
     .talk-info-header {
@@ -311,56 +314,33 @@
 <div class="content-container">
     <div class="box-container">
         <div class="box_menu">
-            <div id="simulation1" class="menu-item" onclick="changePage(1)">코칭 시뮬레이션 1</div>
-            <div id="simulation2" class="menu-item" onclick="changePage(2)">코칭 시뮬레이션 2</div>
-            <div id="simulation3" class="menu-item no-dashed" onclick="changePage(3)">코칭 시뮬레이션 3</div>
+             {% for persona in personas %}
+                <div id="simulation{{ forloop.counter }}" class="menu-item" onclick="changePage({{ forloop.counter }})">코칭 시뮬레이션 {{ forloop.counter }}</div>
+             {% endfor %}
         </div>
+        
         <div class="box_result1">
             {% for persona in personas %}
                 <div id="page{{ persona.id }}" style="display: none;">
                     <h2 class="talk-info-header">{{ persona.department }} - 경력{{ persona.career }}년차 - {{ persona.rank }}</h2>
-                    {% comment %} <ul>
+                    <div class="talk-info">
                         {% for message in messages %}
-                            {% if message.persona == persona %}
-                                <li>{{ message.name }} - {{ message.content }}</li>
+                            {% if message.persona.id == persona.id %}
+                                <div class="container">
+                                    <div class="coaching {% if forloop.last %}no-dashed{% endif %}">
+                                        {{ message.name }} - {{ message.content }}
+                                    </div>
+                                </div>
                             {% endif %}
                         {% endfor %}
-                    </ul>
-                    {% if persona.shared %}
-                        <form action="{% url 'mypage:stop_sharing' persona.id %}" method="POST">
-                            {% csrf_token %}
-                            <input type="hidden" name="persona_id" value="{{ persona.id }}">
-                            <button type="submit">공유 중지</button>
-                        </form>
-                    {% else %}
-                        <form action="{% url 'mypage:share_persona' persona.id %}" method="POST">
-                            {% csrf_token %}
-                            <input type="hidden" name="persona_id" value="{{ persona.id }}">
-                            <input type="text" name="title" placeholder="제목">
-                            <textarea name="content" placeholder="내용"></textarea>
-                            <button type="submit">공유 시작</button>
-                        </form>
-                    {% endif %}
-                    <a href="{% url 'mypage:rating_list' persona.id %}">체크리스트 점수 보기</a> {% endcomment %}
-                    <div class="talk-info">
-                        대화 내역이 들어올 자리
                     </div>
                     <div class="button-container">
                         <button class="talk-info-button">설문 결과 확인하기</button>
                     </div>
                 </div>
             {% endfor %}
-            {% comment %}             
-                {% for persona in personas %}
-                    <div class="menu-item" onclick="changePage('{{ persona.id }}')">{{ persona.department }} - {{ persona.rank }}</div>
-                {% endfor %}
-            {% endcomment %}
-
         </div>
-            {% comment %}             
-            {% for persona in personas %}
-                <div class="menu-item" onclick="changePage('{{ persona.id }}')">{{ persona.department }} - {{ persona.rank }}</div>
-            {% endfor %} {% endcomment %}
+
         <div class="box_result2">
             <h2 class="analysis-header">대화 분석 결과</h2>
             <h3 class="analysis-info-header">GROW 결과</h3>
@@ -404,100 +384,3 @@
     }
 </script>
 {% endblock %}
-
-
-
-
-
-{% comment %} <div id="page0">
-                <div class="box_result_graph">
-                        <p class="box_result_grow">GROW 코칭 모델기반 설문결과</p>
-                        <p class="box_result_grow_info">코칭이란 과거의 실수 보다는 미래의 가능성에 초점을 맞추는 것입니다.</p>
-                        <p class="box_result_grow_info">GROW 모델은 Goal, Reality, Options, Will의 약자입니다.</p>
-                    <div class="text-container">
-                        <p class="box_result_grow_info">- Goal : 목표 - 단기 및 장기 목표 정의</p>
-                        <p class="box_result_grow_info">- Reality : 현실 - 현재 상황 및 문제 탐색</p>
-                        <p class="box_result_grow_info">- Options : 옵션 - 해결 가능한 옵션 및 평가</p>
-                        <p class="box_result_grow_info">- Will : 의지 - 실행할 업무와 시기 설정</p>
-                    </div>
-                </div> 
-                <div class="box_result_graph_section">
-                    <div class="box_result_graph_sections">
-                    </div>
-                    <div class="box_result_graph_sections">
-                    </div>
-                    <div class="box_result_graph_sections">
-                    </div>
-                    <div class="box_result_graph_sections">
-                    </div> 
-                </div>                                           
-            </div>
-            <div id="page1">
-                <div class="box_result_graph">
-                    <p class="box_result_grow">GROW 코칭 모델기반 설문결과</p>
-                    <p class="box_result_grow_info">코칭이란 과거의 실수 보다는 미래의 가능성에 초점을 맞추는 것입니다.</p>
-                    <p class="box_result_grow_info">GROW 모델은 Goal, Reality, Options, Will의 약자입니다.</p>
-                <div class="text-container">
-                    <p class="box_result_grow_info">- Goal : 목표 - 단기 및 장기 목표 정의</p>
-                    <p class="box_result_grow_info">- Reality : 현실 - 현재 상황 및 문제 탐색</p>
-                    <p class="box_result_grow_info">- Options : 옵션 - 해결 가능한 옵션 및 평가</p>
-                    <p class="box_result_grow_info">- Will : 의지 - 실행할 업무와 시기 설정</p>
-                </div>
-            </div> 
-            <div class="box_result_graph_section">
-                <div class="box_result_graph_sections">
-                </div>
-                <div class="box_result_graph_sections">
-                </div>
-                <div class="box_result_graph_sections">
-                </div>
-                <div class="box_result_graph_sections">
-                </div> 
-            </div>
-            </div>
-            <div id="page2">
-                <div class="box_result_graph">
-                    <p class="box_result_grow">GROW 코칭 모델기반 설문결과</p>
-                    <p class="box_result_grow_info">코칭이란 과거의 실수 보다는 미래의 가능성에 초점을 맞추는 것입니다.</p>
-                    <p class="box_result_grow_info">GROW 모델은 Goal, Reality, Options, Will의 약자입니다.</p>
-                <div class="text-container">
-                    <p class="box_result_grow_info">- Goal : 목표 - 단기 및 장기 목표 정의</p>
-                    <p class="box_result_grow_info">- Reality : 현실 - 현재 상황 및 문제 탐색</p>
-                    <p class="box_result_grow_info">- Options : 옵션 - 해결 가능한 옵션 및 평가</p>
-                    <p class="box_result_grow_info">- Will : 의지 - 실행할 업무와 시기 설정</p>
-                </div>
-            </div> 
-            <div class="box_result_graph_section">
-                <div class="box_result_graph_sections">
-                </div>
-                <div class="box_result_graph_sections">
-                </div>
-                <div class="box_result_graph_sections">
-                </div>
-                <div class="box_result_graph_sections">
-                </div> 
-            </div>
-            </div>
-            <div id="page3">
-                <div class="box_result_graph">
-                    <p class="box_result_grow">GROW 코칭 모델기반 설문결과</p>
-                    <p class="box_result_grow_info">코칭이란 과거의 실수 보다는 미래의 가능성에 초점을 맞추는 것입니다.</p>
-                    <p class="box_result_grow_info">GROW 모델은 Goal, Reality, Options, Will의 약자입니다.</p>
-                <div class="text-container">
-                    <p class="box_result_grow_info">- Goal : 목표 - 단기 및 장기 목표 정의</p>
-                    <p class="box_result_grow_info">- Reality : 현실 - 현재 상황 및 문제 탐색</p>
-                    <p class="box_result_grow_info">- Options : 옵션 - 해결 가능한 옵션 및 평가</p>
-                    <p class="box_result_grow_info">- Will : 의지 - 실행할 업무와 시기 설정</p>
-                </div>
-            </div> 
-            <div class="box_result_graph_section">
-                <div class="box_result_graph_sections">
-                </div>
-                <div class="box_result_graph_sections">
-                </div>
-                <div class="box_result_graph_sections">
-                </div>
-                <div class="box_result_graph_sections">
-                </div> 
-            </div>
-            </div> {% endcomment %}
