@@ -23,29 +23,25 @@
 </div>-->
 
 <!-- 사이드 바 -->
-{% comment %} <div class="l-navbar" id="navbar">
+<div class="navbar" id="navbar">
   <nav class="nav">
     <div>
       <div class="nav__brand">
         <ion-icon name="menu-outline" class="nav__toggle" id="nav-toggle"></ion-icon>
-        <a href="{% url 'common:home' %}" class="nav__logo">KT coaching</a>
+        {% comment %} <a href="{% url 'common:home' %}" class="nav__logo">KT coaching</a> {% endcomment %}
       </div>
       <div class="nav__list">
         <a href="#" class="nav__link active" onclick="loadContent('notice_list')">
-            <ion-icon name="megaphone-outline" class="nav__icon"></ion-icon>
-            <span class="nav_name">공지사항</span>
+          <ion-icon name="megaphone-outline" class="nav__icon" onclick="loadContent('notice_list')"></ion-icon>
+          <span class="nav_name" onclick="loadContent('notice_list')">공지사항</span>
         </a>
-        <a href="#" class="nav__link active">
-          <ion-icon name="receipt-outline" class="nav__icon"></ion-icon>
+        <a href="#" class="nav__link active" onclick="loadContent('survey_list')">
+          <ion-icon name="receipt-outline" class="nav__icon" onclick="loadContent('survey_list')"></ion-icon>
           <span class="nav_name" onclick="loadContent('survey_list')">설문요청</span>
         </a>
-      </div>
+    </div>
   </nav>
-</div> {% endcomment %}
-
-<!-- 고정 사이드 바 -->
-<div>
-
+</div>
 
 <!-- 메인 페이지 -->
 <div class="row">
