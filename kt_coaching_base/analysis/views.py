@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
 from rpg.models import Message
 from account.models import Account
@@ -74,6 +74,9 @@ def result (request):
 # Create your views here.
 
 def intro (request):
+    qf = request.session.get("analysis_qf")
+    if qf == 0 :
+        return redirect("rpg:rpg_start")
     df = pd.DataFrame()
     p_id = request.session.get("persona_id")[0]["id"]
     questions = Message.objects.filter(persona=p_id, name=request.user.nickname)

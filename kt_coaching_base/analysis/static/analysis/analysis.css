@@ -6,19 +6,25 @@
       opacity: 1;
     }
 }
+
+.h_r{
+    margin-left: 0;
+    width: 240px;
+}
+
+.comma{
+    transform: translate(240%, -130%);
+}
+
 .score_span{
     position: absolute;
     border-radius: 50%;
     font-size: 22px;
     font-weight: 600;
     color: black;
-    transform: translate(240%, -130%);
+    transform: translate(340%, 125%);
 }
 
-.h_r{
-    margin-left: 0;
-    width: 240px;
-}
 .y_in_h_r{
     margin-left: 0;
     width: 140px;
@@ -32,7 +38,7 @@
     font-size: 45px;
     font-weight: 750;
     color:#0097FE;
-    transform: translate(-70%, -50%);
+    transform: translate(-65%, -50%);
 }
 
 .white_circle{
