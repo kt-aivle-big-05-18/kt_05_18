@@ -40,6 +40,29 @@
   text-align: center;
 } */
 
+.modal-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-dialog.modal-lg {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  margin: 0;
+}
+
+.modal-body {
+  text-align: center;
+}
+
+.modal-body .person_info {
+  max-width: 100%;
+  height: auto;
+}
+
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -144,18 +167,30 @@
   margin: 10px 0px;
 }
 
+.signup_content_detail_gender_element{
+  margin: 0px 5px;
+}
+
   .signup_line{
     width:350px;
     border: solid #D2D2D2 1px;
   }
+
   .signup_content_detail_submit{
     display: flex;
     flex-direction: column;
     text-align: center;
   }
 
+  .signup_content_detail_person_info_label{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0px 5px;
+  }
+
   .signup_content_detail_person_info{
-    margin: 10px 0px;
+    margin: 10px 5px;
   }
 
   .signup_content_detail_submit_btn{
