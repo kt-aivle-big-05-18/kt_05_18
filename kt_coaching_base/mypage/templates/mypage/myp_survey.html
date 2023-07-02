@@ -52,6 +52,7 @@
         border-radius: 20px;
         background-color: white;
         box-shadow: 2px 5.5px 10px rgba(0, 0, 0, 0.3);
+        overflow: auto;
     }
 
     .box_result1 {
@@ -315,7 +316,7 @@
     <div class="box-container">
         <div class="box_menu">
              {% for persona in personas %}
-                <div id="simulation{{ forloop.counter }}" class="menu-item" onclick="changePage({{ forloop.counter }})">코칭 시뮬레이션 {{ forloop.counter }}</div>
+                <div id="simulation{{ forloop.counter }}" class="menu-item" onclick="changePage({{ forloop.counter }})">코칭 대화 {{ forloop.counter }}</div>
              {% endfor %}
         </div>
         
@@ -380,7 +381,14 @@
     }
 
     window.onload = function() {
-        changePage(1); // 페이지 1부터 표시하도록 변경
+        const hasMessages = {% if messages %}true{% else %}false{% endif %};
+        
+        if (!hasMessages) {
+            window.alert("대화한 내역이 없습니다.");
+            window.location.href = "/rpg"; // 페르소나 페이지로 이동합니다.
+        } else {
+            changePage(1); // 페이지 1부터 표시하도록 변경
+        }
     }
 </script>
 {% endblock %}
