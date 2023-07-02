@@ -59,6 +59,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'kt_coaching_base.middleware.DisableClientSideCachingMiddleware',
 ]
 
 ROOT_URLCONF = "kt_coaching_base.urls"
@@ -90,7 +91,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME':  'kt_coaching', #mySQL DB이름
         'USER': 'root', #계정이름
-        'PASSWORD': '0000', #계정 비밀번호 <- 변경 안하신 분은 "aivle"
+        'PASSWORD': 'aivle', #계정 비밀번호 <- 변경 안하신 분은 "aivle"
         'HOST': 'localhost', #수정X
         'PORT': '3306', #수정X
     }

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
 from rpg.models import Message
 from account.models import Account
@@ -7,6 +7,8 @@ import pandas as pd
 import os, json
 
 def result (request):
+    grow_df = pd.DataFrame()
+    p_id = request.session.get("persona_id")[0]["id"]
     pie_counts_new = request.session["pie_counts"]
     scores = request.session.get("scores")
     d_scores = []
@@ -14,8 +16,56 @@ def result (request):
         d_scores.append({"{0}".format(i+1) : scores[i]})
     print(1111111, pie_counts_new, request.session["scores"][-1], d_scores)
     
+    
+    grow_db = Message.objects.filter(persona=p_id, name=request.user.nickname)
+    grow_list = [
+        {
+            'id': msg.id, 
+            'name': msg.name, 
+            'persona': msg.persona.id,  # assuming persona object has an id
+            'content': msg.content, 
+            'send_date': msg.send_date.isoformat(), 
+            'voice_url': msg.voice_url,
+            'csv_url': msg.csv_url,
+            'grow_url': msg.grow_url
+        } 
+        for msg in grow_db
+    ]
+    for grow in grow_list:
+        grow_url = grow['grow_url']
+        # csv_url에서 CSV 파일을 읽어옴
+        df_temp = pd.read_csv(grow_url)
+        # 읽어온 DataFrame을 df 아래에 붙임
+        grow_df = pd.concat([grow_df, df_temp], ignore_index=True)
+    
+    request.session["Goal"] = 0
+    request.session["Reality"] = 0
+    request.session["Options"] = 0
+    request.session["Will"] = 0
+    request.session["ETC"] = 0
+    l = len(grow_df['predict'])
+    for i in range(l):
+        request.session[grow_df['predict'][i]] += 1
+        print( grow_df['predict'][i])
+    
+    grow_counts = [
+        {"name": "Goal", "value": request.session.get("Goal")},
+        {"name": "Reality", "value": request.session.get("Reality")},
+        {"name": "Options", "value": request.session.get("Options")},
+        {"name": "Will", "value": request.session.get("Will")},
+        {"name": "기타", "value": request.session.get("ETC")},
+    ]
+    # for question in questions_list:
+    #     csv_url = question['csv_url']
+
+    # csv_url에서 CSV 파일을 읽어옴
+    # df_temp = pd.read_csv(csv_url)
+    # # 읽어온 DataFrame을 df 아래에 붙임
+    # df = pd.concat([df, df_temp], ignore_index=True)
+    
     pie_chart_new = {
         "socre_mem" : json.dumps(list(d_scores)),
+        "grow_counts" : json.dumps(list(grow_counts)),
         "pie_counts": json.dumps(list(pie_counts_new), ensure_ascii=False),
         "f_score" : request.session["scores"][-1],
         "pie_word": pie_counts_new,
@@ -24,6 +74,9 @@ def result (request):
 # Create your views here.
 
 def intro (request):
+    qf = request.session.get("analysis_qf")
+    if qf == 0 :
+        return redirect("rpg:rpg_start")
     df = pd.DataFrame()
     p_id = request.session.get("persona_id")[0]["id"]
     questions = Message.objects.filter(persona=p_id, name=request.user.nickname)
@@ -54,12 +107,9 @@ def intro (request):
     request.session["존중"] = 0
     request.session["판단"] = 0
     l = len(df['predict'])
-    if l > 0: 
-        for i in range(l):
-            request.session[df['predict'][i]] += 1
-            print( df['predict'][i])
-    else : # 아무 대화도 안한 경우 돌려보내기
-        return redirect('rpg:rpg_start')
+    for i in range(l):
+        request.session[df['predict'][i]] += 1
+        print( df['predict'][i])
         
     perspective     = round((request.session.get("관점전환")/l) * 100, 0)
     negation        = round((request.session.get("부정")/l) * 100, 0)

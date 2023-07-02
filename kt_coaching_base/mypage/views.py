@@ -17,11 +17,9 @@ def mypage_view(request):
     else :
         return render(request, 'mypage/myp.html')
 
+@login_required
 def myp_info(request):
     return render(request, 'mypage/myp_info.html')
-
-def myp_self(request):
-    return render(request, 'mypage/myp_self.html')
 
 @login_required
 def myp_survey(request):

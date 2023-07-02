@@ -35,43 +35,24 @@ $.ajaxSetup({
 // 라인차트
 $(document).ready(function() {
   var context = document.getElementById('line_chart').getContext('2d');
-
   // Parse the JSON data
   var lineChartDataElement = JSON.parse(document.getElementById('lineData').textContent);
-
-  var labels = [];
-  var values = [];
-
-  lineChartDataElement.forEach(function(item) {
-    var key = Object.keys(item)[0];
-    var value = item[key];
-
-    labels.push(key);
-    values.push(value);
-  });
+  var growdayLabels = lineChartDataElement.map(item => item.name);
+  var growdayData = lineChartDataElement.map(item => item.value);
 
   var myChart = new Chart(context, {
-    type: 'line',
+    type: 'bar',
     data: {
-      labels: labels,  // Use the extracted labels
+      labels: growdayLabels,  // Use the extracted labels
       datasets: [{
         fill: false,
-        data: values,  // Use the extracted values
+        data: growdayData,  // Use the extracted values
         backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)'
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)'
+          'rgba(145, 211, 139, 1)',
+          'rgba(255, 227, 155, 1)',
+          'rgba(180, 232, 255, 1)',
+          'rgba(220, 170, 237, 1)',
+          'rgba(217, 217, 217, 1)',
         ],
         borderWidth: 1
       }]
@@ -79,9 +60,19 @@ $(document).ready(function() {
     options: {
       indexAxis: 'x',  // Change this to 'x'
       scales: {
-        y: {  // Also, use 'y' instead of 'yAxes'
-          beginAtZero: true
-        }
+        y: {
+          beginAtZero: true,
+          ticks: {
+              precision: 0, // 소수점 이하 자릿수를 0으로 설정하여 정수로 표시
+              callback: function(value, index, values) {
+                  if (Math.floor(value) === value) {
+                      return value;
+                  }
+              }
+          },
+          autoSkip: true, // 데이터에 맞게 눈금 간격 자동 조정
+          maxTicksLimit: 10 // 최대 눈금 개수 제한 (원하는 값으로 조정)
+      }
       },
       plugins: {
         legend: {
@@ -89,7 +80,7 @@ $(document).ready(function() {
         },
         title: {
             display: true,
-            text: '실시간 점수 변화'
+            text: 'GROW 코칭 결과'
         }
       }
     }
