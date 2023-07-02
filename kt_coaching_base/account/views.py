@@ -7,7 +7,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from django.core.exceptions import ValidationError
 from .forms import RegistrationForm
-from django.http import JsonResponse, HttpResponseBadRequest
+from django.http import JsonResponse, HttpResponseBadRequest, HttpResponse
 from django.views.decorators.http import require_POST
 from .models import Account, admin_info
 from captcha.models import CaptchaStore
@@ -23,6 +23,7 @@ from django.template.loader import render_to_string
 def signup(request):
     if request.method == "POST":        
         form = RegistrationForm(request.POST)
+
         if form.is_valid():
             user = form.save()
             user = authenticate(request, userid=user.userid, password=form.cleaned_data['password1'])
@@ -57,11 +58,11 @@ def login_view(request):
             if captcha_key and captcha_word:
                 if CaptchaStore.objects.filter(response=captcha_word, hashkey=captcha_key).count() == 0:
                     return render(request, 'account/login.html',
-                                  {'error_message': '캡챠가 틀렸습니다.', 'show_captcha': show_captcha,
+                                  {'error_message': '보안문구가 틀렸습니다.', 'show_captcha': show_captcha,
                                    'captcha_image_url': captcha_image_url, 'captcha_key': captcha_key})
             else:
                 return render(request, 'account/login.html',
-                              {'error_message': '캡챠가 틀렸습니다.', 'show_captcha': show_captcha,
+                              {'error_message': '보안문구를 입력하세요.', 'show_captcha': show_captcha,
                                'captcha_image_url': captcha_image_url, 'captcha_key': captcha_key})
 
             # 비밀번호 검증
@@ -70,7 +71,20 @@ def login_view(request):
                 login(request, user)
                 account.password_attempt_count = 0  # 로그인 성공 시, 로그인 시도 횟수 초기화
                 account.save()
-                return redirect("common:home")
+
+                # 아이디 저장 여부 확인 및 처리
+                if 'id-save-checkbox' in request.POST:
+                    save_id = request.POST.get('id-save-checkbox')
+                    if save_id == 'on':
+                        response = redirect('common:home')
+                        response.set_cookie('saved_id', userid, expires='Fri, 31 Dec 9999 23:59:59 GMT')
+                        return response
+                else:
+                    response = redirect('common:home')
+                    response.delete_cookie('saved_id')
+                    return response    
+                    
+                return redirect('common:home')
             else:
                 account.password_attempt_count += 1  # 로그인 실패 시, 로그인 시도 횟수 증가
                 account.save()
@@ -95,7 +109,21 @@ def login_view(request):
                         count   = 1
                     )
                     admin_info_count.save()
-                return redirect("common:home")
+                
+                # 아이디 저장 여부 확인 및 처리
+                if 'id-save-checkbox' in request.POST:
+                    save_id = request.POST.get('id-save-checkbox')
+                    
+                    if save_id == 'on':
+                        response = redirect('common:home')
+                        response.set_cookie('saved_id', userid, expires='Fri, 31 Dec 9999 23:59:59 GMT')
+                        return response
+                else:
+                    response = redirect('common:home')
+                    response.delete_cookie('saved_id')
+                    return response
+                    
+                return redirect('common:home')
             
             else:
                 # 로그인 실패 시, 로그인 시도 횟수 증가
@@ -120,6 +148,7 @@ def login_view(request):
 
         return render(request, 'account/login.html',
                       {'show_captcha': show_captcha, 'captcha_image_url': captcha_image_url, 'captcha_key': captcha_key})
+
 
 def logout_view(requset):
     logout(requset)

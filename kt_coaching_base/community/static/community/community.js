@@ -55,6 +55,7 @@
 // navToggle.addEventListener('click', toggleSidebar);
 
 
+// ============================= 원래 사이드바 =============================
 function toggleSidebar() {
   const navbar = document.getElementById('navbar');
   const bodypadding = document.getElementById('body-pd');
