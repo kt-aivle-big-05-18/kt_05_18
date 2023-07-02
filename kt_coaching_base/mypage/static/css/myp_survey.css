@@ -304,3 +304,10 @@ h3 {
     justify-content: center; /* 추가된 값 */
     align-items: center; /* 추가된 값 */
 }
+
+.coaching-info-text {
+    display: inline-block;
+    font-size: 15px;
+    overflow: auto;
+    background-color: #F4F4F4; /* 원하는 배경색을 지정합니다 */
+}
