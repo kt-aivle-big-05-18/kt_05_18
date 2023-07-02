@@ -380,7 +380,14 @@
     }
 
     window.onload = function() {
-        changePage(1); // 페이지 1부터 표시하도록 변경
+        const hasMessages = {% if messages %}true{% else %}false{% endif %};
+        
+        if (!hasMessages) {
+            window.alert("대화한 내역이 없습니다.");
+            window.location.href = "/rpg"; // 페르소나 페이지로 이동합니다.
+        } else {
+            changePage(1); // 페이지 1부터 표시하도록 변경
+        }
     }
 </script>
 {% endblock %}

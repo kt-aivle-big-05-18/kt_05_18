@@ -270,7 +270,7 @@ def rpg(request):
         
         # gpt 답장 메세지 DB 전송
         gpt_response_obj = Message(
-            name="gpt",
+            name="홍길동",
             persona = Persona.objects.get(id=int(p_id)),
             content = trans_,
             voice_url = path_gpt_voice
