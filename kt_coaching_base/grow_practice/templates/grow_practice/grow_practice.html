@@ -53,10 +53,14 @@
         </div>
         {% csrf_token %}
         <div class="rpg_bottom">
-          <div class="rpg_input_section">
-            <input class="rpg_input_container" type="text" id="user-input" placeholder="이곳에 입력하세요.">
-            <ion-icon name="send-outline" class="rpg_send_icon" id="send-btn"></ion-icon>
-          </div>
+            <div class="rpg_input_section">
+                <div class="speech_bubble">
+                <ion-icon name="mic-circle-outline" class="rpg_record_icon" id="record"></ion-icon>
+                <span class="tooltip">말을 다 하셨다면 한번 더 클릭해주세요! </span>
+                </div>
+                <input class="rpg_input_container" type="text" id="user-input" placeholder="이곳에 입력하세요.">
+                <ion-icon name="send-outline" class="rpg_send_icon" id="send-btn"></ion-icon>
+              </div>
         </div>
     </div>
 </div>

@@ -213,6 +213,8 @@
                     } else if (age >= 60) {
                         ageGroup = "old";
                     }
+
+                    gender = gender.toUpperCase();
         
                     if (gender == "M" && ageGroup !== null) {
                         imageName = ageGroup + "_male" + ".png";

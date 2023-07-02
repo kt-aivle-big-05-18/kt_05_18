@@ -117,6 +117,8 @@ $(document).ready(function() {
                     audioElement.src = "data:audio/wav;base64," + response.voice;
                     audioElement.id = audioID;
                 
+                    audioElement.play(); // 메시지 받으면 자동으로 음성 출력
+
                     var volumeIcons = document.getElementsByClassName('assistant_message_icon');
                     for (var i = 0; i < volumeIcons.length; i++) {
                         volumeIcons[i].onclick = function() {
@@ -146,6 +148,8 @@ $(document).ready(function() {
             $("#user-input").val("");
         }
     }
+
+    
 
     function scrollToBottom() {
         chatContainer.scrollTop(chatContainer[0].scrollHeight);

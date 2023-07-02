@@ -23,6 +23,7 @@ from django.template.loader import render_to_string
 def signup(request):
     if request.method == "POST":        
         form = RegistrationForm(request.POST)
+
         if form.is_valid():
             user = form.save()
             user = authenticate(request, userid=user.userid, password=form.cleaned_data['password1'])
@@ -57,11 +58,11 @@ def login_view(request):
             if captcha_key and captcha_word:
                 if CaptchaStore.objects.filter(response=captcha_word, hashkey=captcha_key).count() == 0:
                     return render(request, 'account/login.html',
-                                  {'error_message': '캡챠가 틀렸습니다.', 'show_captcha': show_captcha,
+                                  {'error_message': '보안문구가 틀렸습니다.', 'show_captcha': show_captcha,
                                    'captcha_image_url': captcha_image_url, 'captcha_key': captcha_key})
             else:
                 return render(request, 'account/login.html',
-                              {'error_message': '캡챠가 틀렸습니다.', 'show_captcha': show_captcha,
+                              {'error_message': '보안문구를 입력하세요.', 'show_captcha': show_captcha,
                                'captcha_image_url': captcha_image_url, 'captcha_key': captcha_key})
 
             # 비밀번호 검증

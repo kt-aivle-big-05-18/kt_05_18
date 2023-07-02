@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 import os
 import pickle
+import random
 
 # Django
 from django.http import JsonResponse, HttpResponse
@@ -15,6 +16,20 @@ from django.db import transaction
 import openai, json, requests
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+
+# Goolge stt/tts
+from google.cloud import speech, texttospeech
+from google.cloud import speech_v1p1beta1 as speech
+from google.oauth2 import service_account
+
+# 인코딩 관련
+import scipy.io.wavfile as wav
+from scipy.signal import resample
+from scipy.io.wavfile import write
+import wave
+import base64
+from io import BytesIO
+import subprocess
 
 def grow_practice(request):
     return render(request, 'grow_practice/grow_practice.html')
@@ -49,3 +64,68 @@ def grow(request):
     
     else :
         return render(request, "grow_practice/grow_practice.html")
+
+def stt(request):
+    p_id = request.session.get("persona_id")[0]["id"]
+    count = request.session.get("count")
+
+    audio_data = request.FILES['audio_data']
+
+    fs = OverwriteStorage(location=os.path.join(settings.BASE_DIR, 'rpg/static/voice'))
+    filename = fs.save('{0}_{1}.webm'.format(p_id, count), audio_data)
+    uploaded_file_url = fs.path(filename)
+
+    trans_voice_message = transcribe_audio(uploaded_file_url)
+
+    return JsonResponse({"text" : trans_voice_message})
+
+
+#---------------------------------------------------------------------------#
+# stt
+#---------------------------------------------------------------------------#
+
+class OverwriteStorage(FileSystemStorage):
+
+    def get_available_name(self, name, max_length=None):
+        if self.exists(name):
+            os.remove(os.path.join(self.location, name))
+        return name
+
+def stt(request):
+    audio_data = request.FILES['audio_data']
+
+    fs = OverwriteStorage(location=os.path.join(settings.BASE_DIR, 'grow_practice/static/voice'))
+    letters = "abcdefghijklmnopqrstuvwxyz0123456789"
+    filename = ''.join(random.choice(letters) for _ in range(20))+'.webm'
+
+    filename = fs.save(filename, audio_data)
+    uploaded_file_url = fs.path(filename)
+
+    trans_voice_message = transcribe_audio(uploaded_file_url)
+
+    return JsonResponse({"text" : trans_voice_message})
+
+def transcribe_audio(file_path):
+    
+    # Speech-to-Text 클라이언트 생성
+    client = speech.SpeechClient()
+
+    # 녹음 파일 읽기
+    with open(file_path, 'rb') as audio_file:
+        audio_data = audio_file.read()
+
+    # 음성 데이터 인식 요청 생성
+    audio = speech.RecognitionAudio(content=audio_data)
+    config = speech.RecognitionConfig(
+        encoding=speech.RecognitionConfig.AudioEncoding.WEBM_OPUS,
+        # sample_rate_hertz=44100,
+        language_code="ko-KR",
+    )
+    response = client.recognize(config=config, audio=audio)
+
+    # 변환된 텍스트 추출
+    transcript = ""
+    for result in response.results:
+        transcript += result.alternatives[0].transcript + " "
+
+    return transcript

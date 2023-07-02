@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 
 class MyAccountManager(BaseUserManager):
-    # 일반 user 생성, username 이 userID를 의미함
+    # 일반 user 생성
     def create_user(self, userid, email, username, nickname, department, rank, age, gender, password=None):
         if not userid:
             raise ValueError("Users must have an ID")
