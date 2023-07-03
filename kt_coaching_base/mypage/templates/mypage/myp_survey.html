@@ -91,7 +91,7 @@
                         {% endfor %}
                     </div>
                     <div class="button-container">
-                        <button class="talk-info-button">설문 결과 확인하기</button>
+                        <button class="talk-info-button" id="survey_result_confirm">설문 결과 확인하기</button>
                     </div>
                     {% comment %} {% if persona.shared %}
                         <form action="{% url 'mypage:stop_sharing' persona.id %}" method="POST">
@@ -112,19 +112,36 @@
             {% endfor %}
         </div>
 
-        <div class="box_result2">
-            <h2 class="analysis-header">대화 분석 결과</h2>
-            <h3 class="analysis-info-header">GROW 결과</h3>
-            <div class="grow-info">
-                <div class = "g_b_c">
-                    <canvas id = "grow_bar_chart" class = "grow_bar_chart"></canvas>
+        <div class="box_result2" id="second_box">
+            <div id="result2">
+                <h2 class="analysis-header">대화 분석 결과</h2>
+                <h3 class="analysis-info-header">GROW 결과</h3>
+                <div class="grow-info">
+                    <div class = "g_b_c">
+                        <canvas id = "grow_bar_chart" class = "grow_bar_chart"></canvas>
+                    </div>
+                </div>
+                <h3 class="analysis-info-header">코칭 요인 분석</h3>
+                <div class="coaching-info">
+                    <canvas id = "coaching_chart_analysis" class = "coaching_chart_analysis"></canvas>
+                </div>
+                <div id = "analysis_chat" class="coaching-info-text">
                 </div>
             </div>
-            <h3 class="analysis-info-header">코칭 요인 분석</h3>
-            <div class="coaching-info">
-                <canvas id = "coaching_chart_analysis" class = "coaching_chart_analysis"></canvas>
-            </div>
-            <div id = "analysis_chat" class="coaching-info-text">
+            <div class="survey_result_wrapper" id="result3">
+                <div class="survey_result_summary">요약내용</div>
+                <div class="survey_result_txt">설명</div>
+                <div class="survey_result_grow_wrapper">
+                    <div class="survey_result_gr">
+                        <div class="survey_result_goal">g</div>
+                        <div class="survey_result_reality">r</div>
+                    </div>
+                    <div class="survey_result_ow">
+                        <div class="survey_result_options">o</div>
+                        <div class="survey_result_will">w</div>
+                    </div>
+                </div>
+                <div class="survey_result_comment">코멘트</div>
             </div>
         </div>
     </div>

@@ -275,7 +275,7 @@ body{
     visibility: visible;
   }
 
-  .growtooltip:after {
+  /* .growtooltip:after {
     border-top: 10px solid rgba(0, 0, 0, 0.8);
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
@@ -284,7 +284,7 @@ body{
     position: absolute;
     top: 100%;
     left: 20%;
-}
+} */
 
 /*  information 말풍선 */
 .infotooltip {
@@ -305,7 +305,7 @@ body{
   .info_bubble:hover .infotooltip {
     visibility: visible;
   }
-
+/* 
   .infotooltip:after {
     border-top: 10px solid rgba(0, 0, 0, 0.8);
     border-left: 10px solid transparent;
@@ -315,7 +315,7 @@ body{
     position: absolute;
     top: 100%;
     left: 25%;
-}
+} */
 
   /* 음성 녹음 설명 말풍선 */
 .tooltip {
@@ -337,7 +337,7 @@ body{
     visibility: visible;
   }
 
-  .tooltip:after {
+  /* .tooltip:after {
     border-top: 10px solid rgba(0, 0, 0, 0.8);
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
@@ -346,7 +346,7 @@ body{
     position: absolute;
     top: 100%;
     left: 57%;
-}
+} */
 
  /* 로딩 창 스타일 */
  .loading-overlay {
