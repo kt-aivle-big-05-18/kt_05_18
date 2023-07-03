@@ -56,26 +56,26 @@ class MyAccountManager(BaseUserManager):
         return user
 
 class Account(AbstractBaseUser):
-    userid      = models.CharField(max_length=32, unique=True, primary_key=True)
-    email       = models.EmailField(verbose_name='email', max_length=60, unique=True)
-    username    = models.CharField(max_length=45, null=False, blank=False)
-    nickname    = models.CharField(max_length=45, unique=True)
-    department  = models.CharField(max_length=45)
-    rank        = models.CharField(max_length=45)
-    age         = models.IntegerField()
-    gender      = models.CharField(max_length=4)
-    point       = models.IntegerField(default=0)
-    last_login  = models.DateTimeField(verbose_name='last login', auto_now=True)
-    is_admin    = models.BooleanField(default=False)
-    is_active   = models.BooleanField(default=True)
-    is_staff    = models.BooleanField(default=False) 
+    userid = models.CharField(max_length=32, unique=True, primary_key=True)
+    email = models.EmailField(verbose_name='email', max_length=60, unique=True)
+    username = models.CharField(max_length=45, null=False, blank=False)
+    nickname = models.CharField(max_length=45, unique=True, db_collation='utf8_bin')  # collation 변경
+    department = models.CharField(max_length=45)
+    rank = models.CharField(max_length=45)
+    age = models.IntegerField()
+    gender = models.CharField(max_length=4)
+    point = models.IntegerField(default=0)
+    last_login = models.DateTimeField(verbose_name='last login', auto_now=True)
+    is_admin = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False) 
     is_superuser = models.BooleanField(default=False) 
     password_attempt_count = models.IntegerField(default=0)
     
     objects = MyAccountManager()  # 헬퍼 클래스 사용
  
     USERNAME_FIELD = 'userid'  # 로그인 ID로 사용할 필드
-    REQUIRED_FIELDS = ['email', 'username', 'nickname', 'department', 'rank', 'age', 'gender'] # 필수 작성 필드
+    REQUIRED_FIELDS = ['email', 'username', 'nickname', 'department', 'rank', 'age', 'gender']  # 필수 작성 필드
 
     def __str__(self):
         return self.nickname
@@ -85,7 +85,6 @@ class Account(AbstractBaseUser):
  
     def has_module_perms(self, app_lable):
         return True
-
 
 class admin_info(models.Model):
     login_date   = models.DateTimeField(auto_now_add=True)

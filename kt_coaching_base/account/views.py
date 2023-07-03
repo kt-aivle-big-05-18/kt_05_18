@@ -178,11 +178,16 @@ def check_duplicate_email(request):
 def check_nickname(request):
     nickname = request.POST.get('nickname', None)
 
+    matching_accounts = Account.objects.filter(nickname__iexact=nickname)
+    is_taken = any(account.nickname == nickname for account in matching_accounts)
+
     response_data = {
-        'is_taken': Account.objects.filter(nickname=nickname).exists()
+        'is_taken': is_taken
     }
 
     return JsonResponse(response_data)
+
+
 
 def find_userid(request):
     if request.method == "POST":
