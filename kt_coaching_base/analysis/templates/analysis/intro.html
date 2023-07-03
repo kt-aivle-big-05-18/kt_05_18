@@ -38,32 +38,32 @@
                 코칭 리더십에 대한 5가지 요인은 관점 변화, 존중, 인정, 판단, 분위기 영역으로 구성됩니다. <br>
                 <table class="result_intro_table" border="1" width="100%" >
                     <th style="width: 16%">결과척도</th>
-	                <th>정의</th>
-                    <th>질문예시</th>
+	                <th style="width: 42%">정의</th>
+                    <th style="width: 42%">질문예시</th>
                     <tr>
-                        <td>존중</td>
-                        <td>대화 상대를 존중하고 심리적으로 지지하고 돕는 질문</td>
-                        <td>당신의 목표를 달성하기 위해 제가 협력할 수 있습니다.</td>
+                        <td style="text-align: center">존중</td>
+                        <td>대화 상대를 존중하고 심리적으로<br>지지하고 돕는 질문</td>
+                        <td>당신의 목표를 달성하기 위해<br>제가 협력할 수 있습니다.</td>
                     </tr>
                     <tr>
-                        <td>관점 변화</td>
-                        <td>대화 상대가 기존과 다른 관점에서 해결책을 찾도록 질문</td>
+                        <td style="text-align: center">관점 변화</td>
+                        <td>대화 상대가 기존과 다른 관점에서<br>해결책을 찾도록 질문</td>
                         <td>목표를 달성하기 위한 대안이 있나요?</td>
                     </tr>
                     <tr>
-                        <td>인정</td>
-                        <td>대화 상대가 스스로 문제를 해결할 능력을 가지고 있다고 믿음</td>
-                        <td>이번 프로젝트가 끝나면 성장한 모습을 보여줄 수 있을 겁니다.</td>
+                        <td style="text-align: center">인정</td>
+                        <td>대화 상대가 스스로 문제를 해결할<br>능력을 가지고 있다고 믿음</td>
+                        <td>이번 프로젝트가 끝나면 성장한 모습을<br>보여줄 수 있을 겁니다.</td>
                     </tr>
                     <tr>
-                        <td>판단</td>
-                        <td>대화 상대에게 선택지를 제공하거나 개인적인 의견이 포함된 질문</td>
-                        <td>개발하면서 빠르게 피드백을 수용하는 연습이 필요할 것 같네요.</td>
+                        <td style="text-align: center">판단</td>
+                        <td>대화 상대에게 선택지를 제공하거나<br>개인적인 의견이 포함된 질문</td>
+                        <td>개발하면서 빠르게 피드백을 수용하는<br>연습이 필요할 것 같네요.</td>
                     </tr>
                     <tr>
-                        <td>부정</td>
+                        <td style="text-align: center">부정</td>
                         <td>부정적인 질문</td>
-                        <td>그런 불안정한 해결책을 제시하는 것이 도움이 될까요?</td>
+                        <td>그런 불안정한 해결책을 제시하는 것이<br>도움이 될까요?</td>
                     </tr>
                 </table>
                 자세한 결과 분석 내용은 상세 결과 페이지에서 확인하실 수 있습니다.
@@ -75,7 +75,7 @@
                 </div>
                 <div class="ana_int_content_right_graph">
                     <div class="ana_int_content_right_graph_title"> 코칭 리더십 요인 분석 </div>
-                    <canvas id="myChart"></canvas>
+                    <canvas id="myChart" width="100" height="100"></canvas>
                     <script id="pieChartData" type="application/json">{{ pie_chart.pie_counts|safe }}</script>
                     <script src="{% static 'analysis/intro.js' %}" defer></script>
                 </div>
