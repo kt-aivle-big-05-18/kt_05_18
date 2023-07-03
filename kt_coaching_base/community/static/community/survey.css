@@ -2,9 +2,45 @@ body{
     margin: 0;
 }
 /* ========================== survey_list ======================== */
+.back_button {
+    position: absolute;
+    top: 15%;
+    right: 30px;
+    font-size: 18px;
+    padding: 6px 12px;
+    background-color: #99b4da;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.back_button:hover {
+    background-color: #134971;
+}
+
 .survey_list_wrapper{
     width: 100%;
     /* background-color: blueviolet; */
+}
+
+.back_button {
+    position: absolute;
+    top: 5%;
+    right: 30px;
+    font-size: 18px;
+    padding: 6px 12px;
+    background-color: #99b4da;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.back_button:hover {
+    background-color: #134971;
 }
 
 .survey_list_title{
@@ -154,6 +190,8 @@ body{
     display: flex;
     flex-direction: column;
     align-items: end;
+    margin-top: 30px;
+    padding-bottom: 20px; 
 }
 
 .survey_detail_checklist_wrapper{
