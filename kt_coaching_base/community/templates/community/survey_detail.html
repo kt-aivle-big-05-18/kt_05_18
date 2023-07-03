@@ -1,4 +1,4 @@
-{% comment %} {% extends "base.html" %} {% endcomment %}
+{% extends "base.html" %}
 {% comment %} 설문 세부사항: 게시글 {% endcomment %}
 {% load static %}
 
@@ -13,16 +13,16 @@
 
 
 <!-- 헤더 -->
-<div class="commu_head_wrapper">
+{% comment %} <div class="commu_head_wrapper">
     <div class="commu_head_menu_wrapper" style="display: inline;">
-        {% comment %} href는 아직 구현 안 됨 {% endcomment %}
         <a class="commu_head_menu"><ion-icon name="information-circle" class="commu_head_menu_icon"></ion-icon></a>
         <a href="{% url 'community:commu_list' %}" class="commu_head_menu"><ion-icon name="exit-outline" class="commu_head_menu_icon"></ion-icon></a>
       </div>
-  </div>
+  </div> {% endcomment %}
 
 <!-- 메인 -->
 <div class="survey_detail_wrapper">
+    <button class="back_button" onclick="window.history.back();">&lt</button>
     <div class="survey_detail_contain">
         <div class="survey_detail_head_wrapper">
             <div class="survey_detail_head_title">
@@ -39,21 +39,19 @@
                 <div class="survey_detail_conversation_title">{{ survey.author }} 님의 코칭 대화</div>
                 <div class="survey_detail_conversation_wrapper">
                     {% comment %} {{ message.name }} {% endcomment %}
-                    <ul>
-                        {% for message in messages %}
-                            {% if forloop.counter|divisibleby:2 %}
-                            <div class="survey_detail_conversation_list_coach">
-                                <img class="survey_detail_conversation_list_pic_coach" src="/static/img/young_male.png">
-                                <li class="survey_detail_conversation_list_txt_coach">{{ message.content }}</li>
-                            </div>
-                            {% else %}
-                            <div class="survey_detail_conversation_list_member">
-                                <img class="survey_detail_conversation_list_pic_member" src="/static/img/won.png">
-                                <li class="survey_detail_conversation_list_txt_member">{{ message.content }}</li>
-                            </div>
-                                {% endif %}
-                        {% endfor %}
-                    </ul>
+                    {% for message in messages %}
+                        {% if forloop.counter|divisibleby:2 %}
+                        <div class="survey_detail_conversation_list_coach">
+                            <img class="survey_detail_conversation_list_pic_coach" src="/static/img/young_male.png">
+                            <div class="survey_detail_conversation_list_txt_coach">{{ message.content }}</div>
+                        </div>
+                        {% else %}
+                        <div class="survey_detail_conversation_list_member">
+                            <img class="survey_detail_conversation_list_pic_member" src="/static/img/won.png">
+                            <div class="survey_detail_conversation_list_txt_member">{{ message.content }}</div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
                 </div>
             </div>
             <div class="survey_detail_checklist_contain">

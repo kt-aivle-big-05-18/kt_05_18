@@ -155,7 +155,7 @@
 /* 팝업창 */
 /* ======================================================================= */
 /* image modal */
-#modalWrap {
+#modalWrap{
     display: none;
     position: fixed;
     z-index: 9999;
@@ -167,7 +167,7 @@
     background-color: rgba(48, 46, 46, 0.5);
   }
   
-  #modalContent {
+  #modalContent{
     margin: 5% auto;
     padding: 0px;
     width: 100%;
@@ -177,7 +177,7 @@
     background-color: rgba(255, 255, 255, 0);
   }
   
-  #closeBtn {
+  #closeBtn{
     display: none;
   }
   
