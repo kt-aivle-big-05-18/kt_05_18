@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
@@ -126,14 +126,52 @@ def rating_list(request, persona_id):
 
             if group:
                 group_counts[group][score-1] += 1
+    # 매핑 정보
+    mapping = ["매우 그렇지 않다", "그렇지 않다", "그렇다", "매우 그렇다"]
 
+    # 결과 저장을 위한 딕셔너리
+    result = {}
+
+    # 각 항목에 대해 반복
+    for key, values in group_counts.items():
+        result[key] = []
+        for i, value in enumerate(values):
+            result[key].append({
+                "name": mapping[i],
+                "value": value
+            })
+
+# 결과 출력
+    for key, values in result.items():
+        if key == 'G':
+            G = values
+        elif key == 'R':
+            R = values
+        elif key == 'O':
+            O = values
+        elif key == 'W':
+            W = values
+        print(f"{key} = {values}")
+    comment = []
+    print('123G = ',G)
+    print('123R = ',R)
+    print('123O = ',O)
+    print('123W = ',W)
+    for rating in ratings:
+        comment.append(rating.comment)
+    comments = "<br>".join(comment)
+    print(comments)
     context = {
-        'persona': persona,
-        'ratings': ratings,
-        'group_counts': group_counts,
+        'G': json.dumps(list(G)),
+        'R': json.dumps(list(R)),
+        'O': json.dumps(list(O)),
+        'W': json.dumps(list(W)),
+        'comments' : comments
     }
     print("gc:", group_counts)
-    return render(request, 'mypage/rating_list.html', context)
+    print("comment", comments)
+    return JsonResponse(context)
+
 
 def popup(request):
     message = request.GET.get('message', None)
@@ -171,7 +209,6 @@ def graph_draw(request):
     request.session["Options"] = 0
     request.session["Will"] = 0
     request.session["ETC"] = 0
-    print(grow_df,"123123123123333333111111111111111111111")
     l = len(grow_df['predict'])
     for i in range(l):
         request.session[grow_df['predict'][i]] += 1
@@ -250,6 +287,8 @@ def graph_draw(request):
     print(json.dumps(list(pie_counts)), "1`23123314525256qaqqwe")
     
     return JsonResponse(data, content_type='application/json')
+
+
     
     
 def such(score):
@@ -271,3 +310,4 @@ def m_such(score):
         text = '<span style="color: #F15F5F;">다소 많이</span>'
     
     return text
+
