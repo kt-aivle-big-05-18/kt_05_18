@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static '/community/survey.css' %}">
 <link rel="stylesheet" href="{% static '/community/community.css' %}">
+{% comment %} <script src="{% static 'community/survey_detail.js' %}"></script> {% endcomment %}
 <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script> <!-- IONICONS -->
 
 
@@ -24,7 +25,9 @@
     <button class="back_button" onclick="window.history.back();">&lt</button>
     <div class="survey_detail_contain">
         <div class="survey_detail_head_wrapper">
-            <div class="survey_detail_head_title">설문 요청</div>
+            <div class="survey_detail_head_title">
+                설문 요청
+            </div>
             <div class="survey_detail_head_content">
                 <div>제목: {{ survey.title }}</div>
                 <div>내용: {{ survey.content }}</div>
@@ -70,20 +73,18 @@
                             <label for="comment">더 하고 싶은 말이 있다면 자유롭게 적어주세요</label>
                             <textarea name="comment" id="comment" class="form-control"></textarea>
                         </div>
+                        <button class="survey_detail_submit_btn" type="submit">설문완료</button>
                     </form>
                 </div>
-                <button class="survey_detail_submit_btn" type="submit">설문완료</button>
             </div>
         </div>
-        {% comment %} <button type="submit">Submit</button> {% endcomment %}
-    </form>
-
     {% comment %} <a href="{% url 'community:commu_list' %}">목록</a> {% endcomment %}
     </div>
 </div>
+
 <script>
     document.getElementById("ratingForm").addEventListener("submit", function(event) {
-        var checklist = document.getElementsByClassName("rating-group");
+        var checklist = document.getElementsByClassName("survey_detail_checklist_item_wrapper");
         for (var i = 0; i < checklist.length; i++) {
             var radios = checklist[i].querySelectorAll("input[type='radio']");
             var checked = false;
