@@ -39,6 +39,7 @@ def myp_survey(request):
 @login_required
 @require_POST
 def share_persona(request, persona_id):
+    print(request.POST.get('persona_id'))
     try:
         persona = Persona.objects.get(pk=persona_id, nickname=request.user.nickname)
         persona.shared = True
