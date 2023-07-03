@@ -44,3 +44,12 @@ $(function() {
 });
 
   
+
+
+/*-------------------------FOR BOSS-------------------------*/
+
+document.getElementById("hyunji-container").addEventListener("click", function () {
+  this.querySelector(".profile_box").classList.toggle("flip");
+  this.querySelector(".text-container-hyunji").classList.toggle("flip");
+});
+
