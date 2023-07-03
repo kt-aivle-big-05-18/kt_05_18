@@ -65,7 +65,7 @@ $(document).ready(function() {
             + "</div>");
             scrollToBottom();
             console.log(userInput);
-            message = '"'+userInput+'"' + '라는 문장이 GROW 코칭 대화 모델 G,R,O,W중 무엇에 해당하는지 정확하게 판단해서 알려주고, 만약 어디에도 해당하지 않는다면 해당하지 않는다고 말해줘.' 
+            message = '"'+userInput+'"' + '라는 문장이 GROW 코칭대화 모델에서 G,R,O,W중 무엇인지 알려줘. 간단하게 답변해줘'
             $.ajax({
                 url: "/grow_practice/grow_start/",
                 type: "POST",
@@ -194,11 +194,15 @@ $(document).ready(function() {
 document.addEventListener("DOMContentLoaded", function() {
     // 토글 버튼 클릭 이벤트
     document.getElementById("grow-ex").addEventListener("click", function() {
-      showModal();
+      growshowModal();
     });
+
+    document.getElementById("error_guide").addEventListener("click", function() {
+        errorshowModal();
+      });
   
     // 모달 표시 함수
-    function showModal() {
+    function growshowModal() {
       var modalContent = document.getElementById("modalContent");
       var modalImage = document.getElementById("modalImage");
       modalImage.src = "/static/img/grow_ex.png";
@@ -206,6 +210,15 @@ document.addEventListener("DOMContentLoaded", function() {
   
       document.getElementById("modalWrap").style.display = "block";
     }
+
+    function errorshowModal() {
+        var modalContent = document.getElementById("modalContent");
+        var modalImage = document.getElementById("modalImage");
+        modalImage.src = "/static/img/error_guide.png";
+        modalImage.alt = "Error Guide";
+    
+        document.getElementById("modalWrap").style.display = "block";
+      }
   
     // 모달 숨기는 함수
     function hideModal() {

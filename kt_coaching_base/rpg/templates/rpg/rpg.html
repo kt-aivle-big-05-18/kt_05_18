@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'rpg/rpg.css' %}">
 <link rel="stylesheet" href="{% static 'header.css' %}">
+<script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{% static '/rpg/rpg.js' %}" defer></script>
 <script>
@@ -25,6 +26,13 @@
   </div>
 </div>
 
+<div id="modalWrap">
+  <div id="modalContent">
+    <span id="closeBtn">&times;</span>
+    <img id="modalImage" src="/static/img/error_guide.png" alt="Error Guide">
+  </div>
+</div>
+
 {% comment %} <!-- 헤더 -->
 <div class="commu_head_wrapper">
   <div class="commu_head_menu_wrapper" style="display: inline;">
@@ -35,16 +43,16 @@
 </div> {% endcomment %}
 
 <!-- 로딩 창 -->
-<div class="loading-overlay">
+{% comment %} <div class="loading-overlay">
   <div class="loading-text">로딩 중...</div>
-</div>
+</div> {% endcomment %}
 
-<div id="loadingModal" class="modal-background">
+{% comment %} <div id="loadingModal" class="modal-background">
   <div class="modal-content">
     <div class="loader"></div>
     <div id="loadingMessage">로딩 중...</div>
   </div>
-</div>
+</div> {% endcomment %}
 
 
 <!-- ================================================================ -->
@@ -61,6 +69,7 @@
             <button class="rpg_submit_btn" id="end_btn">실습 종료</button>
           </div>
           <div class="chat_container" id="chat-container"></div>
+          <img id='loadingModal' class="loading_img" src="/static/img/loading_icon.gif" alt="로딩이미지">
         </div>
         {% csrf_token %}
         <div class="rpg_bottom">
@@ -68,15 +77,15 @@
                 {% comment %} <img class="rpg_record_icon" id="record" src="/static/img/mice.png" alt="녹음아이콘"> {% endcomment %}
                 <div class="grow_bubble">
                   <ion-icon name="document-text-outline" class="rpg_record_icon" id="grow-ex"></ion-icon>
-                  <span class="growtooltip">GROW 예시 질문 리스트입니다!</span>
+                  <span class="growtooltip">GROW 예시 질문 리스트</span>
                 </div>
                 <div class="info_bubble">
-                  <ion-icon name="information-circle" class="rpg_record_icon"></ion-icon>
-                  <span class="infotooltip">인포메이션</span>
+                  <ion-icon name="information-circle" class="rpg_record_icon" id="error_guide"></ion-icon>
+                  <span class="infotooltip">에러 가이드</span>
                 </div>
                 <div class="speech_bubble">
                   <ion-icon name="mic-circle-outline" class="rpg_record_icon" id="record"></ion-icon>
-                  <span class="tooltip">말을 다 하셨다면 한번 더 클릭해주세요! </span>
+                  <span class="tooltip">말을 다 하셨다면 한번 더 클릭해주세요</span>
                 </div>
                 {% comment %} <ion-icon name="mic-off-outline"></ion-icon> {% endcomment %}
                 {% comment %} <img class="rpg_stop_icon" id="stop" src="/static/img/check.png" alt="중지아이콘"> {% endcomment %}

@@ -274,28 +274,28 @@ html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 220px;
-    height: 420px;
-    margin: 40px 40px;
+    width: 320px;
+    height: 400px;
+    margin: 40px 14px;
     border-radius: 10px;
-    background-color: rgb(255, 255, 255);
+    background-color: #E9F2FF;
 }
 
 .use_content_img_box{
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 245px;
-    height: 205px;
-    background-color: #002C4D;
+    width: 300px;
+    height: 200px;
+    background-color: #E9F2FF;
     border-radius: 10px;
     margin-top: 20px;
 }
 
 .use_content_img{
     background-color: #FFFFFF;
-    width: 230px;
-    height: 190px;
+    width: 300px;
+    height: 202px;
     border-radius: 10px;
 }
 
@@ -367,6 +367,7 @@ html {
 .profile_box {
     width: 220px;
     margin: 0px 20px;
+    width: 220px;
 }
 
 .profile_box:hover {
@@ -421,17 +422,6 @@ html {
     margin-bottom: 20px;
 }
 
-.profile_box {
-    width: 220px;
-    /* height: 232px; */
-    /* background-color: #fff; */
-    /* margin: 0 30px; */
-    /* margin-top: 5px; */
-    /* border-radius: 12px; */
-    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
-    /* animation: floating 3s ease-in-out infinite;*/
-}
-
 @keyframes floating {
     0% {
       transform: translateY(0);
@@ -472,12 +462,12 @@ html {
 
 /* 꺽쇠 기호 */
 .arrow {
-    font-size: 5rem;
-    height: 240px;
+    font-size: 6.5rem;
+    height: 100px;
+    width: 25px;
+    margin: 0px 10px 0px 5px;
     font-weight: 700;
-    color: rgb(51, 48, 48);
-    margin: 40px 20px;
-    margin-bottom: 70px;
+    color: #004882;
 }
 
 /* 처음으로 버튼 추가 */
@@ -508,13 +498,13 @@ html {
         transform: perspective(400px) rotateY(0);
     }
     100% {
-        transform: perspective(400px) rotateY(1turn);
+        transform: perspective(400px) rotateY(4turn);
     }
 }
 
 /* 뒤집힌 스타일 정의 */
 .flip {
-    animation: flip 2s linear both;
+    animation: flip 0.3s linear both;
 }
 
 /* 이미지 div 전체를 감싸는 container 스타일 */
@@ -523,19 +513,26 @@ html {
     perspective: 1000px;
 }
 
-/* 이미지와 겹칠 글자 컨테이너 및 글자 스타일 지정 */
-.text-container-hyunji {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 24px;
-  font-weight: bold;
-  backface-visibility: hidden;
-  transform: rotateY(180deg);
+
+/* -----------------------team about----------------------------- */
+/* 뒤집힌 스타일 정의 */
+@keyframes flip1 {
+    0% {
+        transform: perspective(400px) rotateY(0);
+    }
+    100% {
+        transform: perspective(400px) rotateY(2turn);
+    }
 }
+
+.flip1 {
+    animation: flip 2s linear both;
+}
+
+/* 이미지 div 전체를 감싸는 container 스타일 */
+.flip-container-team {
+    position: relative;
+    perspective: 1000px;
+}
+  
 
