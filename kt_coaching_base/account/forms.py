@@ -22,8 +22,8 @@ class RegistrationForm(UserCreationForm):
 
     def save(self, commit=True):
         instance = super().save(commit=False)
-        instance.userid = self.cleaned_data['hidden_userid']
-        instance.email = self.cleaned_data['hidden_email']
+        instance.userid = self.cleaned_data['hidden_userid'].lower()  # 아이디를 소문자로 변환하여 저장
+        instance.email = self.cleaned_data['hidden_email'].lower()  # 이메일을 소문자로 변환하여 저장
         instance.nickname = self.cleaned_data['hidden_nickname']
         if commit:
             instance.save()
