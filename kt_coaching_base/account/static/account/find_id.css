@@ -34,7 +34,7 @@
 .find_userid_box_content_input{
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: left;
     justify-content: center;
 }
 
@@ -51,7 +51,9 @@
 }
 
 .find_userid_box_content_nickname{
+    display: flex;
     margin-top: 15px;
+    justify-content: space-between;
 }
 
 .find_userid_box_content_nickname input{
@@ -69,10 +71,97 @@
     border-radius: 10px;
     padding: 10px;
     margin-top: 30px;
+    margin-left: 53px;
 }
 
 .find_userid_box_content_submit:hover{
     background-color:#0068FF;
     color: white;
     transition: 1.0s;
+}
+
+/* ----------------------- password --------------------------*/
+
+.find_userpassw_box_content_id {
+    margin-top: 15px;
+}
+.find_userpassw_box_content_id input{
+    border: solid #D2D2D2 1px;
+    padding: 5px;
+    border-radius: 5px;
+    margin-left: 5px;
+}
+
+
+
+
+.find_userpassw_box_content_name{
+    margin-top: 15px;
+}
+.find_userpassw_box_content_name input{
+    border: solid #D2D2D2 1px;
+    padding: 5px;
+    border-radius: 5px;
+    margin-left: 21px;
+}
+
+
+
+.find_userpassw_box_content_nickname {
+    margin-top: 15px;
+}
+.find_userpassw_box_content_nickname input{
+    border: solid #D2D2D2 1px;
+    padding: 5px;
+    border-radius: 5px;
+    margin-left: 5px;
+}
+
+
+.find_userpassw_box_content_submit{
+    width: 200px;
+    color:#0068FF;
+    background-color: white;
+    border: solid 1px #0068FF;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 30px;
+    margin-left: 53px;
+}
+
+.find_userpassw_box_content_submit:hover{
+    background-color:#0068FF;
+    color: white;
+    transition: 1.0s;
+}
+
+
+
+/* ----------------  비밀번호 재설정 --------------------*/
+.confirm_userpassw_box_content_pw1{
+    margin-top: 10px;
+}
+
+.confirm_userpassw_box_content_pw1 input{
+    border: solid #D2D2D2 1px;
+    padding: 5px;
+    border-radius: 5px;
+    margin-left: 60px;
+}
+
+
+.confirm_userpassw_box_content_pw2{
+    margin-top: 5px;
+}
+
+.confirm_userpassw_box_content_pw2 input{
+    border: solid #D2D2D2 1px;
+    padding: 5px;
+    border-radius: 5px;
+    margin-left: 60px;
+}
+
+#password1-error, #password2-error {
+    font-size: 0.8em;
+    margin-left: 8px;
 }

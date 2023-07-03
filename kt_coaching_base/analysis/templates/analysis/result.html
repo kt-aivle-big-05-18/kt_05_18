@@ -48,18 +48,23 @@
                 <div class="analysis_content_score_explain">
                     본 점수는 질문 별 관점변화, 존중, 인정, 판단, 분위기의 다섯 가지 척도 기반 결과입니다.<br>
                     질문 별 점수는 (각 질문 별 점수 / (최고점수 * 질문 개수)) * 100점으로 산출되었습니다.<br>
-                    * 각 질문 별 점수 : 다섯 가지 평가 척도를 기준으로 각 질문에서 얻을 수 있는 점수<br>
-                    * 최고 점수: 질문에서 얻을 수 있는 최고점수 = 2 [점]<br>
-                    * 질문 개수 : 사용자가 질문 개수
+                    <span style="font-size: 12px; margin-left : 10px">
+                        * 각 질문 별 점수 : 다섯 가지 평가 척도를 기준으로 각 질문에서 얻을 수 있는 점수<br></span>
+                    <span style="font-size: 12px; margin-left : 10px">
+                        * 최고 점수: 질문에서 얻을 수 있는 최고점수 = 2 [점]<br></span>
+                    <span style="font-size: 12px; margin-left : 10px">
+                        * 질문 개수 : 사용자가 질문 개수</span>
                 </div>
                 <div class="analysis_content_score_graph">
+                    <div class="grow_chart_title">GROW 분석</div>
+                    <hr class = "grow_h_r">
+                    <div id="grow_is" class="grow_is">
+                        · Goal(목표) - 단기 및 장기 목표 정의<br>
+                        · Reality(현실) - 현재 상황 및 문제 탐색<br>
+                        · Option(목표) - 해결 가능한 옵션 및 평가<br>
+                        · Will(의지) - 실행할 일과 시기 설정<br>
+                    </div>
                     <canvas id="line_chart" class="line_chart"></canvas>
-                </div>
-                <div id="grow_is" class="grow_is">
-                    · Goal(목표) - 단기 및 장기 목표 정의<br>
-                    · Reality(현실) - 현재 상황 및 문제 탐색<br>
-                    · Option(목표) - 해결 가능한 옵션 및 평가<br>
-                    · Will(의지) - 실행할 일과 시기 설정<br>
                 </div>
             </div>
             <div class="analysis_content_result">
@@ -76,7 +81,7 @@
                                 <button class="analysis_content_result_graph_box_btn_idx" id="respect_btn"> 존중 </button>
                                 <button class="analysis_content_result_graph_box_btn_idx" id="perspective_btn" selected> 관점전환 </button>
                                 <button class="analysis_content_result_graph_box_btn_idx" id="judgment_btn"> 판단 </button>
-                                <button class="analysis_content_result_graph_box_btn_idx" id="mood_btn"> 분위기 </button>
+                                <button class="analysis_content_result_graph_box_btn_idx" id="mood_btn"> 부정 </button>
                             </div>
                             <div class="analysis_content_result_graph_box_txt" id="info">인정<br><br>인정은 대화 상대가 스스로 문제를 해결할 능력을 가지고 있다 믿어주는 것으로 정의됩니다. 이 요인은 조금만 도와주면 대화 상대가 스스로 문제를 해결할 것이라고 믿음, 대화상대에게 적절한 도움을 제공하면 스스로 성장하고 발전할 것이라 믿음, 대화상대 자발적으로 동기부여 되는 사람이라고 믿음, 대화상대의 잠재능력과 성장 가능성을 믿는 것이 해당됩니다.</div>
                         </label>
@@ -152,8 +157,11 @@
                 </div>
             </div>
         </div>
+        <div><br><br></div>
     </div>
+
 </div>
+
 {% endblock %}
 
 <script>

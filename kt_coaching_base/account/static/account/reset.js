@@ -6,12 +6,12 @@ $(document).ready(function() {
       var hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(input);
       var hasLetter = /[a-zA-Z]/.test(input);
       var hasNumber = /[0-9]/.test(input);
-      var errorMessage = '';
+      var errorMessage = '';  
   
       if (!hasMinLength) {
         errorMessage = '비밀번호는 최소 8글자 이상이어야 합니다.';
       } else if (!(hasSpecialChar && hasLetter && hasNumber)) {
-        errorMessage = '비밀번호는 특수문자, 영어, 숫자를 혼용하여야 합니다.';
+        errorMessage = '비밀번호는 특수문자, 영어, 숫자를 혼용해야합니다.';
       } else {
         errorMessage = '사용할 수 있습니다.';
       }
