@@ -37,6 +37,21 @@
                     <div class="button-container">
                         <button class="talk-info-button">설문 결과 확인하기</button>
                     </div>
+                    {% if persona.shared %}
+                        <form action="{% url 'mypage:stop_sharing' persona.id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="persona_id" value="{{ persona.id }}">
+                            <button type="submit">공유 중지</button>
+                        </form>
+                    {% else %}
+                        <form action="{% url 'mypage:share_persona' persona.id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="persona_id" value="{{ persona.id }}">
+                            <input type="text" name="title" placeholder="제목">
+                            <textarea name="content" placeholder="내용"></textarea>
+                            <button type="submit">공유 시작</button>
+                        </form>
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>
