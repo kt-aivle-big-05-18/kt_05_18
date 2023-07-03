@@ -1,4 +1,4 @@
-{% comment %} {% extends "base.html" %} {% endcomment %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block content %}
@@ -25,15 +25,14 @@
   </div>
 </div>
 
-<!-- 헤더 -->
+{% comment %} <!-- 헤더 -->
 <div class="commu_head_wrapper">
   <div class="commu_head_menu_wrapper" style="display: inline;">
-      {% comment %} href는 아직 구현 안 됨 {% endcomment %}
       <a class="commu_head_menu"><ion-icon id="grow-ex" name="document-text-outline" class="commu_head_menu_icon"></ion-icon></a>
       <a class="commu_head_menu"><ion-icon name="information-circle" class="commu_head_menu_icon"></ion-icon></a>
       <a href="{% url 'rpg:persona' %}" class="commu_head_menu"><ion-icon name="exit-outline" class="commu_head_menu_icon"></ion-icon></a>
     </div>
-</div>
+</div> {% endcomment %}
 
 <!-- 로딩 창 -->
 <div class="loading-overlay">
@@ -67,6 +66,14 @@
         <div class="rpg_bottom">
             <div class="rpg_input_section">
                 {% comment %} <img class="rpg_record_icon" id="record" src="/static/img/mice.png" alt="녹음아이콘"> {% endcomment %}
+                <div class="grow_bubble">
+                  <ion-icon name="document-text-outline" class="rpg_record_icon" id="grow-ex"></ion-icon>
+                  <span class="growtooltip">GROW 예시 질문 리스트입니다!</span>
+                </div>
+                <div class="info_bubble">
+                  <ion-icon name="information-circle" class="rpg_record_icon"></ion-icon>
+                  <span class="infotooltip">인포메이션</span>
+                </div>
                 <div class="speech_bubble">
                   <ion-icon name="mic-circle-outline" class="rpg_record_icon" id="record"></ion-icon>
                   <span class="tooltip">말을 다 하셨다면 한번 더 클릭해주세요! </span>
