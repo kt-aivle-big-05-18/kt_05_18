@@ -49,7 +49,10 @@ $(function() {
 /*-------------------------FOR BOSS-------------------------*/
 
 document.getElementById("hyunji-container").addEventListener("click", function () {
-  this.querySelector(".profile_box").classList.toggle("flip");
-  this.querySelector(".text-container-hyunji").classList.toggle("flip");
+  this.querySelector(".profile_box_boss").classList.toggle("flip");
+});
+
+document.getElementById("team-container").addEventListener("click", function () {
+  this.querySelector(".profile_box_team").classList.toggle("flip1");
 });
 
