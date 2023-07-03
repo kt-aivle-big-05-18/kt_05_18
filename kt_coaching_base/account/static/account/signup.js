@@ -315,7 +315,7 @@ $(document).ready(function() {
 
   // 폼 제출 이벤트를 처리
   $('form').submit(function(event) {
-    var isNicknameValid = !hasSpecialChar;
+    var isNicknameValid = !hasSpecialChar && !isNicknameDuplicateChecked;
   
     if (!isDuplicateChecked) {
       event.preventDefault(); // 아이디 중복확인을 하지 않은 경우 폼 제출을 막음
