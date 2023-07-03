@@ -478,3 +478,41 @@ html {
     background-color: #11456c;
   }
   
+/*-------------------------FOR BOSS-------------------------*/
+/* 애니메이션 스타일 정의 */
+@keyframes flip {
+    0% {
+        transform: perspective(400px) rotateY(0);
+    }
+    100% {
+        transform: perspective(400px) rotateY(1turn);
+    }
+}
+
+/* 뒤집힌 스타일 정의 */
+.flip {
+    animation: flip 2s linear both;
+}
+
+/* 이미지 div 전체를 감싸는 container 스타일 */
+.flip-container-hyunji {
+    position: relative;
+    perspective: 1000px;
+}
+
+/* 이미지와 겹칠 글자 컨테이너 및 글자 스타일 지정 */
+.text-container-hyunji {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+  backface-visibility: hidden;
+  transform: rotateY(180deg);
+}
+
