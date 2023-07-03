@@ -25,6 +25,13 @@
   </div>
 </div>
 
+<div id="modalWrap">
+  <div id="modalContent">
+    <span id="closeBtn">&times;</span>
+    <img id="modalImage" src="/static/img/error_guide.png" alt="Error Guide">
+  </div>
+</div>
+
 {% comment %} <!-- 헤더 -->
 <div class="commu_head_wrapper">
   <div class="commu_head_menu_wrapper" style="display: inline;">
@@ -68,15 +75,15 @@
                 {% comment %} <img class="rpg_record_icon" id="record" src="/static/img/mice.png" alt="녹음아이콘"> {% endcomment %}
                 <div class="grow_bubble">
                   <ion-icon name="document-text-outline" class="rpg_record_icon" id="grow-ex"></ion-icon>
-                  <span class="growtooltip">GROW 예시 질문 리스트입니다!</span>
+                  <span class="growtooltip">GROW 예시 질문 리스트</span>
                 </div>
                 <div class="info_bubble">
-                  <ion-icon name="information-circle" class="rpg_record_icon"></ion-icon>
-                  <span class="infotooltip">인포메이션</span>
+                  <ion-icon name="information-circle" class="rpg_record_icon" id="error_guide"></ion-icon>
+                  <span class="infotooltip">에러 가이드</span>
                 </div>
                 <div class="speech_bubble">
                   <ion-icon name="mic-circle-outline" class="rpg_record_icon" id="record"></ion-icon>
-                  <span class="tooltip">말을 다 하셨다면 한번 더 클릭해주세요! </span>
+                  <span class="tooltip">말을 다 하셨다면 한번 더 클릭해주세요</span>
                 </div>
                 {% comment %} <ion-icon name="mic-off-outline"></ion-icon> {% endcomment %}
                 {% comment %} <img class="rpg_stop_icon" id="stop" src="/static/img/check.png" alt="중지아이콘"> {% endcomment %}
