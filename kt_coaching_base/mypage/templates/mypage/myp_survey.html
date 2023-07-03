@@ -91,7 +91,7 @@
                         {% endfor %}
                     </div>
                     <div class="button-container">
-                        <button class="talk-info-button">설문 결과 확인하기</button>
+                        <button class="talk-info-button" id="survey_result_confirm">설문 결과 확인하기</button>
                     </div>
                     {% comment %} {% if persona.shared %}
                         <form action="{% url 'mypage:stop_sharing' persona.id %}" method="POST">
@@ -112,19 +112,36 @@
             {% endfor %}
         </div>
 
-        <div class="box_result2">
-            <h2 class="analysis-header">대화 분석 결과</h2>
-            <h3 class="analysis-info-header">GROW 결과</h3>
-            <div class="grow-info">
-                <div class = "g_b_c">
-                    <canvas id = "grow_bar_chart" class = "grow_bar_chart"></canvas>
+        <div class="box_result2" id="second_box">
+            <div id="result2">
+                <h2 class="analysis-header">대화 분석 결과</h2>
+                <h3 class="analysis-info-header">GROW 결과</h3>
+                <div class="grow-info">
+                    <div class = "g_b_c">
+                        <canvas id = "grow_bar_chart" class = "grow_bar_chart"></canvas>
+                    </div>
+                </div>
+                <h3 class="analysis-info-header">코칭 요인 분석</h3>
+                <div class="coaching-info">
+                    <canvas id = "coaching_chart_analysis" class = "coaching_chart_analysis"></canvas>
+                </div>
+                <div id = "analysis_chat" class="coaching-info-text">
                 </div>
             </div>
-            <h3 class="analysis-info-header">코칭 요인 분석</h3>
-            <div class="coaching-info">
-                <canvas id = "coaching_chart_analysis" class = "coaching_chart_analysis"></canvas>
-            </div>
-            <div id = "analysis_chat" class="coaching-info-text">
+            <div class="survey_result_wrapper" id="result3">
+                <div class="survey_result_summary">요약내용</div>
+                <div class="survey_result_txt">설명</div>
+                <div class="survey_result_grow_wrapper">
+                    <div class="survey_result_gr">
+                        <div class="survey_result_goal">g</div>
+                        <div class="survey_result_reality">r</div>
+                    </div>
+                    <div class="survey_result_ow">
+                        <div class="survey_result_options">o</div>
+                        <div class="survey_result_will">w</div>
+                    </div>
+                </div>
+                <div class="survey_result_comment">코멘트</div>
             </div>
         </div>
     </div>
@@ -325,38 +342,51 @@
             '<form action="/mypage/stop_sharing/' + personaId + '/" method="POST">' +
             '{% csrf_token %}' +
             '<input type="hidden" name="persona_id" value="' + personaId + '">' +
-            '<div class="survey_popup_btn">'+
+            '<div class="survey_popup_btn">' +
             '<button class="survey_popup_share_btn" type="submit">공유 중지</button>' +
             '<button class="survey_popup_exit_btn" type="button" id="close-button">나가기</button>' +
-            '</div>'+
+            '</div>' +
             '</form>'
           );
         } else {
           // Display share persona form
           // '<h1>' + shared + ', ' + personaId + '</h1>' +
           $('#surveyModalContent').html(
-            '<div class="survey_popup_title">설문요청</div>'+
+            '<div class="survey_popup_title">설문요청</div>' +
             '<form action="/mypage/share_persona/' + personaId + '/" method="POST">' +
             '{% csrf_token %}' +
-            '<div class="survey_popup_content">'+
+            '<div class="survey_popup_content">' +
             '<input type="hidden" name="persona_id" value="' + personaId + '">' +
             '<input class="survey_popup_content_title" type="text" name="title" placeholder="제목">' +
             '<textarea cols="30" rows="20" class="survey_popup_content_content" name="content" height="50px" placeholder="내용"></textarea>' +
-            '</div>'+
-            '<div class="survey_popup_btn">'+
+            '</div>' +
+            '<div class="survey_popup_btn">' +
             '<button class="survey_popup_share_btn" type="submit">공유 시작</button>' +
             '<button class="survey_popup_exit_btn" type="button" id="close-button">나가기</button>' +
-            '</div>'+
+            '</div>' +
             '</form>'
           );
         }
       
         // Open the modal
         $('#surveyModal').show();
-
+      
         // Close the modal when close button is clicked
-        $('#close-button').click(function() {
-            $('#surveyModal').hide();
+        $('#close-button').click(function () {
+          $('#surveyModal').hide();
+        });
+      
+        // Form validation
+        var form = document.querySelector("#surveyModalContent form");
+        var input = form.querySelector("input[name='title']");
+        var textarea = form.querySelector("textarea[name='content']");
+        var button = form.querySelector("button[type='submit']");
+      
+        button.addEventListener("click", function (event) {
+          if (input.value.trim() === "" || textarea.value.trim() === "") {
+            event.preventDefault(); // 폼 제출 막기
+            alert("제목과 내용을 작성해주세요.");
+          }
         });
       }
       
@@ -374,10 +404,6 @@
           }
         });
       });
-      
-      
-
-      
 </script>
 
 {% endblock %}
