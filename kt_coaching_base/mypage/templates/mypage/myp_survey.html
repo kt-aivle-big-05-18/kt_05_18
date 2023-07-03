@@ -3,41 +3,6 @@
 {% load static %}
 
 {% block content %}
-<style>
-    #surveyModal {
-        display: none; /* 모달 초기에는 숨김 상태로 설정 */
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0, 0, 0, 0.5); /* 배경에 투명한 검은색 색상 */
-        z-index: 9999; /* 다른 요소 위에 표시하기 위해 높은 z-index 설정 */
-      }
-      
-      #surveyModalContent {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 5px;
-        width: 400px;
-        max-width: 90%;
-      }
-      
-      #surveyModalClose {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        cursor: pointer;
-      }
-
-      #surveyModalContent h1{
-        color: red;
-      }
-</style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0"></script>
 <script src="{% static 'css/myp.js' %}"></script>
@@ -49,10 +14,10 @@
     <div class="modal-content" id="surveyModalContent">
       <!-- 모달 내용이 동적으로 업데이트됩니다. -->
     </div>
-  </div>
+</div>
 
 <!-- 메인 화면 -->
-<h1>대화 내역 및 분석결과</h1>
+<div class="survey_main_title">대화 내역 및 분석결과</div>
 <button class="back_button" onclick="window.history.back();">&lt</button>
 <div class="content-container">
     <div class="box-container">
@@ -64,7 +29,6 @@
         
         <div class="box_result1">
             {% for persona in personas %}
-<<<<<<< HEAD
                 <!-- 모달 -->
                 {% comment %} <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -98,12 +62,10 @@
                     </div>
                     </div>
                 </div> {% endcomment %}
-=======
->>>>>>> a23a63566d5bac718fe29294829db2282b644afa
                 <div id="page{{ persona.id }}" style="display: none;">
                     <div class="box_result1_title">
                         <div class="talk-info-header">{{ persona.department }} - 경력{{ persona.career }}년차 - {{ persona.rank }}</div>
-                                
+                        <button class="survey_request_btn" onclick="openSurveyModal(this)" data-persona-id="{{ persona.id }}" data-shared="{{ persona.shared }}">설문요청하기</button>
                     </div>
                     
                     <div class="talk-info">
@@ -131,7 +93,6 @@
                     <div class="button-container">
                         <button class="talk-info-button">설문 결과 확인하기</button>
                     </div>
-                    <button onclick="openSurveyModal(this)" data-persona-id="{{ persona.id }}" data-shared="{{ persona.shared }}">설문요청하기</button>
                     {% comment %} {% if persona.shared %}
                         <form action="{% url 'mypage:stop_sharing' persona.id %}" method="POST">
                             {% csrf_token %}
