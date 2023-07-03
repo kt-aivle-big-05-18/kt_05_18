@@ -7,6 +7,24 @@ body{
     /* background-color: blueviolet; */
 }
 
+.back_button {
+    position: absolute;
+    top: 5%;
+    right: 30px;
+    font-size: 18px;
+    padding: 6px 12px;
+    background-color: #99b4da;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.back_button:hover {
+    background-color: #134971;
+}
+
 .survey_list_title{
     font-weight: 900;
     font-size: 25px;

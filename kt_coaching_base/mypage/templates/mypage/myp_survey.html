@@ -24,7 +24,7 @@
         <div class="box_result1">
             {% for persona in personas %}
                 <!-- 모달 -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                {% comment %} <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -52,11 +52,10 @@
                         </div>
                         <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        {% comment %} <button type="button" class="btn btn-primary">Save changes</button> {% endcomment %}
                         </div>
                     </div>
                     </div>
-                </div>
+                </div> {% endcomment %}
                 <div id="page{{ persona.id }}" style="display: none;">
                     <div class="box_result1_title">
                         <div class="talk-info-header">{{ persona.department }} - 경력{{ persona.career }}년차 - {{ persona.rank }}</div>
@@ -64,12 +63,23 @@
                     </div>
                     <div class="talk-info">
                         {% for message in messages %}
-                            {% if message.persona.id == persona.id %}
+                            {% comment %} {% if message.persona.id == persona.id %}
                                 <div class="container">
                                     <div class="coaching {% if forloop.last %}no-dashed{% endif %}">
                                         {{ message.name }} - {{ message.content }}
                                     </div>
                                 </div>
+                            {% endif %} {% endcomment %}
+                            {% if forloop.counter|divisibleby:2 %}
+                            <div class="survey_detail_conversation_list_coach">
+                                <img class="survey_detail_conversation_list_pic_coach" src="/static/img/young_male.png">
+                                <div class="survey_detail_conversation_list_txt_coach">{{ message.content }}</div>
+                            </div>
+                            {% else %}
+                            <div class="survey_detail_conversation_list_member">
+                                <img class="survey_detail_conversation_list_pic_member" src="/static/img/won.png">
+                                <div class="survey_detail_conversation_list_txt_member">{{ message.content }}</div>
+                            </div>
                             {% endif %}
                         {% endfor %}
                     </div>
