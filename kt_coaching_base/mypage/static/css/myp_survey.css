@@ -437,3 +437,42 @@ h3 {
     overflow: auto;
     background-color: #F4F4F4; /* 원하는 배경색을 지정합니다 */
 }
+
+.survey_popup_title{
+    font-weight: 900;
+    font-size: 25px;
+    color: #002C4D;
+}
+
+.survey_popup_content{
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+.survey_popup_content_title{
+    border-radius: 10px;
+}
+
+.survey_popup_content_content{
+    margin-top: 10px;
+    border-radius: 10px;
+}
+
+.survey_popup_btn{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.survey_popup_share_btn, .survey_popup_exit_btn{
+    padding: 10px;
+    border:none;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.survey_popup_share_btn:hover, .survey_popup_exit_btn:hover{
+    color: white;
+    background-color: #686868;
+}
