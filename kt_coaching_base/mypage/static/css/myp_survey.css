@@ -477,3 +477,71 @@ h3 {
     color: white;
     background-color: #686868;
 }
+
+.survey_result_wrapper{
+    /* display: block;
+    justify-content: center;
+    align-items: center; */
+    width: 100%;
+    height: 100%;
+    margin-top: 20px;
+    /* align-items: center; */
+    /* justify-content: center; */
+}
+
+.survey_result_summary{
+    width: 100%;
+    height: 30%;
+    background-color: #EAEAEA;
+    border-radius: 20px;
+}
+.survey_result_txt{
+    width: 100%;
+    height: 10%;
+}
+.survey_result_grow_wrapper{
+    width: 100%;
+    height: 70%;
+    /* background-color: #134971; */
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.survey_result_gr{
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    height: 30%;
+    /* background-color: #99b4da; */
+}
+.survey_result_goal{
+    width: 45%;
+    height: 100%;
+    background-color: white;
+}
+.survey_result_reality{
+    width: 45%;
+    height: 100%;
+    background-color: white;
+}
+
+.survey_result_ow{
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    height: 30%;
+    /* background-color: #99b4da; */
+    margin-top: 30px;
+}
+.survey_result_options{
+    width: 45%;
+    height: 100%;
+    background-color: white;
+}
+.survey_result_will{
+    width: 45%;
+    height: 100%;
+    background-color: white;
+}
