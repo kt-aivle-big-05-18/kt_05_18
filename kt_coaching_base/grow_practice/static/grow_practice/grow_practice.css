@@ -199,7 +199,69 @@
     }
 
 
-/* 녹음 버튼 설명 말풍선 */
+/* GROW 질문 예시 말풍선 */
+.growtooltip {
+    visibility: hidden;
+    position: absolute;
+    z-index: 1;
+    top: -30%; /* 말풍선의 위치 조정 */
+    left: 12%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 6px;
+    border-radius: 4px;
+    font-size: 18px;
+    white-space: nowrap;
+  }
+  
+  .grow_bubble:hover .growtooltip {
+    visibility: visible;
+  }
+
+  .growtooltip:after {
+    border-top: 10px solid rgba(0, 0, 0, 0.8);
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 0px solid transparent;
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 20%;
+}
+
+/*  information 말풍선 */
+.infotooltip {
+    visibility: hidden;
+    position: absolute;
+    z-index: 1;
+    top: -30%; /* 말풍선의 위치 조정 */
+    left: 12%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 6px;
+    border-radius: 4px;
+    font-size: 18px;
+    white-space: nowrap;
+  }
+  
+  .info_bubble:hover .infotooltip {
+    visibility: visible;
+  }
+
+  .infotooltip:after {
+    border-top: 10px solid rgba(0, 0, 0, 0.8);
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 0px solid transparent;
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 25%;
+}
+
+  /* 음성 녹음 설명 말풍선 */
 .tooltip {
     visibility: hidden;
     position: absolute;
@@ -213,13 +275,13 @@
     border-radius: 4px;
     font-size: 18px;
     white-space: nowrap;
-    }
-    
-    .speech_bubble:hover .tooltip {
+  }
+  
+  .speech_bubble:hover .tooltip {
     visibility: visible;
-    }
+  }
 
-    .tooltip:after {
+  .tooltip:after {
     border-top: 10px solid rgba(0, 0, 0, 0.8);
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
@@ -227,5 +289,5 @@
     content: "";
     position: absolute;
     top: 100%;
-    left: 44%;
+    left: 57%;
 }
