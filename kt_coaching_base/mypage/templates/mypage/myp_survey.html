@@ -3,12 +3,53 @@
 {% load static %}
 
 {% block content %}
+<style>
+    #surveyModal {
+        display: none; /* 모달 초기에는 숨김 상태로 설정 */
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5); /* 배경에 투명한 검은색 색상 */
+        z-index: 9999; /* 다른 요소 위에 표시하기 위해 높은 z-index 설정 */
+      }
+      
+      #surveyModalContent {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        width: 400px;
+        max-width: 90%;
+      }
+      
+      #surveyModalClose {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+      }
+
+      #surveyModalContent h1{
+        color: red;
+      }
+</style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0"></script>
 <script src="{% static 'css/myp.js' %}"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="{% static 'css/myp_survey.css' %}">
+
+<div id="surveyModal" class="modal">
+    <div class="modal-content" id="surveyModalContent">
+      <!-- 모달 내용이 동적으로 업데이트됩니다. -->
+    </div>
+  </div>
 
 <!-- 메인 화면 -->
 <h1>대화 내역 및 분석결과</h1>
@@ -23,6 +64,7 @@
         
         <div class="box_result1">
             {% for persona in personas %}
+<<<<<<< HEAD
                 <!-- 모달 -->
                 {% comment %} <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -56,11 +98,14 @@
                     </div>
                     </div>
                 </div> {% endcomment %}
+=======
+>>>>>>> a23a63566d5bac718fe29294829db2282b644afa
                 <div id="page{{ persona.id }}" style="display: none;">
                     <div class="box_result1_title">
                         <div class="talk-info-header">{{ persona.department }} - 경력{{ persona.career }}년차 - {{ persona.rank }}</div>
-                        <button class="signup_content_detail_person_info_btn" type="button" id="add_feed" data-toggle="modal" data-target="#exampleModal"> 설문요청하기 </button>        
+                                
                     </div>
+                    
                     <div class="talk-info">
                         {% for message in messages %}
                             {% comment %} {% if message.persona.id == persona.id %}
@@ -86,6 +131,22 @@
                     <div class="button-container">
                         <button class="talk-info-button">설문 결과 확인하기</button>
                     </div>
+                    <button onclick="openSurveyModal(this)" data-persona-id="{{ persona.id }}" data-shared="{{ persona.shared }}">설문요청하기</button>
+                    {% comment %} {% if persona.shared %}
+                        <form action="{% url 'mypage:stop_sharing' persona.id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="persona_id" value="{{ persona.id }}">
+                            <button type="submit">공유 중지</button>
+                        </form>
+                    {% else %}
+                        <form action="{% url 'mypage:share_persona' persona.id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="persona_id" value="{{ persona.id }}">
+                            <input type="text" name="title" placeholder="제목">
+                            <textarea name="content" placeholder="내용"></textarea>
+                            <button type="submit">공유 시작</button>
+                        </form>
+                    {% endif %} {% endcomment %}
                 </div>
             {% endfor %}
         </div>
@@ -292,6 +353,56 @@
         }
     }
 
+    function openSurveyModal(button) {
+        var personaId = button.dataset.personaId;
+        var shared = button.dataset.shared;
+      
+        if (shared === 'True') {
+          // Display stop sharing form
+          $('#surveyModalContent').html(
+            '<h1>' + shared + ', ' + personaId + '</h1>' +
+            '<form action="/mypage/stop_sharing/' + personaId + '/" method="POST">' +
+            '{% csrf_token %}' +
+            '<input type="hidden" name="persona_id" value="' + personaId + '">' +
+            '<button type="submit">공유 중지</button>' +
+            '</form>'
+          );
+        } else {
+          // Display share persona form
+          $('#surveyModalContent').html(
+            '<h1>' + shared + ', ' + personaId + '</h1>' +
+            '<form action="/mypage/share_persona/' + personaId + '/" method="POST">' +
+            '{% csrf_token %}' +
+            '<input type="hidden" name="persona_id" value="' + personaId + '">' +
+            '<input type="text" name="title" placeholder="제목">' +
+            '<textarea name="content" placeholder="내용"></textarea>' +
+            '<button type="submit">공유 시작</button>' +
+            '</form>'
+          );
+        }
+      
+        // Open the modal
+        $('#surveyModal').show();
+      }
+      
+      $('#surveyModal').on('hidden.bs.modal', function () {
+        // Update the survey buttons after modal is closed
+        var surveyButtons = document.getElementsByClassName('survey-button');
+        Array.from(surveyButtons).forEach(function (button) {
+          var personaId = button.dataset.personaId;
+          var shared = button.dataset.shared;
+      
+          if (shared === 'true') {
+            button.innerHTML = '공유 중지';
+          } else {
+            button.innerHTML = '공유 시작';
+          }
+        });
+      });
+      
+      
+
+      
 </script>
 
 {% endblock %}
