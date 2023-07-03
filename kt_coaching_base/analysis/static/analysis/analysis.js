@@ -58,6 +58,8 @@ $(document).ready(function() {
       }]
     },
     options: {
+      responsive: false,  // 차트가 컨테이너 크기에 응답하도록 설정
+      maintainAspectRatio: false,
       indexAxis: 'x',  // Change this to 'x'
       scales: {
         y: {
@@ -79,7 +81,7 @@ $(document).ready(function() {
             display: false
         },
         title: {
-            display: true,
+            display: false,
             text: 'GROW 코칭 결과'
         }
       }
@@ -169,7 +171,7 @@ $(document).ready(function() {
   
     $("#mood_btn").click(function() {
       updateButtonColor($(this));
-      updateTextInfo("분위기", "분위기는 해당 질문에 대해 긍정적 및 부정적인 것으로 정의됩니다. 이 요인은 해당 질문이 대화상대에게 긍정적인 분위기를 생성하는 것이 긍정 분위기에 해당합니다.");
+      updateTextInfo("부정", "부정은 대화 상대에게 부정적인 분위기를 주는 것으로 정의됩니다. 이 요인은 해당 질문이 대화상대에게 부정적인 분위기를 생성하는 것에 해당합니다.");
       resetOtherButtons($(this));
     });
   

@@ -133,24 +133,24 @@ def persona(request):
             persona.save()
             request.session['visited_persona'] = True
             request.session["persona_set"].append({
-                                    "role" : "user", 
-                                    "content" : translate( "다음 대화부터 당신의 이름은 홍길동입니다. 홍길동씨 당신은 팀장님과 대화하는 {0}세인 {1} {2}{3}이며, {4}인 팀원의 역할을 수행합니다. 당신은 절대로 역할에서 벗어나지 않습니다. 이 역할을 맡고 있을 때 당신은 3문장 이하로 대답합니다.".format(
+                                    "role" : "user",
+                                    "content" : "당신의 이름은 '홍길동'입니다. 당신은 상담사인 저에게 상담을 받는 {0}세인 {1} {2}직급의 {3}입니다. 당신은 {4}인 직원입니다. 당신은 3문장 이하로 대답합니다.".format(
                                         form.cleaned_data['age'], # 0 나이 - gpt
-                                        form.cleaned_data['gender'], # 1 성별 - gpt
                                         form.cleaned_data['department'], # 2 직군 - gpt
                                         form.cleaned_data['rank'], # 3 직급 - gpt
+                                        form.cleaned_data['gender'], # 1 성별 - gpt
                                         form.cleaned_data['topic_label'], # 4 상황 - gpt
-                                        ))  
+                                        )
                                     })
             request.session["persona_set"].append({
                                     "role" : "assistant", 
-                                    "content" : translate( "네! 저는 지금부터 {0}세인 {1} {2}{3}이며, {4}인 팀원의 역할을 수행합니다. 안녕하세요! 팀장님.".format(
+                                    "content" : "네! 이제부터 제 이름은 '홍길동'이고 저는 지금부터 {0}세인 {1} {2}직급의 {3}이며 {4}인 상담받는 직원입니다. 안녕하세요! 무슨 일이신가요?.".format(
                                         form.cleaned_data['age'], # 0 나이 - gpt
                                         form.cleaned_data['gender'], # 1 성별 - gpt
                                         form.cleaned_data['department'], # 2 직군 - gpt
                                         form.cleaned_data['rank'], # 3 직급 - gpt
                                         form.cleaned_data['topic_label'], # 4 상황 - gpt
-                                        ))  
+                                        )
                                     })
             # 프롬프트 연구결과 챗지피티의 첫 답장을 선 입력한 경우 더 제대로 인식한 것으로 판단해 더 오래 제대로 역할을 유지함
             persona_id = Persona.objects.filter(nickname=request.user.nickname).last()
@@ -160,7 +160,7 @@ def persona(request):
             request.session["voice"] = request.POST.get('voice') # 챗봇의 목소리 형태를 저장할 세션 변수
             request.session["count"] = 0 # 대화 주고받는 순서 저장할 세션 변수
             request.session['scores'] = []
-            request.session['topic'] = "{0}의 {1}팀 홍길동 {2}({3}세/{4}년차/{5})".format(
+            request.session['topic'] = "{0}의 {1} 홍길동 {2}({3}세/{4}년차/{5})".format(
                                         form.cleaned_data['topic_label'], # 0 상황 - gpt
                                         form.cleaned_data['department'], # 1 직군 - gpt
                                         form.cleaned_data['rank'], # 2 직급 - gpt
@@ -168,6 +168,8 @@ def persona(request):
                                         form.cleaned_data['career'], # 4 경력 - gpt
                                         form.cleaned_data['gender'], # 5 성별 - gpt
                                         )
+            request.session['age'] = form.cleaned_data['age']
+            request.session['gender'] = form.cleaned_data['gender']
             return redirect("rpg:rpg_start")
     else : # GET 방식인 경우
         # 폼 생성
@@ -205,15 +207,15 @@ def rpg(request):
         count = request.session.get("count") # url 경로 저장을 위한 대화 카운트 설정
         user_voice_url = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.webm'.format(p_id, count))
         wav_voice_url = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.wav'.format(p_id, count))
-        
         convert_webm_to_wav(user_voice_url, wav_voice_url)
-        
         print(user_voice_url)
+        
         # ----------------------------------- AI 전처리 / AI prediction ------------------------------------#
         m_df = classification_model(message, wav_voice_url)
         m_df_url = os.path.join(base_dir, 'rpg/static/df_csv/{0}_{1}.csv'.format(p_id, count))
         m_df.to_csv(m_df_url, index=False)
         # --------------------------------- GROW_AI 전처리 / AI prediction ---------------------------------#
+        
         grow_df = grow_model(message)
         grow_df_url = os.path.join(base_dir, 'rpg/static/df_grow/{0}_{1}.csv'.format(p_id, count))
         grow_df.to_csv(grow_df_url, index=False)
@@ -280,13 +282,38 @@ def rpg(request):
         # 음성 파일의 경로를 반환하는 HttpResponse 객체 생성
         with open(path_gpt_voice, 'rb') as voice_file:
             encoded_voice = base64.b64encode(voice_file.read()).decode('utf-8')
-
+        
+        age = request.session.get('age')
+        gender = request.session.get("gender")
+        text_img = ""
+        if 18 <= age <= 29:
+            text_img += "young_"
+        elif 30 <= age <= 39:
+            text_img += "middle_"
+        elif 40 <= age <= 49:
+            text_img += "senior_"
+        elif 50 <= age <= 59:
+            text_img += "elder_"
+        elif 60 <= age:
+            text_img += "old_"
+        else :
+            text_img += "default"
+            
+        if gender == "남성":
+            text_img += "male" + ".png"
+        elif gender == "여성":
+            text_img += "female" + ".png"
+        
+        print(text_img)
+        
+        
         data = { # json형식으로 respone 해줄 데이터
             'message' : trans_,
             'voice': encoded_voice,
             'path': "{0}_{1}.wav".format(p_id, count),
             'score' : "{0}".format(request.session.get('score')),
-            'grow_info' : grow_info
+            'grow_info' : grow_info,
+            'img_name' : text_img
         }
         request.session["count"] += 1 # 음성녹음 이름을 조합을 위한 count + 1
         print('asdasdasdasdasd', grow_info)
@@ -325,7 +352,7 @@ def generate_speech(text, voice, gender, p_id, count):
         input=synthesis_input, voice=voice, audio_config=audio_config
     )
     
-    # 응답의 오디오 컨텐츠는 이진 데이터입니다.
+    # 응답의 오디오 컨텐츠는 이진 데이터입니다.pu
     with open('rpg/static/voice/{0}_{1}.wav'.format(p_id, count), 'wb') as out:
         # 응답을 출력 파일에 작성합니다.
         out.write(response.audio_content)

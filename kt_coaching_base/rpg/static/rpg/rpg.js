@@ -81,9 +81,9 @@ $(document).ready(function () {
         var userInput = $("#user-input").val();
         if (userInput !== "") {
             chatContainer.append("<div class='user_message'>"
-                + userInput
-                + "<img class='user_profile' src='/static/img/won.png' alt='사용자이미지'>"
-                + "</div>");
+            + userInput
+            + "<img class='user_profile' src='/static/img/default.png' alt='사용자이미지'>"
+            + "</div>");
             scrollToBottom();
             showLoading();
 
@@ -106,12 +106,12 @@ $(document).ready(function () {
                     var audioID = "myAudio" + Date.now();  // 고유한 id를 생성합니다.
                     chatContainer.append("<div class = 'grow_info'>" + response.grow_info + "</div>")
                     chatContainer.append("<div class='assistant_message'>"
-                        + "<div class='assistant_message_left'>"
-                        + "<img class='assistant_profile' src='/static/img/young_male.png' alt='페르소나이미지'>"
-                        + response.message
-                        + "</div>"
-                        + "<ion-icon class='assistant_message_icon' name='volume-medium-outline' data-audio-id='" + audioID + "'></ion-icon>"
-                        + "</div>");
+                    + "<div class='assistant_message_left'>"
+                    + "<img class='assistant_profile' src='/static/img/"+ response.img_name + "' alt='페르소나이미지'>"
+                    + response.message
+                    + "</div>"
+                    + "<ion-icon class='assistant_message_icon' name='volume-medium-outline' data-audio-id='" + audioID + "'></ion-icon>"
+                    + "</div>");
                     // simulateResponse(message);
                     hideLoading();
                     document.getElementById('score').innerHTML = response.score + '점';

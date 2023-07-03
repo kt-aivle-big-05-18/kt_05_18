@@ -1,4 +1,4 @@
-{% comment %} {% extends "base.html" %} {% endcomment %}
+{% extends "base.html" %}
 {% comment %} 설문 세부사항: 게시글 {% endcomment %}
 {% load static %}
 
@@ -8,23 +8,26 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static '/community/survey.css' %}">
 <link rel="stylesheet" href="{% static '/community/community.css' %}">
+{% comment %} <script src="{% static 'community/survey_detail.js' %}"></script> {% endcomment %}
 <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script> <!-- IONICONS -->
 
 
 <!-- 헤더 -->
-<div class="commu_head_wrapper">
+{% comment %} <div class="commu_head_wrapper">
     <div class="commu_head_menu_wrapper" style="display: inline;">
-        {% comment %} href는 아직 구현 안 됨 {% endcomment %}
         <a class="commu_head_menu"><ion-icon name="information-circle" class="commu_head_menu_icon"></ion-icon></a>
         <a href="{% url 'community:commu_list' %}" class="commu_head_menu"><ion-icon name="exit-outline" class="commu_head_menu_icon"></ion-icon></a>
       </div>
-  </div>
+  </div> {% endcomment %}
 
 <!-- 메인 -->
 <div class="survey_detail_wrapper">
+    <button class="back_button" onclick="window.history.back();">&lt</button>
     <div class="survey_detail_contain">
         <div class="survey_detail_head_wrapper">
-            <div class="survey_detail_head_title">설문 요청</div>
+            <div class="survey_detail_head_title">
+                설문 요청
+            </div>
             <div class="survey_detail_head_content">
                 <div>제목: {{ survey.title }}</div>
                 <div>내용: {{ survey.content }}</div>
@@ -36,21 +39,19 @@
                 <div class="survey_detail_conversation_title">{{ survey.author }} 님의 코칭 대화</div>
                 <div class="survey_detail_conversation_wrapper">
                     {% comment %} {{ message.name }} {% endcomment %}
-                    <ul>
-                        {% for message in messages %}
-                            {% if forloop.counter|divisibleby:2 %}
-                            <div class="survey_detail_conversation_list_coach">
-                                <img class="survey_detail_conversation_list_pic_coach" src="/static/img/young_male.png">
-                                <li class="survey_detail_conversation_list_txt_coach">{{ message.content }}</li>
-                            </div>
-                            {% else %}
-                            <div class="survey_detail_conversation_list_member">
-                                <img class="survey_detail_conversation_list_pic_member" src="/static/img/won.png">
-                                <li class="survey_detail_conversation_list_txt_member">{{ message.content }}</li>
-                            </div>
-                                {% endif %}
-                        {% endfor %}
-                    </ul>
+                    {% for message in messages %}
+                        {% if forloop.counter|divisibleby:2 %}
+                        <div class="survey_detail_conversation_list_coach">
+                            <img class="survey_detail_conversation_list_pic_coach" src="/static/img/young_male.png">
+                            <div class="survey_detail_conversation_list_txt_coach">{{ message.content }}</div>
+                        </div>
+                        {% else %}
+                        <div class="survey_detail_conversation_list_member">
+                            <img class="survey_detail_conversation_list_pic_member" src="/static/img/won.png">
+                            <div class="survey_detail_conversation_list_txt_member">{{ message.content }}</div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
                 </div>
             </div>
             <div class="survey_detail_checklist_contain">
@@ -72,20 +73,18 @@
                             <label for="comment">더 하고 싶은 말이 있다면 자유롭게 적어주세요</label>
                             <textarea name="comment" id="comment" class="form-control"></textarea>
                         </div>
+                        <button class="survey_detail_submit_btn" type="submit">설문완료</button>
                     </form>
                 </div>
-                <button class="survey_detail_submit_btn" type="submit">설문완료</button>
             </div>
         </div>
-        {% comment %} <button type="submit">Submit</button> {% endcomment %}
-    </form>
-
     {% comment %} <a href="{% url 'community:commu_list' %}">목록</a> {% endcomment %}
     </div>
 </div>
+
 <script>
     document.getElementById("ratingForm").addEventListener("submit", function(event) {
-        var checklist = document.getElementsByClassName("rating-group");
+        var checklist = document.getElementsByClassName("survey_detail_checklist_item_wrapper");
         for (var i = 0; i < checklist.length; i++) {
             var radios = checklist[i].querySelectorAll("input[type='radio']");
             var checked = false;

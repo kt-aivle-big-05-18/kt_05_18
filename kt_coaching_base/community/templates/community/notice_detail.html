@@ -1,5 +1,5 @@
+{% extends 'base.html' %}
 {% comment %} 공지사항 세부사항: 게시글 {% endcomment %}
-{% comment %} {% extends 'base.html' %} {% endcomment %}
 
 {% load static %}
 {% block content %}
@@ -11,18 +11,18 @@
 <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script> <!-- IONICONS -->
 
 <!-- 헤더 -->
-<div class="commu_head_wrapper">
+{% comment %} <div class="commu_head_wrapper">
     <div class="commu_head_menu_wrapper" style="display: inline;">
-        {% comment %} href는 아직 구현 안 됨 {% endcomment %}
         <a class="commu_head_menu"><ion-icon name="information-circle" class="commu_head_menu_icon"></ion-icon></a>
         <a href="{% url 'community:commu_list' %}" class="commu_head_menu"><ion-icon name="exit-outline" class="commu_head_menu_icon"></ion-icon></a>
       </div>
-</div>
+</div> {% endcomment %}
 
 <!-- 메인 -->
 <div class="notice_detail_wrapper">
     <div class="notice_detail_contain">
         <div class="notice_detail_title">공지사항</div>
+        <button class="back_button" onclick="window.history.back();">&lt</button>
         <!-- 공지사항 상세 -->
         <div class="notice_detail_content">
             <table class="table" border="0" width="100%" height="500">

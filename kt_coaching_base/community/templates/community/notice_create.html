@@ -1,8 +1,8 @@
+{% extends "base.html" %}
 {% comment %} 공지 작성 페이지 {% endcomment %}
-{% comment %} {% extends "base.html" %} {% endcomment %}
 
 {% load static %}
-
+{% block content %}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -12,18 +12,18 @@
 <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script> <!-- IONICONS -->
 
 <!-- 헤더 -->
-<div class="commu_head_wrapper">
+{% comment %} <div class="commu_head_wrapper">
     <div class="commu_head_menu_wrapper" style="display: inline;">
-        {% comment %} href는 아직 구현 안 됨 {% endcomment %}
         <a href="{% url 'community:commu_list' %}" class="commu_head_menu"><ion-icon name="information-circle" class="commu_head_menu_icon"></ion-icon></a>
         <a href="{% url 'community:commu_list' %}" class="commu_head_menu"><ion-icon name="exit-outline" class="commu_head_menu_icon"></ion-icon></a>
     </div>
-</div>
+</div> {% endcomment %}
 
 <!-- 메인 -->
 <div class="notice_create_wrapper">
     <div class="notice_create_contain">
         <div class="notice_create_title">공지사항 작성</div>
+        <button class="back_button" onclick="window.history.back();">&lt</button>
         <div class="notice_create_content">
             <div class="notice_create_table">
                 <form method="POST" enctype="multipart/form-data">  <!-- enctype 속성 추가 -->
@@ -48,3 +48,4 @@
         </div>
     </div>
 </div>
+{% endblock %}
