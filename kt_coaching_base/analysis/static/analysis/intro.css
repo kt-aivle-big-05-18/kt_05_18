@@ -1,11 +1,14 @@
 .ana_int_wrapper{
+    /* position: fixed; */
     width: 98.9vw;
-    height: 120vh;
+    height: calc(100vh - 92px);
+    /* top: 92px; */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     /* background-color: aqua; */
+    margin-top: 5px;
 }
 
 .ana_int_contain{
@@ -13,7 +16,7 @@
 }
 
 .ana_int_title{
-    font-weight:900;
+    font-weight:800;
     font-size: 22px;
     margin-left: 20px;
 }
@@ -25,13 +28,13 @@
     border: 2px solid #B0DEE1;
     border-radius: 10px;
     padding: 20px 20px;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .ana_int_content_left{
-    font-weight: 600;
-    font-size: 16px;
-    line-height : 2.0;
+    font-weight: 500;
+    font-size: 15px;
+    /* line-height : 2.0; */
     background-color: #F7F7F7;
     border-radius: 20px;
     padding: 30px;
@@ -43,9 +46,9 @@
     border: 2px solid #828282;
     border-collapse: collapse;
     background-color: white;
-    margin: 20px 0px;
-    font-weight: 500;
-    font-size: 14px;
+    margin: 10px 0px;
+    font-weight: 600;
+    font-size: 12px;
 }
 
 .ana_int_content_left th{
@@ -84,7 +87,7 @@
 }
 
 .go_detail{
-    margin-top: 20px;
+    margin-top: 10px;
     background-color: rgb(232, 232, 232);
     color: black;
     padding: 10px 15px;
