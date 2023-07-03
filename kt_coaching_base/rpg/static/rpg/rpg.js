@@ -81,6 +81,7 @@ $(document).ready(function () {
         var userInput = $("#user-input").val();
         if (userInput !== "") {
             chatContainer.append("<div class='user_message'>"
+            // + "<img id='loadingModal' class='loading_img' src='/static/img/loading_icon.gif' alt='로딩이미지'>"
             + userInput
             + "<img class='user_profile' src='/static/img/default.png' alt='사용자이미지'>"
             + "</div>");
@@ -297,9 +298,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+// ============================ 로딩 아이콘 =====================
+
 // 로딩 완료 후 로딩 창 숨김
 window.addEventListener('load', function () {
-    var loadingOverlay = document.querySelector('.loading-overlay');
+    var loadingOverlay = document.querySelector('.loading_img');
     loadingOverlay.style.display = 'none';
 });
 
