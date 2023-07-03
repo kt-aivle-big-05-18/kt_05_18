@@ -5,10 +5,12 @@
 {% block content %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0"></script>
-<script src="{% static 'css/myp_survey.js' %}"></script>
-
+<script src="{% static 'css/myp.js' %}"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="{% static 'css/myp_survey.css' %}">
 
+<!-- 메인 화면 -->
 <h1>대화 내역 및 분석결과</h1>
 <button class="back_button" onclick="window.history.back();">&lt</button>
 <div class="content-container">
@@ -21,8 +23,45 @@
         
         <div class="box_result1">
             {% for persona in personas %}
+                <!-- 모달 -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">설문 요청</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">
+                                {% if persona.shared %}
+                                <form action="{% url 'mypage:stop_sharing' persona.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="persona_id" value="{{ persona.id }}">
+                                    <button type="submit">공유 중지</button>
+                                </form>
+                                {% else %}
+                                <form action="{% url 'mypage:share_persona' persona.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="persona_id" value="{{ persona.id }}">
+                                    <input type="text" name="title" placeholder="제목">
+                                    <textarea name="content" placeholder="내용"></textarea>
+                                    <button type="submit">공유 시작</button>
+                                </form>
+                                {% endif %}
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        {% comment %} <button type="button" class="btn btn-primary">Save changes</button> {% endcomment %}
+                        </div>
+                    </div>
+                    </div>
+                </div>
                 <div id="page{{ persona.id }}" style="display: none;">
-                    <h2 class="talk-info-header">{{ persona.department }} - 경력{{ persona.career }}년차 - {{ persona.rank }}</h2>
+                    <div class="box_result1_title">
+                        <div class="talk-info-header">{{ persona.department }} - 경력{{ persona.career }}년차 - {{ persona.rank }}</div>
+                        <button class="signup_content_detail_person_info_btn" type="button" id="add_feed" data-toggle="modal" data-target="#exampleModal"> 설문요청하기 </button>        
+                    </div>
                     <div class="talk-info">
                         {% for message in messages %}
                             {% if message.persona.id == persona.id %}
