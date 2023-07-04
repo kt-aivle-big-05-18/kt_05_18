@@ -203,7 +203,9 @@ def rpg(request):
         request.session["analysis_qf"] = 1
         message = request.POST.get("message")# 사용자가 입력한 한국어 메세지
         # 번역된 사용자 입력 메세지를 messages에 추가
-        request.session.get('messages').append({"role": "user", "content": translate(message)})
+        # request.session.get('messages').append({"role": "user", "content": translate(message)})
+        # 번역 없이 messages에 추가
+        request.session.get('messages').append({"role": "user", "content": message})
         count = request.session.get("count") # url 경로 저장을 위한 대화 카운트 설정
         user_voice_url = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.webm'.format(p_id, count))
         wav_voice_url = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.wav'.format(p_id, count))
@@ -255,7 +257,10 @@ def rpg(request):
         # 대화마다 역할 깨지지 않게 하기 위한 조치
         tran_message = request.POST.get("message") +'. '+ '당신은 ' + request.session['topic'] + '라는 것을 잊지마세요. 자기소개는 하지말고 3문장이내로 대답해주세요.'
         test = request.session.get('messages')
-        test[-1]['content'] = translate(tran_message)
+        # 번역해서 추가
+        # test[-1]['content'] = translate(tran_message)
+        # 번역 안하고 추가
+        test[-1]['content'] = tran_message
         
         # OpenAI의 챗봇 API에 메시지 리스트를 전달하고 응답을 받아오기
         response = openai.ChatCompletion.create(
@@ -263,9 +268,13 @@ def rpg(request):
             messages=test
         )
         
-        # 번역된 챗봇의 메시지를 메시지 리스트에 추가
-        request.session.get('messages').append({"role": "assistant", "content": retranslate(response.choices[0].message.content)})
-        trans_ = retranslate(response.choices[0].message.content) # 한국어 번역한 chatgpt 답변 메세지
+        # # 번역된 챗봇의 메시지를 메시지 리스트에 추가
+        # request.session.get('messages').append({"role": "assistant", "content": retranslate(response.choices[0].message.content)})
+        # trans_ = retranslate(response.choices[0].message.content) # 한국어 번역한 chatgpt 답변 메세지
+        
+        # 번역 없이 챗봇의 메시지를 메시지 리스트에 추가
+        request.session.get('messages').append({"role": "assistant", "content": response.choices[0].message.content})
+        trans_ = response.choices[0].message.content
         
         voice_select = request.session.get('voice')  # 선택한 음성 옵션 가져오기
         if voice_select=='ko-KR-Neural2-A' or voice_select=='ko-KR-Neural2-B' or voice_select=='ko-KR-Wavenet-B':
