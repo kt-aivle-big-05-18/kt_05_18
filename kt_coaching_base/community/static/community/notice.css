@@ -151,6 +151,15 @@ body{
     border: 2px solid #D2D2D2;
 }
 
+.notice_create_input_title{
+    width: 100%;
+    height: 40px;
+}
+.notice_create_input_content{
+    width: 100%;
+    height: 100%;
+}
+
 .notice_create_content_submit{
     text-decoration: none;
     color: white;
