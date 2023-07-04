@@ -244,11 +244,11 @@
             <form method="post" action="{% url 'mypage:update_profile' %}">
                 {% csrf_token %}
                 <div class="info_box">
-                    <div>부서</div>
+                    <div>직군</div>
                     <div class="options-container">
                         <span>{{ user.department }}</span> 
                         <select name="department" id="department" required>
-                            <option value="none" selected>부서를 선택하세요</option>
+                            <option value="none" selected>직군을 선택하세요</option>
                             <option value="B2C">B2C</option>
                             <option value="네트워크">네트워크</option>
                             <option value="B2B">B2B</option>

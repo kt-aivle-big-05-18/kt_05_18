@@ -85,8 +85,8 @@ $(document).ready(function () {
             + userInput
             + "<img class='user_profile' src='/static/img/default.png' alt='사용자이미지'>"
             + "</div>");
-            scrollToBottom();
             showLoading();
+            scrollToBottom();
 
             // if (userInput !== "") {
             //     let userImageSrc = document.getElementById("myp_info_image").src;
@@ -115,7 +115,7 @@ $(document).ready(function () {
                     + "</div>");
                     // simulateResponse(message);
                     hideLoading();
-                    document.getElementById('score').innerHTML = response.score + '점';
+                    document.getElementById('grow_count').innerHTML = "G:"+response.grow_count[0]+" R:"+response.grow_count[1]+" O:"+response.grow_count[2]+" W:"+response.grow_count[3];
 
                     var audioElement = document.createElement("audio");
                     audioElement.src = "data:audio/wav;base64," + response.voice;

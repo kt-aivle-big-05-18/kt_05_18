@@ -102,7 +102,7 @@ def intro (request):
         # 읽어온 DataFrame을 df 아래에 붙임
         df = pd.concat([df, df_temp], ignore_index=True)
     
-    request.session["관점전환"] = 0
+    request.session["관점변화"] = 0
     request.session["부정"] = 0
     request.session["인정"] = 0
     request.session["존중"] = 0
@@ -112,7 +112,7 @@ def intro (request):
         request.session[df['predict'][i]] += 1
         print( df['predict'][i])
         
-    perspective     = round((request.session.get("관점전환")/l) * 100, 0)
+    perspective     = round((request.session.get("관점변화")/l) * 100, 0)
     negation        = round((request.session.get("부정")/l) * 100, 0)
     recognition     = round((request.session.get("인정")/l) * 100, 0)
     respect         = round((request.session.get("존중")/l) * 100, 0)
@@ -120,7 +120,7 @@ def intro (request):
     pie_counts = [
         {"name": "인정", "value": recognition},
         {"name": "존중", "value": respect},
-        {"name": "관점전환", "value": perspective},
+        {"name": "관점변화", "value": perspective},
         {"name": "판단", "value": judgment},
         {"name": "부정", "value": negation},
     ]
