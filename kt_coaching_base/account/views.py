@@ -191,16 +191,15 @@ def check_nickname(request):
 
 def find_userid(request):
     if request.method == "POST":
-        username = request.POST.get('username')
-        nickname = request.POST.get('nickname')
+        email = request.POST.get('email')
         
         # 이메일로 아이디를 보내는 로직
         try:
-            account = Account.objects.get(username=username, nickname=nickname)
+            account = Account.objects.get(email=email)
             to_email = account.email
             mail_subject = '아이디 찾기 결과'
             message = render_to_string('account/smtp_email.html', {
-                        'nickname': account.nickname,
+                        'username': account.username,
                         'userid' : account.userid
                         })
         
@@ -216,11 +215,11 @@ def find_userid(request):
 def password_reset_request(request):
     if request.method == 'POST':
         userid = request.POST['userid']
-        username = request.POST['username']
-        nickname = request.POST['nickname']
+        email = request.POST['email']
+        
         Account = get_user_model()
         try:
-            account = Account.objects.get(userid=userid, username=username, nickname=nickname)
+            account = Account.objects.get(userid=userid, email=email)
         except Account.DoesNotExist:
             return render(request, 'account/password_reset_request.html', {'account_not_found': True})
         
@@ -236,7 +235,7 @@ def password_reset_request(request):
         # Render password reset email template
         email_subject = '비밀번호 재설정'
         email_body = render_to_string('account/password_reset_email.html', {
-            "userid": userid,
+            "username" : account.username,
             'reset_url': reset_url,
         })
         
