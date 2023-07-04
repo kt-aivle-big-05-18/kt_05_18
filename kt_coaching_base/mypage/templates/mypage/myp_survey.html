@@ -11,8 +11,7 @@
 <link rel="stylesheet" href="{% static 'css/myp_survey.css' %}">
 
 <div id="surveyModal" class="modal">
-    <div class="modal-content" id="surveyModalContent">
-    </div>
+    <div class="modal-content" id="surveyModalContent"></div>
 </div>
 
 <!-- 메인 화면 -->
@@ -30,22 +29,25 @@
             {% for persona in personas %}
                 <div id="page{{ persona.id }}" style="display: none;">
                     <div class="box_result1_title">
-                        <div class="talk-info-header">{{ persona.department }} - 경력{{ persona.career }}년차 - {{ persona.rank }}</div>
+                        <div class="talk-info-header">
+                            <h5 style="font-size: 17px; font-weight: 600;">{{ persona.topic_label }}</h5>
+                            {{ persona.department }} - {{ persona.rank }} - {{ persona.age }}세 - {{ persona.gender }} - 경력{{ persona.career }}년차
+                        </div>
                         <button class="survey_request_btn" onclick="openSurveyModal(this)" data-persona-id="{{ persona.id }}" data-shared="{{ persona.shared }}">설문요청하기</button>
                     </div>
                     
                     <div class="talk-info">
-                        {% for message in messages %}
+                        {% for content in persona.message_set.all %}
 
                             {% if forloop.counter|divisibleby:2 %}
                             <div class="survey_detail_conversation_list_coach">
                                 <img class="survey_detail_conversation_list_pic_coach" src="/static/img/ai_icon.png">
-                                <div class="survey_detail_conversation_list_txt_coach">{{ message.content }}</div>
+                                <div class="survey_detail_conversation_list_txt_coach">{{ content.content }}</div>
                             </div>
                             {% else %}
                             <div class="survey_detail_conversation_list_member">
                                 <img class="survey_detail_conversation_list_pic_member" src="/static/img/default.png">
-                                <div class="survey_detail_conversation_list_txt_member">{{ message.content }}</div>
+                                <div class="survey_detail_conversation_list_txt_member">{{ content.content }}</div>
                             </div>
                             {% endif %}
                         {% endfor %}
@@ -75,10 +77,10 @@
             </div>
             <div class="survey_result_wrapper" id="result3">
                 <div class="survey_result_summary">
-                    <p class = "survey_result_wrapper_title" style = "font-size: 22px; font-weight: 700; text-align: center;">GROW 코칭 모델기반 설문 결과</p>
-                    <p style = "font-size: 15px; font-weight: 600; text-align: center;">코칭이란 과거의 실수 보다는 미래의 가능성에 초점을 맞추는 것입니다.</p>
-                    <p style = "font-size: 15px; font-weight: 600; text-align: center;">GROW 모델은 Goal, Reality, Options, Will의 약자입니다.</p>
-                    <p style = "font-size: 14px; font-weight: 600; text-align: center;">
+                    <p class = "survey_result_wrapper_title" style = "font-size: 18px; font-weight: 700; text-align: center;">GROW 코칭 모델기반 설문 결과</p>
+                    <p style = "font-size: 13px; font-weight: 600; text-align: center;">코칭이란 과거의 실수 보다는 미래의 가능성에 초점을 맞추는 것입니다.</p>
+                    <p style = "font-size: 13px; font-weight: 600; text-align: center;">GROW 모델은 Goal, Reality, Options, Will의 약자입니다.</p>
+                    <p style = "font-size: 13px; font-weight: 600; text-align: center;">
                         · Goal : 목표 - 단기 및 장기 목표 정의<br>
                         · Reality : 현실 - 현재 상황 및 문제 탐색<br>
                         · Option : 옵션 - 해결 가능한 옵션 및 평가<br>
@@ -380,15 +382,16 @@
         pages.forEach(page => {
             page.style.display = 'none';
         });
-        menus.forEach(menu => {
+        menus.forEach(menu => { 
             menu.classList.remove('selected');
         });
 
         const currentPage = document.getElementById(`page${page}`);
-        const currentMenu = document.querySelector(`.box_menu > div[onclick="changePage(${page})"]`);
+        const currentMenu = document.querySelector(`.box_menu > div:nth-child(${page})`);
+       /* const currentMenu = document.querySelector(`.box_menu > div[onclick="changePage(${page})"]`);*/
 
         currentPage.style.display = 'block';
-        //currentMenu.classList.add('selected');
+        currentMenu.classList.add('selected');  /*------------------여기 주석 품 ----------------*/
 
          $.ajax({
                 url: "/mypage/graph_draw/",

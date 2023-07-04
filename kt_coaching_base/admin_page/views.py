@@ -105,10 +105,6 @@ def admin_user(request):
     # 시간대별 로그인 횟수를 저장할 리스트 변수
     hour_counts = [0] * 24  # 0부터 23까지의 인덱스를 가진 리스트
 
-   # 요일별 로그인 횟수 추출 결과가 비어있지 않은 경우 처리
-    if login_counts_by_weekday.exists():
-        for entry in login_counts_by_weekday:
-            weekday_counts[entry['weekday']] = entry['count']
     for i in range(len(weekday_counts)):
         weekday_counts[i] = { "weekday" : weekday_mapping[i], 'value' : weekday_counts[i]}
     print(weekday_counts)
