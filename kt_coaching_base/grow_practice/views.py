@@ -43,19 +43,23 @@ def grow(request):
     # HTTP 요청이 POST 방식일 경우
     if request.method == "POST":
         message = request.POST.get("message") # 사용자가 입력한 한국어 메세지
-        print(message)
-        
+        with open("grow_practice/grow_ex.txt", "r") as file:
+            pre_grow = file.read()
+        message = [{"role": "user", "content": pre_grow},{"role": "user", "content":message}]
+        # print(message)
+        # message = translate(message)
+        # print(message)
         # 번역된 사용자 입력 메세지를 messages에 추가
         # request.session.get('messages').append({"role": "user", "content": message})
-        
         # OpenAI의 챗봇 API에 메시지 리스트를 전달하고 응답을 받아오기
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
-            messages= [{"role": "user", "content": message}]
+            messages= message
         )
-        print(response.choices[0].message.content)
-        print(response)
+        # print(response.choices[0].message.content)
+        # print(response)
         # trans_ = retranslate(response.choices[0].message.content) # 한국어 번역한 chatgpt 답변 메세지
+        # print(trans_)
         # request.session.get('messages').append({"role": "assistant", "content": response.choices[0].message.content})
         data = { # json형식으로 respone 해줄 데이터
             'message' : response.choices[0].message.content
@@ -129,3 +133,53 @@ def transcribe_audio(file_path):
         transcript += result.alternatives[0].transcript + " "
 
     return transcript
+
+
+#----------------------------------------------------------------------------------------------------------------------#
+# 네이버 번역 관련
+#----------------------------------------------------------------------------------------------------------------------#
+
+def translate(text):
+    # 네이버 클라우드 플랫폼에서 발급받은 ID와 Secret을 입력
+    client_id = 'k932basti3'
+    client_secret = 'PWJGrQ1Wa6sdkX1Dy69sideTenzGQGominAx3NMW'
+    # 파파고 번역 API를 사용하기 위한 설정
+    # 한국어(ko)를 영어(en)로 번역하도록 설정
+    data = {'source':'ko', 'target':'en', 'text': text}
+    url = "https://naveropenapi.apigw.ntruss.com/nmt/v1/translation"
+    
+    # 네이버 API를 사용하기 위해 요청 헤더에 ID와 Secret을 추가
+    headers = {
+        "X-NCP-APIGW-API-KEY-ID": client_id,
+        "X-NCP-APIGW-API-KEY": client_secret
+    }
+    
+    # 파파고 API에 POST 요청을 보내고 응답을 받기
+    response = requests.post(url, headers=headers, data=data)
+    
+    # 응답을 JSON 형식으로 파싱하고 번역된 텍스트를 반환
+    res = json.loads(response.text)
+    return res['message']['result']['translatedText']
+
+def retranslate(text):
+    # 네이버 클라우드 플랫폼에서 발급받은 ID와 Secret을 입력
+    client_id = 'k932basti3'
+    client_secret = 'PWJGrQ1Wa6sdkX1Dy69sideTenzGQGominAx3NMW'
+    
+    # 파파고 번역 API를 사용하기 위한 설정
+    # 영어(en)를 한국어(ko)로 번역하도록 설정합니다. 공손한 어투를 사용하도록 설정
+    data = {'source':'en', 'target':'ko', 'text': text, 'honorific':'true'}
+    url = "https://naveropenapi.apigw.ntruss.com/nmt/v1/translation"
+    
+    # 네이버 API를 사용하기 위해 요청 헤더에 ID와 Secret을 추가
+    headers = {
+        "X-NCP-APIGW-API-KEY-ID": client_id,
+        "X-NCP-APIGW-API-KEY": client_secret
+    }
+    
+    # 파파고 API에 POST 요청을 보내고 응답을 받기
+    response = requests.post(url, headers=headers, data=data)
+    
+    # 응답을 JSON 형식으로 파싱하고 번역된 텍스트를 반환
+    res = json.loads(response.text)
+    return res['message']['result']['translatedText']
