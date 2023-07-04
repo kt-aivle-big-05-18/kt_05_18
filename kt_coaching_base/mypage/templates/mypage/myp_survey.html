@@ -159,15 +159,16 @@
         pages.forEach(page => {
             page.style.display = 'none';
         });
-        menus.forEach(menu => {
+        menus.forEach(menu => { 
             menu.classList.remove('selected');
         });
 
         const currentPage = document.getElementById(`page${page}`);
-        const currentMenu = document.querySelector(`.box_menu > div[onclick="changePage(${page})"]`);
+        const currentMenu = document.querySelector(`.box_menu > div:nth-child(${page})`);
+       /* const currentMenu = document.querySelector(`.box_menu > div[onclick="changePage(${page})"]`);*/
 
         currentPage.style.display = 'block';
-        //currentMenu.classList.add('selected');
+        currentMenu.classList.add('selected');  /*------------------여기 주석 품 ----------------*/
 
         console.log(p_id + "     ////123123123123123123")
          $.ajax({

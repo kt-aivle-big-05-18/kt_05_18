@@ -143,7 +143,7 @@ h3 {
 
 .menu-item {    
     cursor: pointer;
-    padding: 5px 10px;
+    padding: 10px 15px;
     margin-top: 30px;
     font-size: 18px;
     font-weight: 600;
@@ -159,8 +159,8 @@ h3 {
     background-color: #D9D9D9;
 }
 
-.selected {
-    background-color: #CADDF9;
+.menu-item.selected {
+    background-color: #9EC2F6;
 }
 
 .back_button {
