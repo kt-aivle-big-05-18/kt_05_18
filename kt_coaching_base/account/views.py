@@ -191,9 +191,8 @@ def check_nickname(request):
 
 def find_userid(request):
     if request.method == "POST":
-        # username = request.POST.get('username')
-        # nickname = request.POST.get('nickname')
         email = request.POST.get('email')
+        
         # 이메일로 아이디를 보내는 로직
         try:
             account = Account.objects.get(email=email)
