@@ -15,18 +15,14 @@
       {% if email_sent %}
         <p>아이디 찾기 요청 메일을 보냈습니다.</p>
       {% elif account_not_found %}
-        <p>해당 계정이 없습니다.</p>
+        <p>해당 이메일에 해당하는 계정이 없습니다.</p>
       {% else %}
         <form method="post">
           {% csrf_token %}
           <div class="find_userid_box_content_input">
             <div class="find_userid_box_content_name">
-              <label for="username">유저 이름</label>
-              <input type="text" id="username" name="username" required>
-            </div>
-            <div class="find_userid_box_content_nickname">
-              <label for="nickname">닉네임</label>
-              <input type="text" id="nickname" name="nickname" required>
+              <label for="email">이메일</label>
+              <input type="text" id="email" name="email" required>
             </div>
             <input class="find_userid_box_content_submit" type="submit" value="아이디 찾기">
           </div>
