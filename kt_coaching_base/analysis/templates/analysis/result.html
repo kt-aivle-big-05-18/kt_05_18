@@ -17,6 +17,28 @@
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">설문 요청 방법</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <img class="person_info" src="/static/img/survey_request.png" alt="개인정보처리방침">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          {% comment %} <button type="button" class="btn btn-primary">Save changes</button> {% endcomment %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Main -->
 <div class="analysis_wrapper">    
     <div class="analysis_contain">
         <div class="analysis_title">
@@ -29,7 +51,7 @@
             </div>
             <div class="analysis_title_btn_wrapper">
                 {% comment %} <button class="analysis_title_btn" id="survey_popup" type="button" id="add_feed" data-toggle="modal" data-target="#exampleModal"> 설문 요청하기 </button> {% endcomment %}
-                <a class="analysis_title_btn" href="{% url 'mypage:myp_survey'%}">설문 요청하기</a>
+                <a class="analysis_title_btn" id="add_feed" data-toggle="modal" data-target="#exampleModal">설문 요청하기</a>
             </div>
         </div>
         <div class="analysis_content">
@@ -79,7 +101,7 @@
                             <div class="analysis_content_result_graph_box_btn">
                                 <button class="analysis_content_result_graph_box_btn_idx" id="recognition_btn"> 인정 </button>
                                 <button class="analysis_content_result_graph_box_btn_idx" id="respect_btn"> 존중 </button>
-                                <button class="analysis_content_result_graph_box_btn_idx" id="perspective_btn" selected> 관점전환 </button>
+                                <button class="analysis_content_result_graph_box_btn_idx" id="perspective_btn" selected> 관점변화 </button>
                                 <button class="analysis_content_result_graph_box_btn_idx" id="judgment_btn"> 판단 </button>
                                 <button class="analysis_content_result_graph_box_btn_idx" id="mood_btn"> 부정 </button>
                             </div>
@@ -115,9 +137,9 @@
                         {% endif %}
                     {% endfor %}
                      하신 것으로 나타납니다. 대화상대의 동의를 구하며 심리적으로 지지하고 도움을 주는 것은 코칭 대화에서 중요한 요소입니다.<br>
-                     (관점전환) 대화상대가 기존과 다른 관점에서 해결책을 찾도록 돕는 유형의 질문을 
+                     (관점변화) 대화상대가 기존과 다른 관점에서 해결책을 찾도록 돕는 유형의 질문을 
                      {% for item in pie_chart.pie_word %}
-                         {% if item.name == "관점전환" %}
+                         {% if item.name == "관점변화" %}
                              {% if item.value < 20 %}
                              <span style="color: #F15F5F;">다소 적게</span>
                              {% elif item.value >= 20 and item.value < 30 %}

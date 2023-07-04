@@ -132,18 +132,19 @@ body{
     align-items: center;
     font-weight: 500;
     font-size: 17px;
-	color: black;
-	border: 2px solid #D3D3D3;
-	background-color: #F1F1F1;
-	border-radius: 20px;
-	padding: 20px;
-	margin-top: 35px;
+    color: black;
+    border: 2px solid #D3D3D3;
+    background-color: #F1F1F1;
+    border-radius: 20px;
+    padding: 20px;
+    margin-top: 35px;
 }
 
 .assistant_message_left{
     display: flex;
     flex-direction: row;
     align-items: center;
+    width: 85%;
 }
 
 .assistant_profile{
