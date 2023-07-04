@@ -30,24 +30,24 @@
                 <div id="page{{ persona.id }}" style="display: none;">
                     <div class="box_result1_title">
                         <div class="talk-info-header">
-                            < {{ persona.topic_label }} > <br>
+                            <h5 style="font-size: 17px; font-weight: 600;">{{ persona.topic_label }}</h5>
                             {{ persona.department }} - {{ persona.rank }} - {{ persona.age }}세 - {{ persona.gender }} - 경력{{ persona.career }}년차
                         </div>
                         <button class="survey_request_btn" onclick="openSurveyModal(this)" data-persona-id="{{ persona.id }}" data-shared="{{ persona.shared }}">설문요청하기</button>
                     </div>
                     
                     <div class="talk-info">
-                        {% for message in messages %}
+                        {% for content in persona.message_set.all %}
 
                             {% if forloop.counter|divisibleby:2 %}
                             <div class="survey_detail_conversation_list_coach">
                                 <img class="survey_detail_conversation_list_pic_coach" src="/static/img/ai_icon.png">
-                                <div class="survey_detail_conversation_list_txt_coach">{{ message.content }}</div>
+                                <div class="survey_detail_conversation_list_txt_coach">{{ content.content }}</div>
                             </div>
                             {% else %}
                             <div class="survey_detail_conversation_list_member">
                                 <img class="survey_detail_conversation_list_pic_member" src="/static/img/default.png">
-                                <div class="survey_detail_conversation_list_txt_member">{{ message.content }}</div>
+                                <div class="survey_detail_conversation_list_txt_member">{{ content.content }}</div>
                             </div>
                             {% endif %}
                         {% endfor %}

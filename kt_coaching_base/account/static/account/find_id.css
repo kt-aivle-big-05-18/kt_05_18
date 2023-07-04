@@ -29,7 +29,9 @@
     width: 300px;
     /* background-color: #D2D2D2; */
     margin-top: 30px;
+    margin-left: 15px;
 }
+
 
 .find_userid_box_content_input{
     display: flex;
@@ -40,7 +42,8 @@
 
 .find_userid_box_content_name{
     display: flex;
-    justify-content: space-between;
+    justify-content: inherit;
+    margin-right: 50px;
 }
 
 .find_userid_box_content_name input{
@@ -95,15 +98,16 @@
 
 
 
-.find_userpassw_box_content_name{
+/* .find_userpassw_box_content_email{
     margin-top: 15px;
 }
+
 .find_userpassw_box_content_name input{
     border: solid #D2D2D2 1px;
     padding: 5px;
     border-radius: 5px;
     margin-left: 21px;
-}
+} */
 
 
 
