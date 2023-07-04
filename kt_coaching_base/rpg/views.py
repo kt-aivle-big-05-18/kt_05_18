@@ -134,7 +134,7 @@ def persona(request):
             request.session['visited_persona'] = True
             request.session["persona_set"].append({
                                     "role" : "user",
-                                    "content" : "당신의 이름은 '홍길동'이먀, 당신은 {0}세인 {1} {2}직급의 {3} {4}인 직원입니다. 앞으로 3문장 이하로 대답합니다.".format(
+                                    "content" : "당신의 이름은 '홍길동'입니다. 당신은 {0}세인 {1} {2}직군의 {3}입니다. 당신은 {4}인 직원입니다. 당신은 3문장 이하로 대답합니다.".format(
                                         form.cleaned_data['age'], # 0 나이 - gpt
                                         form.cleaned_data['department'], # 2 직군 - gpt
                                         form.cleaned_data['rank'], # 3 직급 - gpt
@@ -144,7 +144,7 @@ def persona(request):
                                     })
             request.session["persona_set"].append({
                                     "role" : "assistant", 
-                                    "content" : "네! 이제부터 제 이름은 홍길동이고 저는 지금부터 {0}세인 {1} {2}직급의 {3}이며 {4}인 상담받는 직원입니다.".format(
+                                    "content" : "네! 이제부터 제 이름은 '홍길동'이고 저는 지금부터 {0}세인 {1} {2}직군의 {3}이며 {4}인 코칭받는 직원입니다.".format(
                                         form.cleaned_data['age'], # 0 나이 - gpt
                                         form.cleaned_data['gender'], # 1 성별 - gpt
                                         form.cleaned_data['department'], # 2 직군 - gpt
@@ -170,6 +170,7 @@ def persona(request):
                                         )
             request.session['age'] = form.cleaned_data['age']
             request.session['gender'] = form.cleaned_data['gender']
+            request.session['grow_count'] = [0,0,0,0,0]
             return redirect("rpg:rpg_start")
     else : # GET 방식인 경우
         # 폼 생성
@@ -195,20 +196,18 @@ def rpg(request):
     
     base_dir = settings.BASE_DIR # 기본 디렉터리 경로 불러오기
     p_id = request.session.get("persona_id")[0]["id"] # 채팅방 id 불러오기
-    print(p_id)
+    
     
     # HTTP 요청이 POST 방식일 경우
     if request.method == "POST":
         request.session["analysis_qf"] = 1
-        message = request.POST.get("message") # 사용자가 입력한 한국어 메세지
-        
+        message = request.POST.get("message")# 사용자가 입력한 한국어 메세지
         # 번역된 사용자 입력 메세지를 messages에 추가
         request.session.get('messages').append({"role": "user", "content": translate(message)})
         count = request.session.get("count") # url 경로 저장을 위한 대화 카운트 설정
         user_voice_url = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.webm'.format(p_id, count))
         wav_voice_url = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.wav'.format(p_id, count))
         convert_webm_to_wav(user_voice_url, wav_voice_url)
-        print(user_voice_url)
         
         # ----------------------------------- AI 전처리 / AI prediction ------------------------------------#
         m_df = classification_model(message, wav_voice_url)
@@ -219,19 +218,23 @@ def rpg(request):
         grow_df = grow_model(message)
         grow_df_url = os.path.join(base_dir, 'rpg/static/df_grow/{0}_{1}.csv'.format(p_id, count))
         grow_df.to_csv(grow_df_url, index=False)
-
         grow_info = "ETC"
         if grow_df["predict"][0] == "Goal":
             grow_info = "이 질문은 'Goal'에 해당합니다."
+            request.session["grow_count"][0]+=1
         elif grow_df["predict"][0] == "Reality":
             grow_info = "이 질문은 'Reality'에 해당합니다."
+            request.session["grow_count"][1]+=1
         elif grow_df["predict"][0] == "Options":
             grow_info = "이 질문은 'Options'에 해당합니다."
+            request.session["grow_count"][2]+=1
         elif grow_df["predict"][0] == "Will":
             grow_info = "이 질문은 'Will'에 해당합니다."
+            request.session["grow_count"][3]+=1
         else :
             grow_info = "이 질문은 'GROW' 중 어디에도 해당하지 않습니다."
-        
+            request.session["grow_count"][4]+=1
+            
         # 유저 메세지내용, 음성녹음 내용을 테이블에 저장
         user_message_obj = Message(
             name = request.user.nickname,
@@ -248,14 +251,20 @@ def rpg(request):
         
         request.session['score'] = score_count(p_id, request.user.nickname)
         request.session['scores'].append(request.session['score'])
+        
+        # 대화마다 역할 깨지지 않게 하기 위한 조치
+        tran_message = request.POST.get("message") +'. '+ '당신은 ' + request.session['topic'] + '라는 것을 잊지마세요. 자기소개는 하지말고 3문장이내로 대답해주세요.'
+        test = request.session.get('messages')
+        test[-1]['content'] = translate(tran_message)
+        
         # OpenAI의 챗봇 API에 메시지 리스트를 전달하고 응답을 받아오기
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
-            messages=request.session.get('messages')
+            messages=test
         )
         
         # 번역된 챗봇의 메시지를 메시지 리스트에 추가
-        request.session.get('messages').append({"role": "assistant", "content": response.choices[0].message.content})
+        request.session.get('messages').append({"role": "assistant", "content": retranslate(response.choices[0].message.content)})
         trans_ = retranslate(response.choices[0].message.content) # 한국어 번역한 chatgpt 답변 메세지
         
         voice_select = request.session.get('voice')  # 선택한 음성 옵션 가져오기
@@ -304,23 +313,21 @@ def rpg(request):
         elif gender == "여성":
             text_img += "female" + ".png"
         
-        print(text_img)
-        
-        
         data = { # json형식으로 respone 해줄 데이터
             'message' : trans_,
             'voice': encoded_voice,
             'path': "{0}_{1}.wav".format(p_id, count),
             'score' : "{0}".format(request.session.get('score')),
             'grow_info' : grow_info,
-            'img_name' : text_img
+            'img_name' : text_img,
+            'grow_count' : request.session.get('grow_count'),
         }
         request.session["count"] += 1 # 음성녹음 이름을 조합을 위한 count + 1
-        print('asdasdasdasdasd', grow_info)
         return JsonResponse(data)
     else :
         topic = request.session.get("topic")
         request.session["analysis_qf"] = 0
+        request.session["grow_count"] = [0,0,0,0,0]
         request.session['messages'] = request.session.get("persona_set") # 초기 패르소나 설정을 메세지에 추가하기
         return render(request, "rpg/rpg.html", {"topic":topic})
 
@@ -626,7 +633,6 @@ def score_count(p_id, nickname):
             score += 1
     
     f_score = int(round((score/(2*l)) * 100))
-    print(f_score)
     return f_score
     
 
@@ -657,5 +663,4 @@ def grow_model(new_sentence):
 
   final_result['sentence'] = new_sents['sentence']
   final_result['predict'] = np.vectorize(output_dic.get)(y_fin)
-  print(final_result)
   return final_result

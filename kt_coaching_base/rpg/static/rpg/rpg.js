@@ -115,7 +115,7 @@ $(document).ready(function () {
                     + "</div>");
                     // simulateResponse(message);
                     hideLoading();
-                    document.getElementById('score').innerHTML = response.score + '점';
+                    document.getElementById('grow_count').innerHTML = "G:"+response.grow_count[0]+" R:"+response.grow_count[1]+" O:"+response.grow_count[2]+" W:"+response.grow_count[3];
 
                     var audioElement = document.createElement("audio");
                     audioElement.src = "data:audio/wav;base64," + response.voice;
