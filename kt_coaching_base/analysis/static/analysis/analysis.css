@@ -7,6 +7,30 @@
     }
 }
 
+/* 모달창 */
+
+.modal-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .modal-dialog.modal-lg {
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    margin: 0;
+  }
+  
+  .modal-body {
+    text-align: center;
+  }
+  
+  .modal-body .person_info {
+    max-width: 100%;
+    height: auto;
+  }
+
 .h_r{
     margin-top: 5px;
     margin-left: 0;
@@ -84,7 +108,7 @@
 }
 
 .score{
-    font-size: 26px;
+    font-size: 30px;
     font-weight: 700;
     color:#0097FE
 }

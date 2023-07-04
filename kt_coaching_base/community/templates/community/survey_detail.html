@@ -61,11 +61,13 @@
                         {% csrf_token %}
                         {% for item in checklist %}
                         <div class="survey_detail_checklist_item_wrapper">
-                            <div class="survey_detail_checklist_item">{{ item }}</div>
+                            {% with index=forloop.counter %}
+                            <div class="survey_detail_checklist_item">{{index}}. {{ item }}</div>
                             <input type="radio" name="rating_{{ forloop.counter0 }}" value="1">매우 그렇지 않다
                             <input type="radio" name="rating_{{ forloop.counter0 }}" value="2">그렇지 않다
                             <input type="radio" name="rating_{{ forloop.counter0 }}" value="3">그렇다
                             <input type="radio" name="rating_{{ forloop.counter0 }}" value="4">매우 그렇다
+                            {% endwith %}
                         </div>
                         <hr class="survey_detail_checklist_item_hr">
                         {% endfor %}
