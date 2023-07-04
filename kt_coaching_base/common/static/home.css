@@ -139,16 +139,41 @@ html {
 
 /* ============================================================ */
 /* 서비스 소개 */
-.intro_container{
+
+.navBtn {
+    position: absolute;
+    z-index: 1;
+    background-color: #002c4d;
+    border: none;
+    font-size: 16px;
+    color: #FFFFFF;
+    padding: 6px 12px;
+    cursor: pointer;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .navBtn:hover {
+    background-color: #9EC2F6;
+  }
+  
+  #prevBtn {
+    right: 270px;
+  }
+  
+  #nextBtn {
+    left: 270px;
+  }
+  
+  .intro_container {
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
     align-items: center;
     height: 100vh;
     background-color: #E9F2FF;
-}
-
-.intro_title{
+  }
+  
+  .intro_title {
     display: flex;
     align-items: center;
     width: 100%;
@@ -157,32 +182,35 @@ html {
     font-weight: 600;
     font-size: 20px;
     height: 90px;
-}
-
-.intro_title_text{
+  }
+  
+  .intro_title_text {
     padding: 40px;
-}
-
-.intro_content{
-    display: flex;
+  }
+  
+  .intro_content {
+    display: grid;
     flex-direction: row;
-    /* justify-content: space-evenly; */
     height: 100%;
     align-items: center;
-}
-
-.intro_content_box{
-    display: flex;
-    flex-direction: column;
+    position: relative;
+  }
+  
+  .intro_content_box {
+    display: block;
+    flex-direction: row;
+    justify-content: center;
     align-items: center;
-    width: 350px;
+    width: 430px;
     height: 420px;
-    margin: 0px 30px;
+    margin: 0px 0px;
     border-radius: 10px;
     background-color: white;
-}
-
-.intro_content_img_box{
+    position: absolute;
+    transform: translateX(-50%);
+  }
+  
+  .intro_content_img_box {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -191,51 +219,53 @@ html {
     background-color: #E9E9E9;
     border-radius: 10px;
     margin-top: 20px;
-}
-
-.intro_content_img{
+    margin-left: 65px;
+  }
+  
+  .intro_content_img {
     width: 290px;
     height: 190px;
     border-radius: 10px;
-}
-
-.intro_content_txt_box{
+  }
+  
+  .intro_content_txt_box {
     margin-top: 20px;
+    margin-left: 65px;
     width: 280px;
     font-weight: 500;
     font-size: 15px;
-}
-
-.intro_content_txt_title{
+  }
+  
+  .intro_content_txt_title {
     font-weight: 700;
     font-size: 18px;
-}
-
-.intro_bottom{
+  }
+  
+  .intro_bottom {
     display: flex;
     text-align: center;
-}
-
-.intro_bottom_go{
-    /* margin-top: 10px; */
+  }
+  
+  .intro_bottom_go {
     text-decoration: none;
     font-size: large;
     font-weight: 600;
     color: black;
     opacity: 0.6;
-}
-
-.intro_bottom_go:hover{
+  }
+  
+  .intro_bottom_go:hover {
     opacity: 1.0;
-}
-
-.intro_bottom_arrow{
+  }
+  
+  .intro_bottom_arrow {
     margin-top: 10px;
     margin-left: 13px;
     margin-bottom: 15px;
     width: 100px;
     height: 40px;
-}
+  }
+  
 
 /* ====================================================== */
 /* -------- how to use --------- */

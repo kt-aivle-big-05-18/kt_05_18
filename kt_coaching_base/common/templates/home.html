@@ -1,9 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 {% load static %}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{% static 'home.js' %}" defer></script>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <div class="go-home-button" id="goHomeButton">처음으로</div>
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -117,12 +116,15 @@
         </div>
     </div>
 
-    <!-- 서비스소개 -->
+
+    <!-- 서비스 소개 -->
     <div id="home_intro" class="intro_container"> <!-- 2번째 스크롤 -->
         <div class="intro_title">
             <div class="intro_title_text"> Introduction to Services</div>
         </div>
         <div class="intro_content">
+            <button id="prevBtn" class="navBtn">이전</button>
+            <button id="nextBtn" class="navBtn">다음</button>
             <div class="intro_content_box">
                 <div class="intro_content_img_box">
                     <img class="intro_content_img" src="/static/image/chatbot.png" alt="챗봇">
@@ -134,7 +136,7 @@
                     코칭 대상을 확보하기 어려운 문제를 해결
                 </div>
             </div>
-            <div class="intro_content_box">
+            <div class="intro_content_box" style="display:none;">
                 <div class="intro_content_img_box">
                     <img class="intro_content_img" src="/static/image/voice.png" alt="음성인식">
                 </div>
@@ -145,7 +147,7 @@
                     음성인식을 통한 사용자의 목소리를 분석하여 전반적인 코칭 대화의 분위기 감지 및 피드백
                 </div>
             </div>
-            <div class="intro_content_box">
+            <div class="intro_content_box" style="display:none;">
                 <div class="intro_content_img_box">
                     <img class="intro_content_img" src="/static/image/result.png" alt="결과확인">
                 </div>
@@ -163,6 +165,45 @@
             </a>
         </div>  
     </div>
+
+    {% comment %} -------------- 서비스 소개 ---------------- {% endcomment %}
+    <script>
+        function init() {
+        let currentBoxIndex = 0;
+
+        function changeBox(offset) {
+            const boxes = document.querySelectorAll(".intro_content_box");
+            boxes[currentBoxIndex].style.display = "none";
+            currentBoxIndex = (currentBoxIndex + offset + boxes.length) % boxes.length;
+            boxes[currentBoxIndex].style.display = "block";
+        }
+
+        // Hide all boxes except the first one onLoad
+        const boxes = document.querySelectorAll(".intro_content_box");
+        for (let i = 1; i < boxes.length; i++) {
+            boxes[i].style.display = "none";
+        }
+
+        // Add click event listeners to the buttons
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+
+        if (prevBtn && nextBtn) {
+            prevBtn.addEventListener("click", function () {
+            changeBox(-1);
+            });
+            nextBtn.addEventListener("click", function () {
+            changeBox(1);
+            });
+        } else {
+            console.error("Buttons not found. Make sure the button elements have correct IDs.");
+        }
+        }
+
+        window.onload = init;
+    </script>
+
+
 
     <!-- 서비스 이용 방법 -->
     <div id="home_use" class="use_container"> <!-- 3번째 스크롤 -->

@@ -20,42 +20,46 @@
 <div class="content-container">
     <div class="box-container">
         <div class="box_menu">
-             {% for persona in personas %}
-                <div id="simulation{{ forloop.counter }}" class="menu-item" onclick="changePage({{ forloop.counter }}, {{persona.id}})">코칭 대화 {{ forloop.counter }}</div>
-             {% endfor %}
+            {% for persona in personas %}
+                {% if persona.message_set.all %}
+                    <div id="simulation{{ forloop.counter }}" class="menu-item" onclick="changePage({{ forloop.counter }}, {{persona.id}})">코칭 대화 {{ forloop.counter }}</div>
+                {% endif %}
+            {% endfor %}
         </div>
         
         <div class="box_result1">
             {% for persona in personas %}
-                <div id="page{{ persona.id }}" style="display: none;">
-                    <div class="box_result1_title">
-                        <div class="talk-info-header">
-                            <h5 style="font-size: 17px; font-weight: 600;">{{ persona.topic_label }}</h5>
-                            {{ persona.department }} - {{ persona.rank }} - {{ persona.age }}세 - {{ persona.gender }} - 경력{{ persona.career }}년차
+                {% if persona.message_set.all %}
+                    <div id="page{{ persona.id }}" style="display: none;">
+                        <div class="box_result1_title">
+                            <div class="talk-info-header">
+                                <h5 style="font-size: 17px; font-weight: 600;">{{ persona.topic_label }}</h5>
+                                {{ persona.department }} - {{ persona.rank }} - {{ persona.age }}세 - {{ persona.gender }} - 경력{{ persona.career }}년차
+                            </div>
+                            <button class="survey_request_btn" onclick="openSurveyModal(this)" data-persona-id="{{ persona.id }}" data-shared="{{ persona.shared }}">설문요청하기</button>
                         </div>
-                        <button class="survey_request_btn" onclick="openSurveyModal(this)" data-persona-id="{{ persona.id }}" data-shared="{{ persona.shared }}">설문요청하기</button>
-                    </div>
-                    
-                    <div class="talk-info">
-                        {% for content in persona.message_set.all %}
+                        
+                        <div class="talk-info">
+                            {% for content in persona.message_set.all %}
 
-                            {% if forloop.counter|divisibleby:2 %}
-                            <div class="survey_detail_conversation_list_coach">
-                                <img class="survey_detail_conversation_list_pic_coach" src="/static/img/ai_icon.png">
-                                <div class="survey_detail_conversation_list_txt_coach">{{ content.content }}</div>
-                            </div>
-                            {% else %}
-                            <div class="survey_detail_conversation_list_member">
-                                <img class="survey_detail_conversation_list_pic_member" src="/static/img/default.png">
-                                <div class="survey_detail_conversation_list_txt_member">{{ content.content }}</div>
-                            </div>
-                            {% endif %}
-                        {% endfor %}
+                                {% if forloop.counter|divisibleby:2 %}
+                                <div class="survey_detail_conversation_list_coach">
+                                    <img class="survey_detail_conversation_list_pic_coach" src="/static/img/ai_icon.png">
+                                    <div class="survey_detail_conversation_list_txt_coach">{{ content.content }}</div>
+                                </div>
+                                {% else %}
+                                <div class="survey_detail_conversation_list_member">
+                                    <img class="survey_detail_conversation_list_pic_member" src="/static/img/default.png">
+                                    <div class="survey_detail_conversation_list_txt_member">{{ content.content }}</div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="button-container">
+                            <button class="talk-info-button" id="survey_result_confirm_{{ persona.id }}" onclick = "survey_check({{ persona.id }})">설문 결과 확인하기</button>
+                        </div>
                     </div>
-                    <div class="button-container">
-                        <button class="talk-info-button" id="survey_result_confirm_{{ persona.id }}" onclick = "survey_check({{ persona.id }})">설문 결과 확인하기</button>
-                    </div>
-                </div>
+                {% endif %}
             {% endfor %}
         </div>
 
