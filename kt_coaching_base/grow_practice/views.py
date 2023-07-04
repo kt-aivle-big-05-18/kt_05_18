@@ -43,16 +43,18 @@ def grow(request):
     # HTTP 요청이 POST 방식일 경우
     if request.method == "POST":
         message = request.POST.get("message") # 사용자가 입력한 한국어 메세지
+        with open("grow_practice/grow_ex.txt", "r") as file:
+            pre_grow = file.read()
+        message = [{"role": "user", "content": pre_grow},{"role": "user", "content":message}]
         # print(message)
         # message = translate(message)
         # print(message)
         # 번역된 사용자 입력 메세지를 messages에 추가
         # request.session.get('messages').append({"role": "user", "content": message})
-        
         # OpenAI의 챗봇 API에 메시지 리스트를 전달하고 응답을 받아오기
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
-            messages= [{"role": "user", "content": message}]
+            messages= message
         )
         # print(response.choices[0].message.content)
         # print(response)

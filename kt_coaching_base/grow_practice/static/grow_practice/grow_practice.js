@@ -65,7 +65,7 @@ $(document).ready(function() {
             + "</div>");
             scrollToBottom();
             console.log(userInput);
-            message = '"'+userInput+'"' + '라는 문장이 GROW 코칭대화 모델에서 G,R,O,W중 무엇인지 알려줘.'
+            message = '"'+userInput+'"' + '라는 문장이 GROW 코칭대화 모델에서 G,R,O,W중 무엇인지 알려줘. 간단하게 답변해줘'
             $.ajax({
                 url: "/grow_practice/grow_start/",
                 type: "POST",
