@@ -56,6 +56,17 @@
         </div>
         <div class="analysis_content">
             <div class="analysis_content_title">코칭 질문 분석 결과</div>
+            <div class="analysis_content_score_graph">
+                <div class="grow_chart_title">GROW 분석</div>
+                <hr class = "grow_h_r">
+                <div id="grow_is" class="grow_is">
+                    · Goal(목표) - 단기 및 장기 목표 정의<br>
+                    · Reality(현실) - 현재 상황 및 문제 탐색<br>
+                    · Option(목표) - 해결 가능한 옵션 및 평가<br>
+                    · Will(의지) - 실행할 일과 시기 설정<br>
+                </div>
+                <canvas id="line_chart" class="line_chart"></canvas>
+            </div>
             <div class="score_pie">
                 <div class="white_circle">
                     <div class="circle_sc">
@@ -65,7 +76,7 @@
                 </div>
             </div>
             <div class="analysis_content_score">
-                <div class="analysis_content_score_title">나의 점수 <span class = "score">{{pie_chart.f_score}}</span>점</div>
+                <div class="analysis_content_score_title">코칭 리더십 점수 <span class = "score">{{pie_chart.f_score}}</span> 점</div>
                 <hr class = "h_r">
                 <div class="analysis_content_score_explain">
                     본 점수는 질문 별 관점변화, 존중, 인정, 판단, 분위기의 다섯 가지 척도 기반 결과입니다.<br>
@@ -76,17 +87,6 @@
                         * 최고 점수: 질문에서 얻을 수 있는 최고점수 = 2 [점]<br></span>
                     <span style="font-size: 12px; margin-left : 10px">
                         * 질문 개수 : 사용자가 질문 개수</span>
-                </div>
-                <div class="analysis_content_score_graph">
-                    <div class="grow_chart_title">GROW 분석</div>
-                    <hr class = "grow_h_r">
-                    <div id="grow_is" class="grow_is">
-                        · Goal(목표) - 단기 및 장기 목표 정의<br>
-                        · Reality(현실) - 현재 상황 및 문제 탐색<br>
-                        · Option(목표) - 해결 가능한 옵션 및 평가<br>
-                        · Will(의지) - 실행할 일과 시기 설정<br>
-                    </div>
-                    <canvas id="line_chart" class="line_chart"></canvas>
                 </div>
             </div>
             <div class="analysis_content_result">
