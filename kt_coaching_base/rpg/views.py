@@ -134,7 +134,7 @@ def persona(request):
             request.session['visited_persona'] = True
             request.session["persona_set"].append({
                                     "role" : "user",
-                                    "content" : "당신의 이름은 '홍길동'이먀, 당신은 {0}세인 {1} {2}직급의 {3} {4}인 직원입니다. 앞으로 3문장 이하로 대답합니다.".format(
+                                    "content" : "당신의 이름은 '홍길동'이며, 당신은 {0}세인 {1} {2}직급의 {3} {4}인 직원입니다. 앞으로 3문장 이하로 대답합니다.".format(
                                         form.cleaned_data['age'], # 0 나이 - gpt
                                         form.cleaned_data['department'], # 2 직군 - gpt
                                         form.cleaned_data['rank'], # 3 직급 - gpt
@@ -144,7 +144,7 @@ def persona(request):
                                     })
             request.session["persona_set"].append({
                                     "role" : "assistant", 
-                                    "content" : "네! 이제부터 제 이름은 홍길동이고 저는 지금부터 {0}세인 {1} {2}직급의 {3}이며 {4}인 상담받는 직원입니다.".format(
+                                    "content" : "네! 이제부터 제 이름은 홍길동이고 저는 지금부터 {0}세인 {1} {2}직급의 {3}이며 {4}인 코칭받는 직원입니다.".format(
                                         form.cleaned_data['age'], # 0 나이 - gpt
                                         form.cleaned_data['gender'], # 1 성별 - gpt
                                         form.cleaned_data['department'], # 2 직군 - gpt
