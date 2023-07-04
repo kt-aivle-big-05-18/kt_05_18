@@ -486,7 +486,7 @@ def split_into_sentences(paragraph):
 # #---------------- 모델 불러와서 분류하기 -------------#
 
 def classification_model(new_sentence, new_voice):
-  output_dic = {0:'관점전환', 1:'부정', 2:'인정', 3:'존중', 4:'판단'}
+  output_dic = {0:'관점변화', 1:'부정', 2:'인정', 3:'존중', 4:'판단'}
   final_result = pd.DataFrame()
   new_sents = pd.DataFrame(split_into_sentences(new_sentence))
 
