@@ -76,6 +76,12 @@
     margin: 10px 0px;
 }
 
+.score{
+    font-size: 30px;
+    font-weight: 700;
+    color:#0097FE
+}
+
 .ana_int_content_right_graph{
     margin-bottom: 30px;
 }

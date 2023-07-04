@@ -1,5 +1,5 @@
 /* 미디어 쿼리 */
-@media (max-width: 30vw) {
+@media (max-width: 80vw) {
     .nav_logo_link{
         font-size: 15px;
     }
@@ -68,10 +68,6 @@
 .nav_menu_link:hover{
     text-decoration: none;
     color:#1e1e23;
-}
-
-.nav_menu_link:hover{
-
 }
 
 .nav_menu_left_login, .nav_menu_left_signup{

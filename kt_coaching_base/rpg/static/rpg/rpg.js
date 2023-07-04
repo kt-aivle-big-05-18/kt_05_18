@@ -85,8 +85,8 @@ $(document).ready(function () {
             + userInput
             + "<img class='user_profile' src='/static/img/default.png' alt='사용자이미지'>"
             + "</div>");
-            scrollToBottom();
             showLoading();
+            scrollToBottom();
 
             // if (userInput !== "") {
             //     let userImageSrc = document.getElementById("myp_info_image").src;
