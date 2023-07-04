@@ -159,3 +159,6 @@ EMAIL_HOST_USER = 'tkrwp9916@gmail.com'  # 본인의 Gmail 계정
 EMAIL_HOST_PASSWORD = 'ljhhxostgentnuiw'  # 본인의 Gmail 계정 비밀번호
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# 반응형 웹을 위한 접근 허용
+ALLOWED_HOSTS = ['*']
