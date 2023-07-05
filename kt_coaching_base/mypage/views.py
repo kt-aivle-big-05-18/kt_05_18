@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
-from django.db.models import Sum
+from django.db.models import Sum, Count
 from rpg.models import Persona, Message
 from account.models import Account
 from community.models import Survey, Rating
@@ -12,6 +12,8 @@ from django.contrib.auth.hashers import check_password
 import numpy as np
 import pandas as pd
 import os, json
+
+
 
 @login_required
 def mypage_view(request):
@@ -27,11 +29,11 @@ def myp_info(request):
 @login_required
 def myp_survey(request):
     user = request.user.nickname
-    personas = Persona.objects.filter(nickname=user)
-    messages = Message.objects.filter(persona__in=personas)
+    
+    personas_with_messages = Persona.objects.filter(nickname=user).annotate(num_messages=Count('message')).filter(num_messages__gt=0)
     
     context = {
-        'personas': personas,
+        'personas': personas_with_messages,
         'messages': messages
     }
     return render(request, 'mypage/myp_survey.html', context)
