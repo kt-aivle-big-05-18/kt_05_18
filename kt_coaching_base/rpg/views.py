@@ -170,11 +170,6 @@ def persona(request):
                                         )
             request.session['age'] = form.cleaned_data['age']
             request.session['gender'] = form.cleaned_data['gender']
-<<<<<<< HEAD
-=======
-            request.session['grow_count'] = [0,0,0,0,0]
-            request.session['token_limit_prevention'] = 0
->>>>>>> 073b14b69e105282812d76c366fd2108e63537d5
             return redirect("rpg:rpg_start")
     else : # GET 방식인 경우
         # 폼 생성
@@ -208,23 +203,13 @@ def rpg(request):
         message = request.POST.get("message") # 사용자가 입력한 한국어 메세지
         
         # 번역된 사용자 입력 메세지를 messages에 추가
-<<<<<<< HEAD
         request.session.get('messages').append({"role": "user", "content": translate(message)})
-=======
-        # request.session.get('messages').append({"role": "user", "content": translate(message)})
-        # 번역 없이 messages에 추가
-        request.session.get('messages').append({"role": "user", "content": message +'. '+ '당신은 ' + request.session['topic'] + '라는 것을 잊지마세요. 자기소개는 하지말고 3문장이내로 대답해주세요.'})
->>>>>>> 073b14b69e105282812d76c366fd2108e63537d5
         count = request.session.get("count") # url 경로 저장을 위한 대화 카운트 설정
         user_voice_url = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.webm'.format(p_id, count))
         wav_voice_url = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.wav'.format(p_id, count))
         convert_webm_to_wav(user_voice_url, wav_voice_url)
-<<<<<<< HEAD
         print(user_voice_url)
         
-=======
-
->>>>>>> 073b14b69e105282812d76c366fd2108e63537d5
         # ----------------------------------- AI 전처리 / AI prediction ------------------------------------#
         m_df = classification_model(message, wav_voice_url)
         m_df_url = os.path.join(base_dir, 'rpg/static/df_csv/{0}_{1}.csv'.format(p_id, count))
@@ -254,7 +239,7 @@ def rpg(request):
             content = request.POST.get("message"),
             voice_url = user_voice_url,
             csv_url = m_df_url,
-            grow_url = grow_df_url,
+            grow_url = grow_df_url
         )
         user_message_obj.save()
         
@@ -263,10 +248,6 @@ def rpg(request):
         
         request.session['score'] = score_count(p_id, request.user.nickname)
         request.session['scores'].append(request.session['score'])
-<<<<<<< HEAD
-=======
-        
->>>>>>> 073b14b69e105282812d76c366fd2108e63537d5
         # OpenAI의 챗봇 API에 메시지 리스트를 전달하고 응답을 받아오기
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
@@ -276,12 +257,6 @@ def rpg(request):
         # 번역된 챗봇의 메시지를 메시지 리스트에 추가
         request.session.get('messages').append({"role": "assistant", "content": response.choices[0].message.content})
         trans_ = retranslate(response.choices[0].message.content) # 한국어 번역한 chatgpt 답변 메세지
-        
-        request.session['token_limit_prevention'] += 1
-
-        # 토큰 한계 방지를 위해 대화 질문 카운트를 세서 10이 넘어가면 맨앞 하나씩 삭제
-        if request.session['token_limit_prevention']>=10:
-            request.session['messages'] = request.session['messages'][1:]
         
         voice_select = request.session.get('voice')  # 선택한 음성 옵션 가져오기
         if voice_select=='ko-KR-Neural2-A' or voice_select=='ko-KR-Neural2-B' or voice_select=='ko-KR-Wavenet-B':
@@ -346,11 +321,6 @@ def rpg(request):
     else :
         topic = request.session.get("topic")
         request.session["analysis_qf"] = 0
-<<<<<<< HEAD
-=======
-        request.session["grow_count"] = [0,0,0,0,0]
-        request.session['token_limit_prevention'] = 0
->>>>>>> 073b14b69e105282812d76c366fd2108e63537d5
         request.session['messages'] = request.session.get("persona_set") # 초기 패르소나 설정을 메세지에 추가하기
         return render(request, "rpg/rpg.html", {"topic":topic})
 
@@ -509,7 +479,7 @@ def split_into_sentences(paragraph):
 # #---------------- 모델 불러와서 분류하기 -------------#
 
 def classification_model(new_sentence, new_voice):
-  output_dic = {0:'관점변화', 1:'부정', 2:'인정', 3:'존중', 4:'판단'}
+  output_dic = {0:'관점전환', 1:'부정', 2:'인정', 3:'존중', 4:'판단'}
   final_result = pd.DataFrame()
   new_sents = pd.DataFrame(split_into_sentences(new_sentence))
 
