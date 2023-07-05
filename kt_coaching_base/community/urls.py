@@ -12,6 +12,7 @@ urlpatterns = [
     path("notice/create/", views.notice_create, name="notice_create"),
     path('survey/', views.survey_list, name="survey_list"),
     path('survey/<int:survey_id>/', views.survey_detail, name='survey_detail'),
+    path('notice/<int:notice_id>/delete/', views.delete_notice, name='delete_notice'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -9,7 +9,6 @@
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="{% static 'css/myp_survey.css' %}">
-<meta name="viewport" content="width=device-width,initial-scale=1">
 
 <div id="surveyModal" class="modal">
     <div class="modal-content" id="surveyModalContent"></div>
@@ -22,7 +21,7 @@
     <div class="box-container">
         <div class="box_menu">
              {% for persona in personas %}
-                <div id="simulation{{ forloop.counter }}" class="menu-item" onclick="changePage({{ forloop.counter }}, {{persona.id}})">코칭 대화 {{ forloop.counter }}</div>
+                <div id="simulation{{ forloop.counter }}" class="menu-item" onclick="changePage({{ forloop.counter }}, {{ persona.id }})">코칭 대화 {{ forloop.counter }}</div>
              {% endfor %}
         </div>
         
@@ -370,15 +369,12 @@
         });
     }
 
-
-
-
-    
     function changePage(page, p_id) {
         $("#result2").show();
         $("#result3").hide();
         const pages = document.querySelectorAll('.box_result1 > div');
         const menus = document.querySelectorAll('.box_menu > div');
+        console.log(p_id)
 
         pages.forEach(page => {
             page.style.display = 'none';
@@ -387,8 +383,10 @@
             menu.classList.remove('selected');
         });
 
-        const currentPage = document.getElementById(`page${page}`);
-        const currentMenu = document.querySelector(`.box_menu > div:nth-child(${page})`);
+        const currentPage = document.getElementById(`page${p_id}`);
+        const currentMenu = document.getElementById(`simulation${page}`);
+        /*const currentPage = document.getElementById(`page${p_id}`);
+        const currentMenu = document.querySelector(`.box_menu > div:nth-child(${p_id})`);*/
        /* const currentMenu = document.querySelector(`.box_menu > div[onclick="changePage(${page})"]`);*/
 
         currentPage.style.display = 'block';
@@ -538,7 +536,7 @@
 
                 },
                 error: function(xhr, errmsg, err) {
-                    console.log(errmsg);
+                    console.log(errmsg, err);
                 }
          });
     }
