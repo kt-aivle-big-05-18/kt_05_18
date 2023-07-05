@@ -5,22 +5,21 @@ from account.models import Account
 import os
 
 class Notice(models.Model):
-    title = models.CharField(max_length=200, blank=False, null=False)
-    content = models.TextField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    file = models.FileField(upload_to="uploads/", null=True, blank=True)
-
-    # def filename(self):
-    #     return self.file.name.split("/")[-1].split("uploads/")[-1]
+    title         = models.CharField(max_length=200, blank=False, null=False)
+    content       = models.TextField(blank=True, null=True)
+    created_at    = models.DateTimeField(auto_now_add=True)
+    file          = models.FileField(upload_to="uploads/", null=True, blank=True)
+    is_working    = models.BooleanField(default=True)
+    
     def get_filename(self):
         return os.path.basename(self.file.name)
     
 class Survey(models.Model):
-    author = models.ForeignKey(Account, to_field='nickname', on_delete=models.CASCADE)
-    persona_id = models.ForeignKey(Persona, on_delete=models.CASCADE)
-    title = models.CharField(max_length=100, blank=False, null=False)
-    content = models.TextField(blank=True, null=True)
-    shared = models.BooleanField(default=True)
+    author        = models.ForeignKey(Account, to_field='nickname', on_delete=models.CASCADE)
+    persona_id    = models.ForeignKey(Persona, on_delete=models.CASCADE)
+    title         = models.CharField(max_length=100, blank=False, null=False)
+    content       = models.TextField(blank=True, null=True)
+    shared        = models.BooleanField(default=True)
     
     def __str__(self):
         return self.title
