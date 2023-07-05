@@ -18,7 +18,7 @@ def commu_list(request):
 
 # Create your views here.
 def notice_list(request):
-    notices = Notice.objects.order_by('-created_at')
+    notices = Notice.objects.filter(is_working=True).order_by('-created_at')
     reversed(notices)
     return render(request, 'community/notice_list.html', {'notices': notices})
 
@@ -126,3 +126,11 @@ def survey_detail(request, survey_id):
         'checklist': checklist
     }
     return render(request, 'community/survey_detail.html', context)
+
+@login_required
+def delete_notice(request, notice_id):
+    if request.method == 'POST':
+        notice = Notice.objects.get(id=notice_id)
+        notice.is_working = False
+        notice.save()
+        return redirect('community:commu_list')
