@@ -91,7 +91,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME':  'kt_coaching', #mySQL DB이름
         'USER': 'root', #계정이름
-        'PASSWORD': '0000', #계정 비밀번호 <- 변경 안하신 분은 "aivle"
+        'PASSWORD': 'aivle', #계정 비밀번호 <- 변경 안하신 분은 "aivle"
         'HOST': 'localhost', #수정X
         'PORT': '3306', #수정X
     }
@@ -159,3 +159,6 @@ EMAIL_HOST_USER = 'tkrwp9916@gmail.com'  # 본인의 Gmail 계정
 EMAIL_HOST_PASSWORD = 'ljhhxostgentnuiw'  # 본인의 Gmail 계정 비밀번호
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# 반응형 웹을 위한 접근 허용
+ALLOWED_HOSTS = ['*']

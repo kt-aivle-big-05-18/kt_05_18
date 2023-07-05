@@ -90,7 +90,6 @@ h3 {
     overflow: auto;
     background-color: white;
     box-shadow: 2px 5.5px 10px rgba(0, 0, 0, 0.3);
-    overflow: auto;
 }
 
 .box_menu::-webkit-scrollbar {
@@ -124,6 +123,22 @@ h3 {
     overflow: auto;
 }
 
+.box_result1::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+.box_result1::-webkit-scrollbar-thumb {
+    background-color: #cacaca;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+}
+.box_result1::-webkit-scrollbar-track {
+    background-color: grey;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
+}
+
 .box_result2 {
     display: block;
     justify-content: center;
@@ -141,9 +156,25 @@ h3 {
     overflow: auto;
 }
 
+.box_result2::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+.box_result2::-webkit-scrollbar-thumb {
+    background-color: #cacaca;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+}
+.box_result2::-webkit-scrollbar-track {
+    background-color: grey;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
+}
+
 .menu-item {    
     cursor: pointer;
-    padding: 5px 10px;
+    padding: 10px 45px;
     margin-top: 30px;
     font-size: 18px;
     font-weight: 600;
@@ -159,8 +190,8 @@ h3 {
     background-color: #D9D9D9;
 }
 
-.selected {
-    background-color: #CADDF9;
+.menu-item.selected {
+    background-color: #8be4e9;
 }
 
 .back_button {
@@ -452,12 +483,15 @@ h3 {
 }
 
 .survey_popup_content_title{
-    border-radius: 10px;
+    border-radius: 5px;
+    height: 40px;
+    padding: 5px;
 }
 
 .survey_popup_content_content{
     margin-top: 10px;
-    border-radius: 10px;
+    border-radius: 5px;
+    padding: 10px;
 }
 
 .survey_popup_btn{

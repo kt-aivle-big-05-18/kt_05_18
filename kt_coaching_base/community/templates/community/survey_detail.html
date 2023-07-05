@@ -61,11 +61,13 @@
                         {% csrf_token %}
                         {% for item in checklist %}
                         <div class="survey_detail_checklist_item_wrapper">
-                            <div class="survey_detail_checklist_item">{{ item }}</div>
-                            <input type="radio" name="rating_{{ forloop.counter0 }}" value="1">매우 그렇지 않다
-                            <input type="radio" name="rating_{{ forloop.counter0 }}" value="2">그렇지 않다
-                            <input type="radio" name="rating_{{ forloop.counter0 }}" value="3">그렇다
-                            <input type="radio" name="rating_{{ forloop.counter0 }}" value="4">매우 그렇다
+                            {% with index=forloop.counter %}
+                            <div class="survey_detail_checklist_item">{{index}}. {{ item }}</div>
+                            <label><input type="radio" name="rating_{{ forloop.counter0 }}" value="1">매우 그렇지 않다</label>
+                            <label><input type="radio" name="rating_{{ forloop.counter0 }}" value="2">그렇지 않다</label>
+                            <label><input type="radio" name="rating_{{ forloop.counter0 }}" value="3">그렇다</label>
+                            <label><input type="radio" name="rating_{{ forloop.counter0 }}" value="4">매우 그렇다</label>
+                            {% endwith %}
                         </div>
                         <hr class="survey_detail_checklist_item_hr">
                         {% endfor %}
@@ -104,6 +106,37 @@
             }
         }
     
+        if (!allChecked) {
+            event.preventDefault(); // 폼 제출 막기
+            alert("모든 항목을 완성해주세요.");
+        } else {
+            alert("설문 제출이 정상적으로 완료되었습니다.");
+        }
+    });
+
+    document.getElementById("ratingForm").addEventListener("submit", function(event) {
+
+        var checklist = document.getElementsByClassName("survey_detail_checklist_item_wrapper");
+
+        var allChecked = true; // 모든 항목이 체크되었는지 확인하기 위한 변수
+
+        for (var i = 0; i < checklist.length; i++) {
+            var radios = checklist[i].querySelectorAll("input[type='radio']");
+            var checked = false;
+
+            for (var j = 0; j < radios.length; j++) {
+                if (radios[j].checked) {
+                    checked = true;
+                    break;
+                }
+            }
+
+            if (!checked) {
+                allChecked = false;
+                break;
+            }
+        }
+
         if (!allChecked) {
             event.preventDefault(); // 폼 제출 막기
             alert("모든 항목을 완성해주세요.");
