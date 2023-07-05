@@ -10,7 +10,8 @@ class Persona(models.Model):
     voice         = models.CharField(max_length=45)
     career        = models.IntegerField()
     nickname      = models.ForeignKey(Account, to_field="nickname", on_delete=models.CASCADE)
-    shared      = models.BooleanField(default=False)
+    shared        = models.BooleanField(default=False)
+    is_working    = models.BooleanField(default=True)
     
 class Message(models.Model):
     name        = models.CharField(max_length=45)
@@ -20,6 +21,7 @@ class Message(models.Model):
     voice_url   = models.TextField()
     csv_url     = models.TextField()
     grow_url    = models.TextField()
+    
     class Meta:
         ordering    =   ("send_date",)
 

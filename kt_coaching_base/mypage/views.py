@@ -31,6 +31,12 @@ def myp_survey(request):
     user = request.user.nickname
     
     personas_with_messages = Persona.objects.filter(nickname=user).annotate(num_messages=Count('message')).filter(num_messages__gt=0)
+    messages = Message.objects.filter(persona__in=personas_with_messages)
+    
+    for p in personas_with_messages:
+        print(p.id)
+    for m in messages:
+        print(m.content, m.persona)
     
     context = {
         'personas': personas_with_messages,
