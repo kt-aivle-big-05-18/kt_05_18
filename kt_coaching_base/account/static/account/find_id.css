@@ -1,3 +1,21 @@
+.back_button {
+    position: absolute;
+    top: 15%;
+    right: 30px;
+    font-size: 18px;
+    padding: 6px 12px;
+    background-color: #99b4da;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.back_button:hover {
+    background-color: #134971;
+}    
+
 .find_userid_wrapper{
     width: 100vw;
     height: calc(100vh - 92px);

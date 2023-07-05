@@ -84,8 +84,10 @@
     border-radius: 50%;
     width: 60px;
     padding: 60px;
-    position:  relative;
+    position:  absolute;
     margin-right: 35px;
+    margin-top: 592px;
+    margin-left: 25px;
 }
 
 .line_chart{
@@ -181,6 +183,7 @@
 
 .analysis_content_score_explain{
     color: #ABABAB;
+    margin-left: 170px;
 }
 
 .analysis_content_score_graph{

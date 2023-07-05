@@ -293,6 +293,7 @@ h3 {
 }
 
 .talk-info {
+    text-align: -webkit-center;
     background-color: #FFFFFF;
     border: 1px solid #D2D2D2;
     width: 600px;
