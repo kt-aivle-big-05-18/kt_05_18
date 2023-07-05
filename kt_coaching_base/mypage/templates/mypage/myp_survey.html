@@ -39,15 +39,16 @@
                     <div class="talk-info">
                         {% for content in persona.message_set.all %}
 
-                            {% if forloop.counter|divisibleby:2 %}
-                            <div class="survey_detail_conversation_list_coach">
-                                <img class="survey_detail_conversation_list_pic_coach" src="/static/img/ai_icon.png">
-                                <div class="survey_detail_conversation_list_txt_coach">{{ content.content }}</div>
+                            {% comment %} {% if forloop.counter|divisibleby:2 %} {% endcomment %}
+                            {% if content.name == "홍길동" %}
+                            <div class="survey_detail_conversation_list_member">
+                                <img class="survey_detail_conversation_list_pic_member" src="/static/img/ai_icon.png">
+                                <div class="survey_detail_conversation_list_txt_member">{{ content.content }}</div>
                             </div>
                             {% else %}
-                            <div class="survey_detail_conversation_list_member">
-                                <img class="survey_detail_conversation_list_pic_member" src="/static/img/default.png">
-                                <div class="survey_detail_conversation_list_txt_member">{{ content.content }}</div>
+                            <div class="survey_detail_conversation_list_coach">
+                                <img class="survey_detail_conversation_list_pic_coach" src="/static/img/default.png">
+                                <div class="survey_detail_conversation_list_txt_coach">{{ content.content }}</div>
                             </div>
                             {% endif %}
                         {% endfor %}
