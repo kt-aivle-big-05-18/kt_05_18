@@ -483,12 +483,15 @@ h3 {
 }
 
 .survey_popup_content_title{
-    border-radius: 10px;
+    border-radius: 5px;
+    height: 40px;
+    padding: 5px;
 }
 
 .survey_popup_content_content{
     margin-top: 10px;
-    border-radius: 10px;
+    border-radius: 5px;
+    padding: 10px;
 }
 
 .survey_popup_btn{

@@ -104,10 +104,9 @@ body{
     position: absolute;
     top: 90px;
     width: 100vw;
-    height: 100vh;
+    height: calc(100vh - 92px);
     display: flex;
     justify-content: center;
-    margin: 20px 0px;
     /* background-color: #741717; */
 }
 
@@ -115,6 +114,7 @@ body{
     width: 80%;
     display: flex;
     flex-direction: column;
+    margin-top: 20px;
     /* background-color: aquamarine; */
 }
 
@@ -138,7 +138,6 @@ body{
 
 .survey_detail_conversation_contain{
     width: 45%;
-    /* height: 100%; */
 }
 
 .survey_detail_conversation_title{
@@ -151,6 +150,24 @@ body{
     border: 1px solid #D2D2D2;
     margin-top: 10px;
     box-shadow: 2px 2px lightgrey;
+    height: 450px;
+    overflow: auto;
+}
+
+.survey_detail_conversation_wrapper::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+.survey_detail_conversation_wrapper::-webkit-scrollbar-thumb {
+    background-color: #cacaca;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+}
+.survey_detail_conversation_wrapper::-webkit-scrollbar-track {
+    background-color: grey;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
 }
 
 .survey_detail_conversation_list_coach{
@@ -196,10 +213,28 @@ body{
 
 .survey_detail_checklist_wrapper{
     margin-left: 10px;
+    height: 450px;
     border: 1px solid #D2D2D2;
     padding: 10px;
     border-radius: 20px;
     box-shadow: 2px 2px lightgrey;
+    overflow: auto;
+}
+
+.survey_detail_checklist_wrapper::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+.survey_detail_checklist_wrapper::-webkit-scrollbar-thumb {
+    background-color: #cacaca;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+}
+.survey_detail_checklist_wrapper::-webkit-scrollbar-track {
+    background-color: grey;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
 }
 
 .survey_detail_checklist_item_wrapper{
