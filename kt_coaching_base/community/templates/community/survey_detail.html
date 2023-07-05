@@ -40,15 +40,20 @@
                 <div class="survey_detail_conversation_wrapper">
                     {% comment %} {{ message.name }} {% endcomment %}
                     {% for message in messages %}
-                        {% if forloop.counter|divisibleby:2 %}
-                        <div class="survey_detail_conversation_list_coach">
-                            <img class="survey_detail_conversation_list_pic_coach" src="/static/img/young_male.png">
-                            <div class="survey_detail_conversation_list_txt_coach">{{ message.content }}</div>
+                        {% comment %} {% if forloop.counter|divisibleby:2 %} {% endcomment %}
+                        {% if message.name == "홍길동" %}
+                        <div class="survey_detail_conversation_list_member">
+<<<<<<< HEAD
+                            <img class="survey_detail_conversation_list_pic_member" src="/static/img/default.png">
+=======
+                            <img class="survey_detail_conversation_list_pic_member" src="/static/img/young_male.png">
+>>>>>>> aebf899d1e35490fe8acce988614ca3882064245
+                            <div class="survey_detail_conversation_list_txt_member">{{ message.content }}</div>
                         </div>
                         {% else %}
-                        <div class="survey_detail_conversation_list_member">
-                            <img class="survey_detail_conversation_list_pic_member" src="/static/img/won.png">
-                            <div class="survey_detail_conversation_list_txt_member">{{ message.content }}</div>
+                        <div class="survey_detail_conversation_list_coach">
+                            <img class="survey_detail_conversation_list_pic_coach" src="/static/img/won.png">
+                            <div class="survey_detail_conversation_list_txt_coach">{{ message.content }}</div>
                         </div>
                         {% endif %}
                     {% endfor %}
@@ -87,20 +92,30 @@
 <script>
     document.getElementById("ratingForm").addEventListener("submit", function(event) {
         var checklist = document.getElementsByClassName("survey_detail_checklist_item_wrapper");
+        var allChecked = true; // 모든 항목이 체크되었는지 확인하기 위한 변수
+    
         for (var i = 0; i < checklist.length; i++) {
             var radios = checklist[i].querySelectorAll("input[type='radio']");
             var checked = false;
+    
             for (var j = 0; j < radios.length; j++) {
                 if (radios[j].checked) {
                     checked = true;
                     break;
                 }
             }
+    
             if (!checked) {
-                event.preventDefault(); // 폼 제출 막기
-                alert("모든 항목을 완성해주세요.");
+                allChecked = false;
                 break;
             }
+        }
+    
+        if (!allChecked) {
+            event.preventDefault(); // 폼 제출 막기
+            alert("모든 항목을 완성해주세요.");
+        } else {
+            alert("설문 제출이 정상적으로 완료되었습니다.");
         }
     });
 

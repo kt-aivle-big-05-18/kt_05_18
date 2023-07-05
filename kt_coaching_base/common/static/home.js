@@ -48,11 +48,14 @@ $(function() {
 
 /*-------------------------FOR BOSS-------------------------*/
 
-document.getElementById("hyunji-container").addEventListener("click", function () {
-  this.querySelector(".profile_box_boss").classList.toggle("flip");
-});
+// document.getElementById("hyunji-container").addEventListener("click", function () {
+//   this.querySelector(".profile_box_boss").classList.toggle("flip");
+// });
 
-document.getElementById("team-container").addEventListener("click", function () {
-  this.querySelector(".profile_box_team").classList.toggle("flip1");
-});
+// document.getElementById("team-container").addEventListener("click", function () {
+//   this.querySelector(".profile_box_team").classList.toggle("flip1");
+// });
+
+
+
 

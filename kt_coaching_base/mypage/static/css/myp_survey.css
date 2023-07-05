@@ -293,6 +293,7 @@ h3 {
 }
 
 .talk-info {
+    text-align: -webkit-center;
     background-color: #FFFFFF;
     border: 1px solid #D2D2D2;
     width: 600px;
@@ -325,9 +326,8 @@ h3 {
 .survey_detail_conversation_list_coach{
     display: flex;
     flex-direction: column;
-    /* align-items: end; */
-    background-color: #F1F1F1;
     border: solid 1px #CCCCCC;
+    align-items: end;
     font-weight: 500;
     padding: 15px;
 }
@@ -342,7 +342,9 @@ h3 {
 .survey_detail_conversation_list_member{
     display: flex;
     flex-direction: column;
-    align-items: end;
+    /* align-items: end; */
+    background-color: #F1F1F1;
+    border: solid 1px #CCCCCC;
     font-weight: 500;
     padding: 15px;
 }

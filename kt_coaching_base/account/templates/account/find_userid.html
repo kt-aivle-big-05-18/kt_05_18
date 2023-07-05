@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="{% static 'account/find_id.css' %}">
 
 <div class="find_userid_wrapper">
+  <button class="back_button" onclick="window.history.back();">&lt</button>
   <div class="find_userid_box">
     <div class="find_userid_box_title">아이디 찾기 요청</div>
     <div class="find_userid_box_content_wrapper">
@@ -21,7 +22,7 @@
           {% csrf_token %}
           <div class="find_userid_box_content_input">
             <div class="find_userid_box_content_name">
-              <label for="email">이메일</label>
+              <label for="email">이메일 :</label>
               <input type="text" id="email" name="email" required>
             </div>
             <input class="find_userid_box_content_submit" type="submit" value="아이디 찾기">
