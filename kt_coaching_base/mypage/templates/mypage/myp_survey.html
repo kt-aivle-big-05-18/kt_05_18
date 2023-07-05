@@ -41,7 +41,7 @@
 
                             {% if forloop.counter|divisibleby:2 %}
                             <div class="survey_detail_conversation_list_coach">
-                                <img class="survey_detail_conversation_list_pic_coach" src="/static/img/ai_icon.png">
+                                <img class="survey_detail_conversation_list_pic_coach" src="/static/img/kt_robot.png">
                                 <div class="survey_detail_conversation_list_txt_coach">{{ content.content }}</div>
                             </div>
                             {% else %}
@@ -581,7 +581,7 @@
             '<div class="survey_popup_content">' +
             '<input type="hidden" name="persona_id" value="' + personaId + '">' +
             '<input class="survey_popup_content_title" type="text" name="title" placeholder="제목">' +
-            '<textarea cols="30" rows="20" class="survey_popup_content_content" name="content" height="50px" placeholder="내용"></textarea>' +
+            '<textarea cols="30" rows="20" class="survey_popup_content_content" name="content" height="50px" placeholder="설정하신 페르소나를 알려주세요."></textarea>' +
             '</div>' +
             '<div class="survey_popup_btn">' +
             '<button class="survey_popup_share_btn" type="submit">공유 시작</button>' +
