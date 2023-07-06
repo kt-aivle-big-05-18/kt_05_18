@@ -104,8 +104,29 @@ def admin_user(request):
     # 시간대별 로그인 횟수를 저장할 리스트 변수
     hour_counts = [0] * 24  # 0부터 23까지의 인덱스를 가진 리스트
 
+    # for i in range(len(weekday_counts)):
+    #     weekday_counts[i] = { "weekday" : weekday_mapping[i], 'value' : weekday_counts[i]}
+    
+    # 요일별 로그인 횟수 추출 결과를 리스트 변수에 저장
+    for entry in login_counts_by_weekday:
+        weekday_counts[entry['weekday']] = entry['count']
     for i in range(len(weekday_counts)):
-        weekday_counts[i] = { "weekday" : weekday_mapping[i], 'value' : weekday_counts[i]}
+        if i==0:
+            weekday_counts[i] = { 'weekday' : '토' , "value" : weekday_counts[i]}
+        elif i==1:
+            weekday_counts[i] = { 'weekday' : '일' , "value" : weekday_counts[i]}
+        elif i==2:
+            weekday_counts[i] = { 'weekday' : '월' , "value" : weekday_counts[i]}    
+        elif i==3:
+            weekday_counts[i] = { 'weekday' : '화' , "value" : weekday_counts[i]}    
+        elif i==4:
+            weekday_counts[i] = { 'weekday' : '수' , "value" : weekday_counts[i]}    
+        elif i==5:
+            weekday_counts[i] = { 'weekday' : '목' , "value" : weekday_counts[i]}    
+        elif i==6:
+            weekday_counts[i] = { 'weekday' : '금' , "value" : weekday_counts[i]}    
+            
+            
     
     # 시간대별 로그인 횟수 추출 결과를 리스트 변수에 저장
     for entry in login_counts_by_hour:
