@@ -64,7 +64,6 @@ $(document).ready(function() {
             + "<img class='user_profile' src='/static/img/basic.png' alt='사용자이미지'>"
             + "</div>");
             scrollToBottom();
-            console.log(userInput);
             message = '"'+userInput+'"' + '라는 문장이 GROW 코칭대화 모델에서 G,R,O,W중 무엇인지 알려줘. 간단하게 답변해줘'
             $.ajax({
                 url: "/grow_practice/grow_start/",
@@ -165,29 +164,6 @@ $(document).ready(function() {
             console.log("오류 발생 : " + err)
         });
     }
-
-
-    const soundClips = document.getElementById('sound-clips');
-    soundClips.addEventListener('click', function() {
-        if(audio) {
-            if (!isPlaying) {
-                audio.play();
-                isPlaying = true;
-                soundClips.textContent = '정지';
-            } else {
-                audio.pause();
-                audio.currentTime = 0;
-                isPlaying = false;
-                soundClips.textContent = '재생';
-            }
-        }
-    });
-
-    // 오디오의 재생이 끝나면 '재생'으로 버튼 텍스트 변경
-    audio.addEventListener('ended', function() {
-        isPlaying = false;
-        soundClips.textContent = '재생';
-    });
 });
 
 // 모달창 //
