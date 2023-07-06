@@ -21,7 +21,7 @@
     <div class="box-container">
         <div class="box_menu">
              {% for persona in personas %}
-                <div id="simulation{{ forloop.counter }}" class="menu-item" onclick="changePage({{ forloop.counter }}, {{ persona.id }})">코칭 대화 {{ forloop.counter }}</div>
+                    <div id="simulation{{ forloop.counter }}" class="menu-item" onclick="changePage({{ forloop.counter }}, {{ persona.id }})">코칭 대화 {{ forloop.counter }}</div>
              {% endfor %}
         </div>
         
