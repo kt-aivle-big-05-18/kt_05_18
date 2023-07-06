@@ -3,6 +3,8 @@
 {% load static %}
 
 {% block content %}
+
+<input type="hidden" value={{first_p}} id="first_p">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0"></script>
 <script src="{% static 'css/myp.js' %}"></script>
@@ -367,7 +369,6 @@
 
                 var CommentContainer = $('#survey_result_coment');
                 CommentContainer.empty(); 
-                console.log(response.comments)
                 CommentContainer.append(response.comments)
             }
         });
@@ -386,8 +387,8 @@
             menu.classList.remove('selected');
         });
 
-        const currentPage = document.getElementById(`page${p_id}`);
-        const currentMenu = document.getElementById(`simulation${page}`);
+        let currentPage = document.getElementById(`page${p_id}`);
+        let currentMenu = document.getElementById(`simulation${page}`);
         /*const currentPage = document.getElementById(`page${p_id}`);
         const currentMenu = document.querySelector(`.box_menu > div:nth-child(${p_id})`);*/
        /* const currentMenu = document.querySelector(`.box_menu > div[onclick="changePage(${page})"]`);*/
@@ -543,13 +544,14 @@
     }
 
     window.onload = function() {
+        
         const hasMessages = {% if messages %}true{% else %}false{% endif %};
         
         if (!hasMessages) {
             window.alert("대화한 내역이 없습니다.");
             window.location.href = "/rpg"; // 페르소나 페이지로 이동합니다.
         } else {
-            changePage(1, 1); // 페이지 1부터 표시하도록 변경
+            changePage(1, document.getElementById("first_p").value); // 페이지 1부터 표시하도록 변경
             $("#result2").show();
             $("#result3").hide();
         }

@@ -32,10 +32,11 @@ def myp_survey(request):
     
     personas_with_messages = Persona.objects.filter(nickname=user).annotate(num_messages=Count('message')).filter(num_messages__gt=0)
     messages = Message.objects.filter(persona__in=personas_with_messages)
-    
+    first_p = personas_with_messages[0].id
     context = {
         'personas': personas_with_messages,
-        'messages': messages
+        'messages': messages,
+        'first_p' : first_p,
     }
     return render(request, 'mypage/myp_survey.html', context)
 
