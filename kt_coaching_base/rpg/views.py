@@ -203,10 +203,15 @@ def rpg(request):
     if request.method == "POST":
         request.session["analysis_qf"] = 1
         message = request.POST.get("message")# 사용자가 입력한 한국어 메세지
+        
+        #--------------PAPAGO API 이용하여 번역후 chatGPT보내고 싶을 경우-----------------#
         # 번역된 사용자 입력 메세지를 messages에 추가
-        # request.session.get('messages').append({"role": "user", "content": translate(message)})
+        # request.session.get('messages').append({"role": "user", "content": translate(message) +'. '+ '당신은 ' + request.session['topic'] + '라는 것을 잊지마세요. 자기소개는 하지말고 3문장이내로 대답해주세요.'})
+
+        #--------------PAPAGO API 사용 안한 버전------------------#
         # 번역 없이 messages에 추가
-        request.session.get('messages').append({"role": "user", "content": message +'. '+ '당신은 ' + request.session['topic'] + '라는 것을 잊지마세요. 자기소개는 하지말고 3문장이내로 대답해주세요.'})
+        request.session.get('messages').append({"role": "user", "content": message +'. '+ '당신은 '+ request.session['topic']+'라는 것을 잊지마세요. 자기소개는 하지말고 3문장이내로 대답해주세요.'})
+        print(request.session.get('messages'))
         count = request.session.get("count") # url 경로 저장을 위한 대화 카운트 설정
         user_voice_url = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.webm'.format(p_id, count))
         wav_voice_url = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.wav'.format(p_id, count))
@@ -261,10 +266,12 @@ def rpg(request):
             messages=request.session.get('messages')
         )
         
+        #--------------PAPAGO API 이용한 경우-----------------#
         # # 번역된 챗봇의 메시지를 메시지 리스트에 추가
         # request.session.get('messages').append({"role": "assistant", "content": retranslate(response.choices[0].message.content)})
         # trans_ = retranslate(response.choices[0].message.content) # 한국어 번역한 chatgpt 답변 메세지
         
+        #--------------PAPAGO API 이용 안한 경우--------------#
         # 번역 없이 챗봇의 메시지를 메시지 리스트에 추가
         request.session.get('messages').append({"role": "assistant", "content": response.choices[0].message.content})
         trans_ = response.choices[0].message.content

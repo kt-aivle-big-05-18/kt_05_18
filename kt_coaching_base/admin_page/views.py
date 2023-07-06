@@ -75,7 +75,6 @@ def admin_persona(request):
         'career_counts': json.dumps(list(career_counts)),
         'age_counts': json.dumps(list(age_counts)),
     }
-    print(context)
     return render(request, "admin_page/admin_persona.html", context)
 
 
@@ -107,7 +106,6 @@ def admin_user(request):
 
     for i in range(len(weekday_counts)):
         weekday_counts[i] = { "weekday" : weekday_mapping[i], 'value' : weekday_counts[i]}
-    print(weekday_counts)
     
     # 시간대별 로그인 횟수 추출 결과를 리스트 변수에 저장
     for entry in login_counts_by_hour:
@@ -123,5 +121,4 @@ def admin_user(request):
         'weekday_counts': json.dumps(list(weekday_counts),ensure_ascii=False),
         'hour_counts': json.dumps(list(hour_counts)),
     }
-    print(context)
     return render(request, "admin_page/admin_page.html", context)
