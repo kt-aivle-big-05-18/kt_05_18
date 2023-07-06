@@ -1,5 +1,11 @@
 /* 모달창 */
 
+.modal-title{
+  font-size: 17px;
+  font-weight: 600;
+}
+
+
 .modal-header{
   display: flex;
   justify-content: space-between;
@@ -174,6 +180,7 @@ color: black;
 .intro_content_box{
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   width: 350px;
   height: 420px;
@@ -185,7 +192,6 @@ color: black;
 .intro_content_img_box{
   display: flex;
   align-items: center;
-  justify-content: center;
   width: 300px;
   height: 200px;
   background-color: #E9E9E9;
@@ -197,11 +203,13 @@ color: black;
   width: 290px;
   height: 190px;
   border-radius: 10px;
+  margin-left: 5px;
 }
 
 .intro_content_txt_box{
   margin-top: 20px;
   width: 280px;
+  text-align: center;
   font-weight: 500;
   font-size: 15px;
 }
