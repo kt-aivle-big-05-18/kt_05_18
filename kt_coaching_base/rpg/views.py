@@ -210,8 +210,7 @@ def rpg(request):
 
         #--------------PAPAGO API 사용 안한 버전------------------#
         # 번역 없이 messages에 추가
-        request.session.get('messages').append({"role": "user", "content": message +'. '+ '당신은 '+ request.session['topic']+'라는 것을 잊지마세요. 자기소개는 하지말고 3문장이내로 대답해주세요.'})
-        print(request.session.get('messages'))
+        request.session.get('messages').append({"role": "user", "content": message +'. '+ '당신은 '+ request.session['topic']+'이라는 것을 잊지마세요. 자기소개는 하지말고 3문장이내로 대답해주세요.'})
         count = request.session.get("count") # url 경로 저장을 위한 대화 카운트 설정
         user_voice_url = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.webm'.format(p_id, count))
         wav_voice_url = os.path.join(base_dir, 'rpg/static/voice/{0}_{1}.wav'.format(p_id, count))
