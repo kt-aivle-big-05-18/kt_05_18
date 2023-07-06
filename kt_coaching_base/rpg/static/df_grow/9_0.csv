@@ -1,2 +1,6 @@
 sentence,predict
+<<<<<<< HEAD
 안녕하세요. 어떤 주제로 대화를 시작할까요?,Goal
+=======
+안녕 하세요. ,Reality
+>>>>>>> 4380b94cd3620849045f39b67ebf966ab32eb33d

@@ -1,3 +1,13 @@
 sentence,predict
+<<<<<<< HEAD
 안녕하세요.,존중
 어떤 주제로 대화를 시작할까요?,인정
+=======
+<<<<<<<< HEAD:kt_coaching_base/rpg/static/df_csv/9_0.csv
+안녕 하세요.,존중
+,부정
+========
+안녕하세요.,존중
+어떤 주제로 대화할까요?,존중
+>>>>>>>> 4380b94cd3620849045f39b67ebf966ab32eb33d:kt_coaching_base/rpg/static/df_csv/1_0.csv
+>>>>>>> 4380b94cd3620849045f39b67ebf966ab32eb33d

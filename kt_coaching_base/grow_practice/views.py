@@ -46,21 +46,13 @@ def grow(request):
         with open("grow_practice/grow_ex.txt", "r") as file:
             pre_grow = file.read()
         message = [{"role": "user", "content": pre_grow},{"role": "user", "content":message}]
-        # print(message)
-        # message = translate(message)
-        # print(message)
-        # 번역된 사용자 입력 메세지를 messages에 추가
-        # request.session.get('messages').append({"role": "user", "content": message})
+        
         # OpenAI의 챗봇 API에 메시지 리스트를 전달하고 응답을 받아오기
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages= message
         )
-        # print(response.choices[0].message.content)
-        # print(response)
-        # trans_ = retranslate(response.choices[0].message.content) # 한국어 번역한 chatgpt 답변 메세지
-        # print(trans_)
-        # request.session.get('messages').append({"role": "assistant", "content": response.choices[0].message.content})
+        
         data = { # json형식으로 respone 해줄 데이터
             'message' : response.choices[0].message.content
         }

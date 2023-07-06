@@ -103,7 +103,6 @@ $(document).ready(function () {
                     message: userInput
                 },
                 success: function (response) {
-                    console.log("asdasdasdasd")
                     var audioID = "myAudio" + Date.now();  // 고유한 id를 생성합니다.
                     chatContainer.append("<div class = 'grow_info'>" + response.grow_info + "</div>")
                     chatContainer.append("<div class='assistant_message'>"
@@ -227,29 +226,6 @@ $(document).ready(function () {
                 console.log("오류 발생 : " + err)
             });
     }
-
-
-    const soundClips = document.getElementById('sound-clips');
-    soundClips.addEventListener('click', function () {
-        if (audio) {
-            if (!isPlaying) {
-                audio.play();
-                isPlaying = true;
-                soundClips.textContent = '정지';
-            } else {
-                audio.pause();
-                audio.currentTime = 0;
-                isPlaying = false;
-                soundClips.textContent = '재생';
-            }
-        }
-    });
-
-    // 오디오의 재생이 끝나면 '재생'으로 버튼 텍스트 변경
-    audio.addEventListener('ended', function () {
-        isPlaying = false;
-        soundClips.textContent = '재생';
-    });
 });
 
 // 모달창 //

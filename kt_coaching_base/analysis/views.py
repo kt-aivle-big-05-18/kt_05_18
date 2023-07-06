@@ -17,8 +17,6 @@ def result (request):
     d_scores = []
     for i in range(len(scores)):
         d_scores.append({"{0}".format(i+1) : scores[i]})
-    print(1111111, pie_counts_new, request.session["scores"][-1], d_scores)
-    
     
     grow_db = Message.objects.filter(persona=p_id, name=request.user.nickname)
     grow_list = [
@@ -49,7 +47,6 @@ def result (request):
     l = len(grow_df['predict'])
     for i in range(l):
         request.session[grow_df['predict'][i]] += 1
-        print( grow_df['predict'][i])
     
     grow_counts = [
         {"name": "Goal", "value": request.session.get("Goal")},
@@ -110,7 +107,6 @@ def intro (request):
     l = len(df['predict'])
     for i in range(l):
         request.session[df['predict'][i]] += 1
-        print( df['predict'][i])
         
     perspective     = round((request.session.get("관점변화")/l) * 100, 0)
     negation        = round((request.session.get("부정")/l) * 100, 0)
