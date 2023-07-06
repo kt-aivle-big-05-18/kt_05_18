@@ -33,11 +33,6 @@ def myp_survey(request):
     personas_with_messages = Persona.objects.filter(nickname=user).annotate(num_messages=Count('message')).filter(num_messages__gt=0)
     messages = Message.objects.filter(persona__in=personas_with_messages)
     
-    for p in personas_with_messages:
-        print(p.id)
-    for m in messages:
-        print(m.content, m.persona)
-    
     context = {
         'personas': personas_with_messages,
         'messages': messages
@@ -47,7 +42,6 @@ def myp_survey(request):
 @login_required
 @require_POST
 def share_persona(request, persona_id):
-    print(request.POST.get('persona_id'))
     try:
         persona = Persona.objects.get(pk=persona_id, nickname=request.user.nickname)
         persona.shared = True
@@ -159,16 +153,12 @@ def rating_list(request, persona_id):
             O = values
         elif key == 'W':
             W = values
-        print(f"{key} = {values}")
     comment = []
-    print('123G = ',G)
-    print('123R = ',R)
-    print('123O = ',O)
-    print('123W = ',W)
+
     for rating in ratings:
         comment.append(rating.comment)
     comments = "<br>".join(comment)
-    print(comments)
+
     context = {
         'G': json.dumps(list(G)),
         'R': json.dumps(list(R)),
@@ -176,8 +166,6 @@ def rating_list(request, persona_id):
         'W': json.dumps(list(W)),
         'comments' : comments
     }
-    print("gc:", group_counts)
-    print("comment", comments)
     return JsonResponse(context)
 
 
@@ -186,7 +174,6 @@ def popup(request):
     return render(request, 'mypage/myp_popup.html', {'message': message})
 
 def graph_draw(request):
-    print(request.POST.get("message"), "123123123123123123")
     p_id = request.POST.get("message")
     
     #-------------grow 데이터 호출 --------------#
@@ -220,7 +207,6 @@ def graph_draw(request):
     l = len(grow_df['predict'])
     for i in range(l):
         request.session[grow_df['predict'][i]] += 1
-        print( grow_df['predict'][i])
     grow_counts = [
         {"name": "Goal", "value": request.session.get("Goal")},
         {"name": "Reality", "value": request.session.get("Reality")},
@@ -261,7 +247,6 @@ def graph_draw(request):
     l = len(df['predict'])
     for i in range(l):
         request.session[df['predict'][i]] += 1
-        print( df['predict'][i])
         
     perspective     = round((request.session.get("관점변화")/l) * 100, 0)
     negation        = round((request.session.get("부정")/l) * 100, 0)
@@ -291,8 +276,6 @@ def graph_draw(request):
             "judgment" : judgment_s,
             "respect" : respect_s,
             }
-    print(pie_counts, grow_counts)
-    print(json.dumps(list(pie_counts)), "1`23123314525256qaqqwe")
     
     return JsonResponse(data, content_type='application/json')
 

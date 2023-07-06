@@ -52,8 +52,7 @@ def login_view(request):
                 captcha_key = CaptchaStore.generate_key()
                 request.session['captcha_key'] = captcha_key
             captcha_image_url = '/captcha/image/{}'.format(captcha_key)
-            print("if. cap key:", captcha_key)
-            print("if. cap:", captcha_word)
+            
             # 캡챠 유효성 검사
             if captcha_key and captcha_word:
                 if CaptchaStore.objects.filter(response=captcha_word, hashkey=captcha_key).count() == 0:

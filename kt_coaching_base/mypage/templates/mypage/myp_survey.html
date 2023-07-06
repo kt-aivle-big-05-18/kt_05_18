@@ -378,7 +378,6 @@
         $("#result3").hide();
         const pages = document.querySelectorAll('.box_result1 > div');
         const menus = document.querySelectorAll('.box_menu > div');
-        console.log(p_id)
 
         pages.forEach(page => {
             page.style.display = 'none';
@@ -465,9 +464,7 @@
                         previousChart2.destroy();
                     }
                     var ctx = document.getElementById('coaching_chart_analysis').getContext('2d');
-                    console.log("123123123")
                     var pieChartDataElement = JSON.parse(response.class);
-                    console.log("123123123444444")
                     var labels = pieChartDataElement.map(item => item.name);
                     var data = pieChartDataElement.map(item => item.value);
                     
