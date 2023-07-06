@@ -8,11 +8,13 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
   <script src="{% static 'admin_page/admin_persona.js' %}" defer></script>
   <link rel="stylesheet" href="{% static 'admin_page/admin_persona.css' %}">
+  <link rel="icon" type="image/x-icon" sizes="16x16" href="/static/image/kt_favicon.png">
+  <title>K-Training</title>
 </head>
 
 <body>
     <div class="sidebar">
-        <a href="{% url 'common:home' %}" class="kt-coaching">KT coaching</a>
+        <a href="{% url 'common:home' %}" class="kt-coaching">K-training</a>
         <div class="separator"></div>
         <div class="statistics">통계<span class="arrow">▼</span></div>
         <div class= "inside-info">
@@ -49,7 +51,7 @@
             </div>
             <div class="sub-graph-box">
                 <div class="main-sub-graph-box1">
-                    <div class="graph2-title">선택한 직무</div>
+                    <div class="graph2-title">선택한 직군</div>
                     <div class="graph3">
                         <canvas id="department_Chart" style="height: 100%; width: 100%;"></canvas>
                     </div>
