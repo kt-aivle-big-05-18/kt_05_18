@@ -374,6 +374,7 @@
     }
 
     function changePage(page, p_id) {
+        console.log("2222")
         $("#result2").show();
         $("#result3").hide();
         const pages = document.querySelectorAll('.box_result1 > div');
@@ -549,6 +550,7 @@
             window.alert("대화한 내역이 없습니다.");
             window.location.href = "/rpg"; // 페르소나 페이지로 이동합니다.
         } else {
+            console.log("1111111111")
             changePage(1, 1); // 페이지 1부터 표시하도록 변경
             $("#result2").show();
             $("#result3").hide();
