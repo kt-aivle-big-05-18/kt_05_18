@@ -13,6 +13,7 @@
             <div class="nav_contain">
                 <div class="nav_lay">
                     <div id="nav" class="nav_logo">
+                        {% comment %} <img href="{% url 'common:home' %}" src="/static/image/kt_logo.png" alt="개인정보처리방침"> {% endcomment %}
                         <a href="{% url 'common:home' %}" class="nav_logo_link">K-Training</a>
                     </div>
                     <div class="nav_menu_wrapper">
@@ -26,22 +27,24 @@
                             </div>
                         </div>
                         <div id="nav" class="nav_menu_left">
-                            <div class="nav_menu_left_group">
-                                {% if user.is_authenticated %}
-                                    <a class="nav_menu_left_login"> Hello! {{ user.username }} </a>
-                                    <a href="{% url 'account:logout' %}" class="nav_menu_left_login"> 로그아웃 </a>
-                                    <span class="nav_menu_left_divider">|</span>
-                                    <a href="{% url 'mypage:myp_info' %}" class="nav_menu_left_login{% if request.resolver_match.url_name == 'myp_info' %} nav_menu_left_login_active {% endif %}">마이페이지</a>
-                                    {% if user.is_superuser %}
+                            <div class="nav_menu_left_group nav_menu_left_mobile">
+                                <div class="nav_menu_left_group">
+                                    {% if user.is_authenticated %}
+                                        <a class="nav_menu_left_login"> Hello! {{ user.username }} 님</a>
+                                        <a href="{% url 'account:logout' %}" class="nav_menu_left_login"> 로그아웃 </a>
                                         <span class="nav_menu_left_divider">|</span>
-                                        <a href="{% url 'admin_page:admin_user' %}" class="nav_menu_left_signup">관리자 페이지</a>
-                                        {% endif %}
-                                {% else %}
-                                    <a href="{% url 'account:login' %}" class="nav_menu_left_login">로그인</a>
-                                    <span class="nav_menu_left_divider">|</span>
-                                    <a href="{% url 'account:signup' %}" class="nav_menu_left_signup">회원가입</a>
-                                {% endif %}
-                                    <a href="{% url 'rpg:persona' %}"></a>
+                                        <a href="{% url 'mypage:myp_info' %}" class="nav_menu_left_login{% if request.resolver_match.url_name == 'myp_info' %} nav_menu_left_login_active {% endif %}">마이페이지</a>
+                                        {% if user.is_superuser %}
+                                            <span class="nav_menu_left_divider">|</span>
+                                            <a href="{% url 'admin_page:admin_user' %}" class="nav_menu_left_signup">관리자 페이지</a>
+                                            {% endif %}
+                                    {% else %}
+                                        <a href="{% url 'account:login' %}" class="nav_menu_left_login">로그인</a>
+                                        <span class="nav_menu_left_divider">|</span>
+                                        <a href="{% url 'account:signup' %}" class="nav_menu_left_signup">회원가입</a>
+                                    {% endif %}
+                                        <a href="{% url 'rpg:persona' %}"></a>
+                                </div>
                             </div>
                         </div>
                     </div>
