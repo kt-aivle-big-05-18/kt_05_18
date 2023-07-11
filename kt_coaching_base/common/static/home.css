@@ -58,6 +58,7 @@ html {
 
 .home_container {
   /* margin: 0 auto; */
+  /* height: 100vh; */
   padding-top: 10px;
   background-image: linear-gradient(to right, #FFFFFF, #01A1FF );
   padding-bottom: 126px;
@@ -134,6 +135,7 @@ color: black;
 }
 
 .home_bottom_go:hover{
+  text-decoration: none;
   opacity: 1.0;
 }
 
@@ -234,7 +236,12 @@ color: black;
 }
 
 .intro_bottom_go:hover{
+  text-decoration: none;
   opacity: 1.0;
+}
+
+.intro_bottom_text{
+  margin-left: 10px;
 }
 
 .intro_bottom_arrow{
@@ -327,6 +334,9 @@ color: black;
 
 .use_bottom_go{
   /* margin-top: 10px; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-decoration: none;
   font-size: large;
   font-weight: 600;
@@ -334,7 +344,12 @@ color: black;
   opacity: 0.6;
 }
 
+.use_bottom_text{
+  margin-left: 15px;
+}
+
 .use_bottom_go:hover{
+  text-decoration: none;
   opacity: 1.0;
 }
 
