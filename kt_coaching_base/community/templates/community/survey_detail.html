@@ -114,36 +114,5 @@
             alert("설문 제출이 정상적으로 완료되었습니다.");
         }
     });
-
-    document.getElementById("ratingForm").addEventListener("submit", function(event) {
-
-        var checklist = document.getElementsByClassName("survey_detail_checklist_item_wrapper");
-
-        var allChecked = true; // 모든 항목이 체크되었는지 확인하기 위한 변수
-
-        for (var i = 0; i < checklist.length; i++) {
-            var radios = checklist[i].querySelectorAll("input[type='radio']");
-            var checked = false;
-
-            for (var j = 0; j < radios.length; j++) {
-                if (radios[j].checked) {
-                    checked = true;
-                    break;
-                }
-            }
-
-            if (!checked) {
-                allChecked = false;
-                break;
-            }
-        }
-
-        if (!allChecked) {
-            event.preventDefault(); // 폼 제출 막기
-            alert("모든 항목을 완성해주세요.");
-        } else {
-            alert("설문 제출이 정상적으로 완료되었습니다.");
-        }
-    });
 </script>
 {% endblock %}

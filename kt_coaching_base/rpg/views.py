@@ -279,7 +279,9 @@ def rpg(request):
 
         # 토큰 한계 방지를 위해 대화 질문 카운트를 세서 10이 넘어가면 맨앞 하나씩 삭제
         if request.session['token_limit_prevention']>=10:
-            request.session['messages'] = request.session['messages'][1:]
+            request.session['messages'] = request.session['messages'][2:]
+        print(request.session['token_limit_prevention'])
+        print(request.session['messages'])
         
         voice_select = request.session.get('voice')  # 선택한 음성 옵션 가져오기
         if voice_select=='ko-KR-Neural2-A' or voice_select=='ko-KR-Neural2-B' or voice_select=='ko-KR-Wavenet-B':
