@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404, get_list_or_40
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.db.models import Sum, Count
 from rpg.models import Persona, Message
 from account.models import Account
@@ -32,10 +32,11 @@ def myp_survey(request):
     
     personas_with_messages = Persona.objects.filter(nickname=user).annotate(num_messages=Count('message')).filter(num_messages__gt=0)
     messages = Message.objects.filter(persona__in=personas_with_messages)
-    
+    first_p = personas_with_messages[0].id
     context = {
         'personas': personas_with_messages,
-        'messages': messages
+        'messages': messages,
+        'first_p' : first_p,
     }
     return render(request, 'mypage/myp_survey.html', context)
 
@@ -61,19 +62,24 @@ def share_persona(request, persona_id):
 
 @login_required
 def stop_sharing(request, persona_id):
-    try:
-        persona = Persona.objects.get(pk=persona_id, nickname=request.user.nickname)
-        persona.shared = False
-        persona.save()
-        
-        author = Account.objects.get(nickname=request.user.nickname)
-        surveys = Survey.objects.filter(author=author, persona_id=persona, shared=True)
-        surveys.update(shared=False)
+    if request.method == 'POST':  # 요청 메서드 확인
+        try:
+            persona = Persona.objects.get(pk=persona_id, nickname=request.user.nickname)
+            persona.shared = False
+            persona.save()
+            
+            author = Account.objects.get(nickname=request.user.nickname)
+            surveys = Survey.objects.filter(author=author, persona_id=persona, shared=True)
+            surveys.update(shared=False)
 
-    except Persona.DoesNotExist:
+            # JsonResponse를 반환하여 요청이 성공적으로 처리되었음을 알려줍니다.
+            return JsonResponse({'success': True})
+        except Persona.DoesNotExist:
+            # JsonResponse를 반환하여 요청 처리가 실패했음을 알려줍니다.
+            return JsonResponse({'success': False})
+    else:
+        # 기존 리다이렉트 로직을 유지합니다.
         return redirect('mypage:myp_survey')
-
-    return redirect('mypage:myp_survey')
 
 # @login_required
 from django.shortcuts import render, redirect
@@ -90,7 +96,7 @@ def update_profile(request):
             rank = request.POST['rank']
             user.rank = rank
         elif 'update-password' in request.POST:
-            password = request.POST['password']
+            password = request.POST['password_2']  # 입력한 비밀번호 값을 사용하도록 업데이트
             if len(password) > 0:
                 user.set_password(password)
         

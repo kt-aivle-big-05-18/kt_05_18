@@ -1,6 +1,10 @@
 
 /* ======================================================================= */
 /* 시뮬레이션 메인 */
+.grow_practice_wrapper{
+  width: 100vw;
+}
+
 .rpg_wrapper{
     position: absolute;
     Top:90px;

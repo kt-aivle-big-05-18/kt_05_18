@@ -3,6 +3,8 @@
 {% load static %}
 
 {% block content %}
+
+<input type="hidden" value={{first_p}} id="first_p">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0"></script>
 <script src="{% static 'css/myp.js' %}"></script>
@@ -15,103 +17,105 @@
 </div>
 
 <!-- 메인 화면 -->
-<div class="survey_main_title">대화 내역 및 분석결과</div>
-<button class="back_button" onclick="window.history.back();">&lt</button>
-<div class="content-container">
-    <div class="box-container">
-        <div class="box_menu">
-             {% for persona in personas %}
-                    <div id="simulation{{ forloop.counter }}" class="menu-item" onclick="changePage({{ forloop.counter }}, {{ persona.id }})">코칭 대화 {{ forloop.counter }}</div>
-             {% endfor %}
-        </div>
-        
-        <div class="box_result1">
-            {% for persona in personas %}
-                <div id="page{{ persona.id }}" style="display: none;">
-                    <div class="box_result1_title">
-                        <div class="talk-info-header">
-                            <h5 style="font-size: 17px; font-weight: 600;">{{ persona.topic_label }}</h5>
-                            {{ persona.department }} - {{ persona.rank }} - {{ persona.age }}세 - {{ persona.gender }} - 경력{{ persona.career }}년차
-                        </div>
-                        <button class="survey_request_btn" onclick="openSurveyModal(this)" data-persona-id="{{ persona.id }}" data-shared="{{ persona.shared }}">설문요청하기</button>
-                    </div>
-                    
-                    <div class="talk-info">
-                        {% for content in persona.message_set.all %}
-                            {% comment %} {% if forloop.counter|divisibleby:2 %} {% endcomment %}
-                            {% if content.name == "홍길동" %}
-                            <div class="survey_detail_conversation_list_member">
-                                <img class="survey_detail_conversation_list_pic_member" src="/static/img/ai_icon.png">
-                                <div class="survey_detail_conversation_list_txt_member">{{ content.content }}</div>
-                            </div>
-                            {% else %}
-                            <div class="survey_detail_conversation_list_coach">
-                                <img class="survey_detail_conversation_list_pic_coach" src="/static/img/default.png">
-                                <div class="survey_detail_conversation_list_txt_coach">{{ content.content }}</div>
-                            </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                    
-                    <div class="button-container">
-                        <button class="talk-info-button" id="survey_result_confirm_{{ persona.id }}" onclick="survey_check({{ persona.id }})">설문 결과 확인하기</button>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-        
-
-        <div class="box_result2" id="second_box">
-            <div id="result2">
-                <h2 class="analysis-header">대화 분석 결과</h2>
-                <h3 class="analysis-info-header">GROW 결과</h3>
-                <div class="grow-info">
-                    <div class = "g_b_c">
-                        <canvas id = "grow_bar_chart" class = "grow_bar_chart"></canvas>
-                    </div>
-                </div>
-                <h3 class="analysis-info-header">코칭 요인 분석</h3>
-                <div class="coaching-info">
-                    <canvas id = "coaching_chart_analysis" class = "coaching_chart_analysis"></canvas>
-                </div>
-                <div id = "analysis_chat" class="coaching-info-text">
-                </div>
+<div class="survey_main_wrapper">
+    <div class="survey_main_title">대화 내역 및 분석결과</div>
+    <button class="back_button" onclick="window.history.back();">&lt</button>
+    <div class="content-container">
+        <div class="box-container">
+            <div class="box_menu">
+                {% for persona in personas %}
+                        <div id="simulation{{ forloop.counter }}" class="menu-item" onclick="changePage({{ forloop.counter }}, {{ persona.id }})">코칭 대화 {{ forloop.counter }}</div>
+                {% endfor %}
             </div>
-            <div class="survey_result_wrapper" id="result3">
-                <div class="survey_result_summary">
-                    <p class = "survey_result_wrapper_title" style = "font-size: 18px; font-weight: 700; text-align: center;">GROW 코칭 모델기반 설문 결과</p>
-                    <p style = "font-size: 13px; font-weight: 600; text-align: center;">코칭이란 과거의 실수 보다는 미래의 가능성에 초점을 맞추는 것입니다.</p>
-                    <p style = "font-size: 13px; font-weight: 600; text-align: center;">GROW 모델은 Goal, Reality, Options, Will의 약자입니다.</p>
-                    <p style = "font-size: 13px; font-weight: 600; text-align: center;">
-                        · Goal : 목표 - 단기 및 장기 목표 정의<br>
-                        · Reality : 현실 - 현재 상황 및 문제 탐색<br>
-                        · Option : 옵션 - 해결 가능한 옵션 및 평가<br>
-                        · Will : 의지 - 실행할 일과 시기 설정<br>
-                    </p>
-                </div>
-                <div class="survey_result_txt" style = "font-size: 14px; font-weight: 500;">이용자님이 공유한 코칭 시뮬레이션에 대해 다른 사용자들이 진행한 <br>GROW 코칭 모델 기반 설문 결과입니다.</div>
-                <div class="survey_result_grow_wrapper">
-                    <div class="survey_result_gr">
-                        <div class="survey_result_goal">
-                            <canvas class="g_bar_chart" id="g_bar_chart"></canvas>
+            
+            <div class="box_result1">
+                {% for persona in personas %}
+                    <div id="page{{ persona.id }}" style="display: none;">
+                        <div class="box_result1_title">
+                            <div class="talk-info-header">
+                                <h5 style="font-size: 17px; font-weight: 600;">{{ persona.topic_label }}</h5>
+                                {{ persona.department }} - {{ persona.rank }} - {{ persona.age }}세 - {{ persona.gender }} - 경력{{ persona.career }}년차
+                            </div>
+                            <button class="survey_request_btn" onclick="openSurveyModal(this)" data-persona-id="{{ persona.id }}" data-shared="{{ persona.shared }}">{% if persona.shared %}공유 중지{% else %}설문요청하기{% endif %}</button>
                         </div>
-                        <div class="survey_result_reality">
-                            <canvas id = "r_bar_chart"></canvas>
+                        
+                        <div class="talk-info">
+                            {% for content in persona.message_set.all %}
+                                {% comment %} {% if forloop.counter|divisibleby:2 %} {% endcomment %}
+                                {% if content.name == "홍길동" %}
+                                <div class="survey_detail_conversation_list_member">
+                                    <img class="survey_detail_conversation_list_pic_member" src="/static/img/ai_icon.png">
+                                    <div class="survey_detail_conversation_list_txt_member">{{ content.content }}</div>
+                                </div>
+                                {% else %}
+                                <div class="survey_detail_conversation_list_coach">
+                                    <img class="survey_detail_conversation_list_pic_coach" src="/static/img/default.png">
+                                    <div class="survey_detail_conversation_list_txt_coach">{{ content.content }}</div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="button-container">
+                            <button class="talk-info-button" id="survey_result_confirm_{{ persona.id }}" onclick="survey_check({{ persona.id }})">설문 결과 확인하기</button>
                         </div>
                     </div>
-                    <div class="survey_result_ow">
-                        <div class="survey_result_options">
-                            <canvas id = "o_bar_chart"></canvas>
-                        </div>
-                        <div class="survey_result_will">
-                            <canvas id = "w_bar_chart"></canvas>
+                {% endfor %}
+            </div>
+            
+
+            <div class="box_result2" id="second_box">
+                <div id="result2">
+                    <h2 class="analysis-header">대화 분석 결과</h2>
+                    <h3 class="analysis-info-header">GROW 결과</h3>
+                    <div class="grow-info">
+                        <div class = "g_b_c">
+                            <canvas id = "grow_bar_chart" class = "grow_bar_chart"></canvas>
                         </div>
                     </div>
+                    <h3 class="analysis-info-header">코칭 요인 분석</h3>
+                    <div class="coaching-info">
+                        <canvas id = "coaching_chart_analysis" class = "coaching_chart_analysis"></canvas>
+                    </div>
+                    <div id = "analysis_chat" class="coaching-info-text">
+                    </div>
                 </div>
-                <p style = "font-size: 21px; font-weight: 600;">이용자 의견</p>
-                <div id ="survey_result_coment"  class="survey_result_coment">
+                <div class="survey_result_wrapper" id="result3">
+                    <div class="survey_result_summary">
+                        <p class = "survey_result_wrapper_title" style = "font-size: 18px; font-weight: 700; text-align: center;">GROW 코칭 모델기반 설문 결과</p>
+                        <p style = "font-size: 13px; font-weight: 600; text-align: center;">코칭이란 과거의 실수 보다는 미래의 가능성에 초점을 맞추는 것입니다.</p>
+                        <p style = "font-size: 13px; font-weight: 600; text-align: center;">GROW 모델은 Goal, Reality, Options, Will의 약자입니다.</p>
+                        <p style = "font-size: 13px; font-weight: 600; text-align: center;">
+                            · Goal : 목표 - 단기 및 장기 목표 정의<br>
+                            · Reality : 현실 - 현재 상황 및 문제 탐색<br>
+                            · Option : 옵션 - 해결 가능한 옵션 및 평가<br>
+                            · Will : 의지 - 실행할 일과 시기 설정<br>
+                        </p>
+                    </div>
+                    <div class="survey_result_txt" style = "font-size: 14px; font-weight: 500;">이용자님이 공유한 코칭 시뮬레이션에 대해 다른 사용자들이 진행한 <br>GROW 코칭 모델 기반 설문 결과입니다.</div>
+                    <div class="survey_result_grow_wrapper">
+                        <div class="survey_result_gr">
+                            <div class="survey_result_goal">
+                                <canvas class="g_bar_chart" id="g_bar_chart"></canvas>
+                            </div>
+                            <div class="survey_result_reality">
+                                <canvas id = "r_bar_chart"></canvas>
+                            </div>
+                        </div>
+                        <div class="survey_result_ow">
+                            <div class="survey_result_options">
+                                <canvas id = "o_bar_chart"></canvas>
+                            </div>
+                            <div class="survey_result_will">
+                                <canvas id = "w_bar_chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <p style = "font-size: 21px; font-weight: 600;">이용자 의견</p>
+                    <div id ="survey_result_coment"  class="survey_result_coment">
+                    </div>
+                    <br>
                 </div>
-                <br>
             </div>
         </div>
     </div>
@@ -367,7 +371,6 @@
 
                 var CommentContainer = $('#survey_result_coment');
                 CommentContainer.empty(); 
-                console.log(response.comments)
                 CommentContainer.append(response.comments)
             }
         });
@@ -387,8 +390,8 @@
             menu.classList.remove('selected');
         });
 
-        const currentPage = document.getElementById(`page${p_id}`);
-        const currentMenu = document.getElementById(`simulation${page}`);
+        let currentPage = document.getElementById(`page${p_id}`);
+        let currentMenu = document.getElementById(`simulation${page}`);
         /*const currentPage = document.getElementById(`page${p_id}`);
         const currentMenu = document.querySelector(`.box_menu > div:nth-child(${p_id})`);*/
        /* const currentMenu = document.querySelector(`.box_menu > div[onclick="changePage(${page})"]`);*/
@@ -544,14 +547,14 @@
     }
 
     window.onload = function() {
+        
         const hasMessages = {% if messages %}true{% else %}false{% endif %};
         
         if (!hasMessages) {
             window.alert("대화한 내역이 없습니다.");
             window.location.href = "/rpg"; // 페르소나 페이지로 이동합니다.
         } else {
-            console.log("1111111111")
-            changePage(1, 1); // 페이지 1부터 표시하도록 변경
+            changePage(1, document.getElementById("first_p").value); // 페이지 1부터 표시하도록 변경
             $("#result2").show();
             $("#result3").hide();
         }
@@ -562,21 +565,32 @@
         var shared = button.dataset.shared;
       
         if (shared === 'True') {
-          // Display stop sharing form
-          // '<h1>' + shared + ', ' + personaId + '</h1>' +
-          $('#surveyModalContent').html(
-            '<form action="/mypage/stop_sharing/' + personaId + '/" method="POST">' +
-            '{% csrf_token %}' +
-            '<input type="hidden" name="persona_id" value="' + personaId + '">' +
-            '<div class="survey_popup_btn">' +
-            '<button class="survey_popup_share_btn" type="submit">공유 중지</button>' +
-            '<button class="survey_popup_exit_btn" type="button" id="close-button">나가기</button>' +
-            '</div>' +
-            '</form>'
-          );
+          // 공유 중지
+          $.ajax({
+            url: "/mypage/stop_sharing/" + personaId + "/",
+            type: "POST",
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            datatype: 'json',
+            data: {
+              message: personaId
+            },
+            success: function(response) {
+                if (response.success) {
+                    // 공유 중지 후 버튼 텍스트 업데이트
+                    button.innerHTML = "설문요청하기";
+                    button.dataset.shared = "False";
+                } else {
+                    // 실패했을 경우에 대한 처리
+                    console.error("Stop sharing failed");
+                  }
+                }
+              });
         } else {
           // Display share persona form
           // '<h1>' + shared + ', ' + personaId + '</h1>' +
+          // Open the modal
+          $('#surveyModal').show();
+
           $('#surveyModalContent').html(
             '<div class="survey_popup_title">설문요청</div>' +
             '<form action="/mypage/share_persona/' + personaId + '/" method="POST">' +
@@ -592,10 +606,24 @@
             '</div>' +
             '</form>'
           );
+
+          document.getElementById('surveyModalContent').style.display = 'block';
+          document.getElementById('surveyModal').style.display = 'block';
+
+          var connectAnonymousButton = document.getElementById('connectAnonymousButton');
+          var surveyMyButton = document.getElementById('surveyMyButton');
+
+          connectAnonymousButton.addEventListener('click', function (event) {
+          document.getElementById('surveyModalContent').style.display = 'none';
+          document.getElementById('surveyMy').style.display = 'block';
+         });
+
+          surveyMyButton.addEventListener('click', function (event) {
+          document.getElementById('surveyModalContent').style.display = 'none';
+          document.getElementById('surveyMy').style.display = 'none';
+         });
         }
       
-        // Open the modal
-        $('#surveyModal').show();
       
         // Close the modal when close button is clicked
         $('#close-button').click(function () {

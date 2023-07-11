@@ -1,12 +1,26 @@
-/* 미디어 쿼리 */
-@media (max-width: 80vw) {
-    .nav_logo_link{
-        font-size: 15px;
-    }
-    .nav_menu_link{
-        font-size: 8px;
-    }
+/* 기본 설정: nav_menu_left_mobile 클래스 */
+.nav_menu_left_mobile .nav_menu_left{
+    display: flex;
   }
+  
+  /* 미디어 쿼리: 화면 크기에 따른 글꼴 크기 및 nav_menu_left_mobile 클래스 display 설정 */
+  @media (max-width: 1300px) {
+    /* nav_menu_left_mobile 클래스 display 설정 */
+    .nav_menu_left_mobile{
+        display: none;
+        }
+  }
+
+/* 미디어 쿼리: 화면 크기에 따른 글꼴 크기 및 nav_menu_left_mobile 클래스 display 설정 */
+@media (max-width: 900px) {
+    /* nav_menu_left_mobile 클래스 display 설정 */
+    .nav_menu_left{
+        display: none;
+        }
+    }
+    .nav_menu_wrapper{
+        width: 0vw;
+    }
 
 .nav_wrapper{
     background-color: white;
@@ -29,6 +43,10 @@
     width: 95%;
 }
 
+.nav_logo{
+    width: 180px;
+}
+
 .nav_logo_link{
     font-family: sans-serif;
     color: #2FC4CE;
@@ -43,7 +61,7 @@
 }
 
 .nav_menu_wrapper{
-    width: 83%;
+    width: 75vw;
     display: flex;
     justify-content: space-between;
 }

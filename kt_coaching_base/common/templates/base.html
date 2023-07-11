@@ -11,12 +11,14 @@
                 font-size: 13px;
             }
         }
-        body {
-          margin: 0px;
-        }
         html{
             font-family: 'Montserrat', sans-serif;
             overflow: auto;
+            {% comment %} width: 100vw; {% endcomment %}
+        }
+        body {
+            {% comment %} position: fixed; {% endcomment %}
+            margin: 0px;
         }
         html::-webkit-scrollbar {
             width: 10px;
