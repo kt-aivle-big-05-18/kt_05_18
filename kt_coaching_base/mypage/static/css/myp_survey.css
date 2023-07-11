@@ -358,11 +358,12 @@ h3 {
 .survey_detail_conversation_list_member{
     display: flex;
     flex-direction: column;
-    /* align-items: end; */
+    align-items: start;
     background-color: #F1F1F1;
     border: solid 1px #CCCCCC;
     font-weight: 500;
     padding: 15px;
+    text-align: left;
 }
 
 .survey_detail_conversation_list_pic_member{
@@ -386,12 +387,11 @@ h3 {
 }
 
 .survey_request_btn{
-    width: 120px;
     border-radius: 10px;
     background-color: #a5a5a5;
     color: white;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 18px;
     border: none;
     padding: 5px 10px;
 }
