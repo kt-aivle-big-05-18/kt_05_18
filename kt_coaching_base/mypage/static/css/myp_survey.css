@@ -380,12 +380,12 @@ h3 {
 }
 
 .survey_request_btn{
-    width: 50px;
+    width: 120px;
     border-radius: 10px;
     background-color: #a5a5a5;
     color: white;
     font-weight: 500;
-    font-size: 15px;
+    font-size: 16px;
     border: none;
     padding: 5px 10px;
 }
