@@ -22,23 +22,21 @@
     <button class="back_button" onclick="window.history.back();">&lt</button>
     <div class="content-container">
         <div class="box-container">
-            <!-- 왼쪽 메뉴 사이드바 -->
             <div class="box_menu">
                 {% for persona in personas %}
                         <div id="simulation{{ forloop.counter }}" class="menu-item" onclick="changePage({{ forloop.counter }}, {{ persona.id }})">코칭 대화 {{ forloop.counter }}</div>
                 {% endfor %}
             </div>
             
-            <!-- 대화 내역 보기 -->
             <div class="box_result1">
                 {% for persona in personas %}
-                    <div class ="box_result1_wrapper" id="page{{ persona.id }}" style="display: none;">
+                    <div id="page{{ persona.id }}" style="display: none;">
                         <div class="box_result1_title">
                             <div class="talk-info-header">
                                 <h5 style="font-size: 17px; font-weight: 600;">{{ persona.topic_label }}</h5>
                                 {{ persona.department }} - {{ persona.rank }} - {{ persona.age }}세 - {{ persona.gender }} - 경력{{ persona.career }}년차
                             </div>
-                            <button class="survey_request_btn" onclick="openSurveyModal(this)" data-persona-id="{{ persona.id }}" data-shared="{{ persona.shared }}">설문요청하기</button>
+                            <button class="survey_request_btn" onclick="openSurveyModal(this)" data-persona-id="{{ persona.id }}" data-shared="{{ persona.shared }}">{% if persona.shared %}공유 중지{% else %}설문요청하기{% endif %}</button>
                         </div>
                         
                         <div class="talk-info">
@@ -65,9 +63,9 @@
                 {% endfor %}
             </div>
             
-            <!-- 결과 확인 -->
+
             <div class="box_result2" id="second_box">
-                <div class="box_result2_wrapper" id="result2">
+                <div id="result2">
                     <h2 class="analysis-header">대화 분석 결과</h2>
                     <h3 class="analysis-info-header">GROW 결과</h3>
                     <div class="grow-info">
@@ -379,6 +377,7 @@
     }
 
     function changePage(page, p_id) {
+        console.log("2222")
         $("#result2").show();
         $("#result3").hide();
         const pages = document.querySelectorAll('.box_result1 > div');
@@ -562,25 +561,36 @@
     }
 
     function openSurveyModal(button) {
-        var personaId = button.dataset.h3;
+        var personaId = button.dataset.personaId;
         var shared = button.dataset.shared;
       
         if (shared === 'True') {
-          // Display stop sharing form
-          // '<h1>' + shared + ', ' + personaId + '</h1>' +
-          $('#surveyModalContent').html(
-            '<form action="/mypage/stop_sharing/' + personaId + '/" method="POST">' +
-            '{% csrf_token %}' +
-            '<input type="hidden" name="persona_id" value="' + personaId + '">' +
-            '<div class="survey_popup_btn">' +
-            '<button class="survey_popup_share_btn" type="submit">공유 중지</button>' +
-            '<button class="survey_popup_exit_btn" type="button" id="close-button">나가기</button>' +
-            '</div>' +
-            '</form>'
-          );
+          // 공유 중지
+          $.ajax({
+            url: "/mypage/stop_sharing/" + personaId + "/",
+            type: "POST",
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            datatype: 'json',
+            data: {
+              message: personaId
+            },
+            success: function(response) {
+                if (response.success) {
+                    // 공유 중지 후 버튼 텍스트 업데이트
+                    button.innerHTML = "설문요청하기";
+                    button.dataset.shared = "False";
+                } else {
+                    // 실패했을 경우에 대한 처리
+                    console.error("Stop sharing failed");
+                  }
+                }
+              });
         } else {
           // Display share persona form
           // '<h1>' + shared + ', ' + personaId + '</h1>' +
+          // Open the modal
+          $('#surveyModal').show();
+
           $('#surveyModalContent').html(
             '<div class="survey_popup_title">설문요청</div>' +
             '<form action="/mypage/share_persona/' + personaId + '/" method="POST">' +
@@ -596,10 +606,24 @@
             '</div>' +
             '</form>'
           );
+
+          document.getElementById('surveyModalContent').style.display = 'block';
+          document.getElementById('surveyModal').style.display = 'block';
+
+          var connectAnonymousButton = document.getElementById('connectAnonymousButton');
+          var surveyMyButton = document.getElementById('surveyMyButton');
+
+          connectAnonymousButton.addEventListener('click', function (event) {
+          document.getElementById('surveyModalContent').style.display = 'none';
+          document.getElementById('surveyMy').style.display = 'block';
+         });
+
+          surveyMyButton.addEventListener('click', function (event) {
+          document.getElementById('surveyModalContent').style.display = 'none';
+          document.getElementById('surveyMy').style.display = 'none';
+         });
         }
       
-        // Open the modal
-        $('#surveyModal').show();
       
         // Close the modal when close button is clicked
         $('#close-button').click(function () {
