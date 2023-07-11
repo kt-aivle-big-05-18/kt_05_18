@@ -1,6 +1,8 @@
     {% extends "base.html" %}
     {% load static %}
     {% block content %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
     {% if messages %}
     {% for message in messages %}
@@ -26,7 +28,7 @@
 
         .content-container {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
             align-items: flex-start;
             width: 80%;
             margin: 40px auto;
@@ -121,6 +123,24 @@
             box-shadow: 2px 5.5px 10px rgba(0, 0, 0, 0.3);
         }
 
+        .info_box_pw {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            font-weight: 530;
+            font-size: 20px;
+            padding: 25px;
+            margin-top: 20px;
+            margin-right: 70px;
+            margin-bottom: 30px;
+            width: 600px;
+            height: 70px;
+            border-radius: 20px;
+            background-color: white;
+            box-shadow: 2px 5.5px 10px rgba(0, 0, 0, 0.3);
+        }
+
         .username {
             font-size: 18px;
             font-weight: bold;
@@ -159,11 +179,11 @@
             margin-left: 220px;
         }
 
-        .info_box input[type="password"] {
+        .info_box_pw_input input[type="password"] {
             width: 180px;
             height: 30px;
             text-align: center;
-            margin-right: 2px;
+            margin-right: 3px;
         }
 
         .back_button {
@@ -182,6 +202,15 @@
       
         .back_button:hover {
             background-color: #134971;
+        }
+
+        .signup_error_message_myp{
+            font-size : 12px;
+            color : #red;
+        }
+
+        .info_box_pw_input {
+            flex-direction: column;
         }
 
 
@@ -279,15 +308,78 @@
                 </div>                
             </form>
             <!-- 비밀번호 수정 -->
-            <form method="post" action="{% url 'mypage:update_profile' %}">
-                {% csrf_token %}
-                <div class="info_box">
-                    <div>비밀번호</div>
-                    <div><input type="password" name="password" placeholder="비밀번호를 입력하세요."></div>
-                    <button type="submit" class="edit_button" name="update-password">수정</button>
-                </div>
-            </form>
+<form method="post" action="{% url 'mypage:update_profile' %}" id="update-password-form">
+    {% csrf_token %}
+    <div class="info_box_pw">
+        <div>비밀번호</div>
+        <div class="info_box_pw_input">
+            <!-- 비밀번호 수정 -->
+            <input type="password" name="password_1" id='password_1' placeholder="비밀번호를 입력하세요." required/>
+            <div class="signup_error_message_myp" id="password_1-error"></div>
+
+            <input type="password" name="password_2" id='password_2' placeholder="비밀번호를 다시 입력하세요." required/>
+            <div class="signup_error_message_myp" id="password_2-error"></div>
         </div>
+        <button type="submit" class="edit_button" name="update-password" id="update-password-button" disabled>수정</button>
     </div>
-    
+</form>
+
+<script>
+    $(document).ready(function () {
+        $('#password_1, #password_2').on('input', function () {
+            updatePasswordFormState();
+        });
+
+        function updatePasswordFormState() {
+            updatePassword1ErrorMessage();
+            updatePassword2ErrorMessage();
+            
+            const errorMessage1 = $('#password_1-error').text();
+            const errorMessage2 = $('#password_2-error').text();
+
+            if (errorMessage1 === '사용할 수 있습니다.' && errorMessage2 === '비밀번호가 같습니다.') {
+                $('#update-password-button').prop('disabled', false);
+            } else {
+                $('#update-password-button').prop('disabled', true);
+            }
+        }
+
+        function updatePassword1ErrorMessage() {
+            const input = $('#password_1').val();
+            const hasMinLength = input.length >= 8;
+            const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(input);
+            const hasLetter = /[a-zA-Z]/.test(input);
+            const hasNumber = /[0-9]/.test(input);
+            let errorMessage = '';
+
+            if (!hasMinLength) {
+                errorMessage = '비밀번호는 최소 8글자 이상이어야 합니다.';
+            } else if (!(hasSpecialChar && hasLetter && hasNumber)) {
+                errorMessage = '비밀번호는 특수문자, 영어, 숫자를 혼용하여야 합니다.';
+            } else {
+                errorMessage = '사용할 수 있습니다.';
+            }
+
+            $('#password_1-error').text(errorMessage);
+        }
+
+        function updatePassword2ErrorMessage() {
+            const password1Value = $('#password_1').val();
+            const password2Value = $('#password_2').val();
+            let errorMessage = '';
+
+            if (password1Value !== password2Value) {
+                errorMessage = '비밀번호가 일치하지 않습니다.';
+            } else if (password1Value !== '' && $('#password_1-error').text() === '사용할 수 있습니다.') {
+                errorMessage = '비밀번호가 같습니다.';
+            }
+
+            $('#password_2-error').text(errorMessage);
+        }
+
+        // 초기 폼상태 설정
+        updatePasswordFormState();
+    });
+</script>
+
 {% endblock %}
