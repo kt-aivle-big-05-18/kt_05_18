@@ -43,7 +43,7 @@ def grow(request):
     # HTTP 요청이 POST 방식일 경우
     if request.method == "POST":
         message = request.POST.get("message") # 사용자가 입력한 한국어 메세지
-        with open("grow_practice/grow_ex.txt", "r") as file:
+        with open("grow_practice/grow_ex.txt", encoding='utf-8') as file:
             pre_grow = file.read()
         message = [{"role": "user", "content": pre_grow},{"role": "user", "content":message}]
         
